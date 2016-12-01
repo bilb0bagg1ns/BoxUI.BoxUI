@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--  Source: http://www.thymeleaf.org/doc/articles/layouts.html  -->
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	 <link rel="stylesheet" type="text/css" media="all"
+	       href="../../css/box.css" th:href="@{/css/box.css}"/>
+	</head>
+  </head>
+  <body>
+    <div class="container">
+      <div class="hero-unit">
+        <h1>Test</h1>
+        <p>
+          Welcome!
+          Get started quickly by signing in.
+        </p>
+        <p>
+          <a href="/login" th:href="@{/login}" class="btn btn-large btn-success">Login</a>
+        </p>
+        <p>          
+          Or register.
+        </p>
+        <p>
+          <a href="/register" th:href="@{/register}" class="btn btn-large btn-success">Register</a>
+        </p>
+        
+      </div>
+      <div>&copy; 2016</div>
+    </div>
+  </body>
+</html>

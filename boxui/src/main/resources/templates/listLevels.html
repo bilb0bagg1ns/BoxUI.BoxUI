@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <p th:text="'Hello, ' + ${user.userName} + '!'" />
+      
+      <fieldset>
+        <div>
+          <label th:text="#{skilllevel.type}">Interested Skill Type </label>
+          <ul>
+<!--           
+            <li th:each="type : ${T(com.box.type.SkillLevelType).values()} ">
+            OR 
+ -->         
+            <!-- Iterate over each enumerated skill type -->   
+            <li th:each="type : ${allSkillLevelType}"> <!-- Model attribute in HomeController -->
+              <!-- links to each skill type -->
+              <a th:href="@{${type.link}}"><span th:text="${type.text}"></span></a>              
+            </li>
+          </ul>
+        </div>
+      </fieldset>    
+</body>
+</html>
