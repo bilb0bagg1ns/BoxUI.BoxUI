@@ -26,7 +26,13 @@ public class AuthenticationService {
 		
 		
 		if ((retrievedUser != null) && (retrievedUser.getUserName().equals(user.getUserName())) && (retrievedUser.getPassword().equals(user.getPassword()))){
-			isAuthenticated = true;			
+			isAuthenticated = true;
+
+			// populate state of authenticated user
+			//TODO : Replace it with cloning
+			user.setId(retrievedUser.getId());
+			user.setFirstName(retrievedUser.getFirstName());
+			user.setLastName(retrievedUser.getLastName());
 		}
 		return isAuthenticated;
 	}

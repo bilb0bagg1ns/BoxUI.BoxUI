@@ -85,31 +85,25 @@ public class HomeController {
 	@RequestMapping(value = "/levels")
 	public ModelAndView authenticate(ModelAndView model, @ModelAttribute User user) throws IOException {	
 		// testing REST based call
-//		CoachingEngineController cec = new CoachingEngineController();
 		ModelMap mm = new ModelMap();
 		coachingEngineController.getTest(mm);
 		System.out.println (mm.get("test") + "<<<<<<------------");
 		
 		// authenticate user
-        //authenticationService = new AuthenticationService();
         boolean isAuthenticated = authenticationService.isAuthenticated(user);
 		if (isAuthenticated){
 			//List<Contact> listContact = contactDAO.list();
 			//model.addObject("listContact", listContact);
 			model.addObject("user", user);
 			model.setViewName("listLevels");
-		}
-		
-    	//Query searchUserQuery = new Query(Criteria.where("userName").is(user.getUserName()).and("password").is(user.getPassword()));
-//		User savedUser = repository.findByUserNamePassword(user.getUserName(), user.getPassword());
-//		
-//		System.out.println(savedUser + "<<<<<----");
-//
-		
-//		//model.addObject("listContact", listContact);
-//		model.setViewName("greeting");
-
+		}		
 		return model;
-	}	
+	}
+	
+	@RequestMapping(value = "/novice")
+	public ModelAndView novice (ModelAndView model, @RequestParam("user") String userName) throws IOException {
+		System.out.println (userName + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");					
+		return model;
+	}
 
 }

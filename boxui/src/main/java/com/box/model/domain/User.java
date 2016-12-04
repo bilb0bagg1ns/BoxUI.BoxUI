@@ -1,5 +1,6 @@
 package com.box.model.domain;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -10,6 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "users")
 public class User {
+
+    @Id
+    public String id;
 
 	private String userName;
 	private String password;
@@ -33,6 +37,16 @@ public class User {
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+
+	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -66,8 +80,10 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userName=" + userName + ", password=" + password + ", firstName=" + firstName + ", lastName="
-				+ lastName + "]";
+		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + "]";
 	}
+
+
 	
 }
