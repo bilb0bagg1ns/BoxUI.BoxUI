@@ -18,7 +18,7 @@
             <!-- Iterate over each enumerated skill type -->   
             <li th:each="type : ${allSkillLevelType}"> <!-- Model attribute in HomeController -->
               <!-- links to each skill type. Pass username via link for now. TODO: set user on Session -->
-              <a th:href="@{${type.link}(user=${user.userName})}"><span th:text="${type.text}"></span></a>              
+              <a th:href="@{${type.link}(userName=${user.userName}, levelId=${type.id})}"><span th:text="${type.text}"></span></a>              
             </li>
           </ul>
         </div>

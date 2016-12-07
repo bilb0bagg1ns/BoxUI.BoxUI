@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.box.model.data.repository.UserRepository;
+import com.box.model.domain.Lesson;
 import com.box.model.domain.User;
 import com.box.model.services.AuthenticationService;
 import com.box.model.services.RegistrationService;
@@ -101,8 +103,22 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/novice")
-	public ModelAndView novice (ModelAndView model, @RequestParam("user") String userName) throws IOException {
-		System.out.println (userName + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");					
+	public ModelAndView novice (HttpSession session, ModelAndView model, @RequestParam("userName") String userName, @RequestParam("levelId") String levelId) throws IOException {
+		System.out.println (userName + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+
+		Lesson lesson = new Lesson ();
+		lesson.setLevelId(levelId);
+		
+		model.addObject("lesson", lesson);
+		session.setAttribute("lessonSessionAttribute",lesson);
+		System.out.println (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+
+		return model;
+	}
+	
+	@RequestMapping(value = "/lessonEntry")
+	public ModelAndView lessonEntry (ModelAndView model, @ModelAttribute Lesson lesson) throws IOException {
+		model.setViewName("lessonEntryForm");
 		return model;
 	}
 

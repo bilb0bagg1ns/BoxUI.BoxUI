@@ -1,18 +1,20 @@
 package com.box.model.type;
 
 public enum SkillLevelType {
-	NOVICE("Novice", "novice", "Novice"),
-	INTERMEDIATE("Intermediate", "intermediate", "Intermediate"),
-	EXPERT("Expert", "expert", "Expert");
+	NOVICE("Novice", "1", "novice", "Novice"),
+	INTERMEDIATE("Intermediate", "2", "intermediate", "Intermediate"),
+	EXPERT("Expert", "3", "expert", "Expert");
 
 	private String code;
+	private String id;
 	private String link;
 	private String text;
 
 
 	
-	private SkillLevelType(String code, String link, String text) {
+	private SkillLevelType(String code, String id, String link, String text) {
 		this.code = code;
+		this.id = id;
 		this.link = link;
 		this.text = text;
 	}
@@ -46,6 +48,16 @@ public enum SkillLevelType {
 		this.text = text;
 	}
 
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 }
