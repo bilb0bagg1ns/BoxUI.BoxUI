@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	 <link rel="stylesheet" type="text/css" media="all"
+	       href="../../css/box.css" th:href="@{/css/box.css}"/>
+	</head>
+	<body>
+		<h2>Admin - Novice Lesson Entry - Under Construction</h2>
+		<p th:text="'Lesson: ' + ${session.lessonSessionAttribute} + '!'" />
+		<p th:text="'User ' + ${session.userSessionAttribute} + '!'" />
+		
+		
+		<a href="#" th:href="@{/lessonEntry}">Add Lesson</a>
+		
+ <h2>Lesson list</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Short Description</th>
+                    <th>Long Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr th:each="lesson : ${lessonListWrapper.lessonList}">
+                    <td th:text="${lesson.name}">Red chair</td>
+                    <td th:text="${lesson.shortDescription}">Red chair</td>
+                    <td th:text="${lesson.longDescription}">Red chair</td>
+                    <td> 
+                        <a th:href="@{editLesson(lessonId=${lesson.id})}"><span th:text="Edit"></span></a>
+                        <a th:href="@{deleteLesson(lessonId=${lesson.id})}"><span th:text="Delete"></span></a>                                                                
+                    </td>                                                      
+                </tr>
+            </tbody>
+        </table>		
+	</body>
+</html>
