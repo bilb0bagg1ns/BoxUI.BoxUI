@@ -3,6 +3,8 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    	 <link rel="stylesheet" type="text/css" media="all"
+	       href="../../css/box.css" th:href="@{/css/box.css}"/>
 </head>
 <body>
     <p th:text="'Hello, ' + ${user.userName} + '!'" />
@@ -16,9 +18,9 @@
             OR 
  -->         
             <!-- Iterate over each enumerated skill type -->   
-            <li th:each="type : ${allSkillLevelType}"> <!-- Model attribute in HomeController -->
+            <li th:each="skillLevelType : ${allSkillLevelType}"> <!-- Model attribute in HomeController -->
               <!-- links to each skill type. Pass username via link for now. TODO: set user on Session -->
-              <a th:href="@{${type.link}(userName=${user.userName}, levelId=${type.id})}"><span th:text="${type.text}"></span></a>              
+              <a th:href="@{${skillLevelType.link}(userName=${user.userName}, skillLevelTypeId=${skillLevelType.id})}"><span th:text="${skillLevelType.text}"></span></a>              
             </li>
           </ul>
         </div>

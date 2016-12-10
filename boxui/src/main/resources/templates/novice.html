@@ -6,9 +6,27 @@
 	       href="../../css/box.css" th:href="@{/css/box.css}"/>
 	</head>
 	<body>
-		<h2>Under Construction</h2>
-		<p th:text="'Lesson: ' + ${lesson} + '!'" />
+		<h2>Novice User - Under Construction</h2>
+		<p th:text="'Lesson: ' + ${session.lessonSessionAttribute} + '!'" />
+		<p th:text="'User ' + ${session.userSessionAttribute} + '!'" />
 		
-		<a href="#" th:href="@{/lessonEntry}">Add Lesson</a>
+ <h2>Lesson List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Lesson</th>
+                    <th>Description</th>
+                    <th>Challenge</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr th:each="lesson : ${lessonListWrapper.lessonList}">
+                    <td> <a th:href="@{${lesson.name}}"><span th:text="${lesson.name}"></span></a></td>              
+                    <td th:text="${lesson.longDescription}">Description</td>
+                    <td> <a th:href="@{${lesson.name}}"><span th:text="Submit"></span></a></td>                                  
+                </tr>
+            </tbody>
+        </table>
+       		
 	</body>
 </html>
