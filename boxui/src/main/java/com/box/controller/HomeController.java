@@ -232,4 +232,30 @@ public class HomeController {
 		Lesson lesson = lessonsProcessingService.findLessonByLessonId(lessonId);
 		return lessonEntryUpdate(model, lesson);
 	}
+	
+	@RequestMapping(value = "/submitChallenge")
+	public ModelAndView submitChallenge (Model m, ModelAndView model, @ModelAttribute LessonListWrapper lessonListWrapper, @RequestParam("lessonId") String lessonId, @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
+		System.out.println ("Submitting challenge for LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		System.out.println ("Submitting challenge for skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		
+		// testing REST based call
+		ModelMap mm = new ModelMap();
+		coachingEngineController.getTest(mm);
+		System.out.println (mm.get("test") + "<<<<<<------------");
+		
+		if ((SkillLevelType.valueOfId(skillLevelTypeId)).equals(SkillLevelType.NOVICE)){
+		    // retrieve lessons
+		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(skillLevelTypeId);
+		    m.addAttribute("lessonListTmp", lessonsList);
+
+		    // insert list into wrapper
+		    LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+		    lessonListWrapperTmp.setLessonList(lessonsList);
+		    m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+			
+		  model.setViewName("novice");	
+		}
+		
+		return model;
+	}
 }

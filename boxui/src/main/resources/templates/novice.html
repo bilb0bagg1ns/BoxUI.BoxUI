@@ -23,7 +23,7 @@
                 <tr th:each="lesson : ${lessonListWrapper.lessonList}">
                     <td> <a th:href="@{${lesson.name}}"><span th:text="${lesson.name}"></span></a></td>              
                     <td th:text="${lesson.longDescription}">Description</td>
-                    <td> <a th:href="@{${lesson.name}}"><span th:text="Submit"></span></a></td>                                  
+                    <td> <a th:href="@{submitChallenge(lessonId=${lesson.Id}, skillLevelTypeId=${lesson.skillLevelTypeId})}"><span th:text="Submit"></span></a></td>                                  
                 </tr>
             </tbody>
         </table>

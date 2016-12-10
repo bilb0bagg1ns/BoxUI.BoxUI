@@ -28,6 +28,15 @@ public enum SkillLevelType {
 		throw new IllegalArgumentException("Invalid code: " + code);
 	}
 
+	
+	public static SkillLevelType valueOfId(String id) {
+		for (SkillLevelType type : SkillLevelType.values()) {
+			if (type.getId().equals(id)) {
+				return type;
+			}
+		}
+		throw new IllegalArgumentException("Invalid id: " + id);
+	}
 	public String getCode() {
 		return code;
 	}
