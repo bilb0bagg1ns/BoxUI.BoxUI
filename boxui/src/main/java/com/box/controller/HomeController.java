@@ -118,6 +118,7 @@ public class HomeController {
 
 			Lesson lesson = new Lesson ();
 			lesson.setSkillLevelTypeId(skillLevelTypeId);
+			model.addObject("lesson", lesson);
 			
 			// add to session so it's available for subsequent screens
 			// adding to session in lieu of trying to pass it via the hfref link
@@ -157,8 +158,20 @@ public class HomeController {
 		return model;
 	}
 	
+	/**
+	 * Save lesson created by Admin
+	 * 
+	 * @param session
+	 * @param model
+	 * @param m
+	 * @param lesson
+	 * @param lessonListWrapper
+	 * @return
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/saveLesson")
-	public ModelAndView saveLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper, @ModelAttribute ArrayList<Lesson> lessonsListTmp) throws IOException, Exception {
+	public ModelAndView saveLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper) throws IOException, Exception {
 		Lesson lessonSessionAttribute = (Lesson)session.getAttribute("lessonSessionAttribute");
 		if (lessonSessionAttribute != null){
 			lesson.setSkillLevelTypeId(lessonSessionAttribute.getSkillLevelTypeId()); // assign the skill id
@@ -192,8 +205,21 @@ public class HomeController {
 		return model;
 	}
 	
+	/**
+	 * Lesson updated by Admin being updated in db.
+	 * 
+	 * @param session
+	 * @param model
+	 * @param m
+	 * @param lesson
+	 * @param lessonListWrapper
+	 * @param lessonsListTmp
+	 * @return
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/saveUpdateLesson")
-	public ModelAndView saveUpdateLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper, @ModelAttribute ArrayList<Lesson> lessonsListTmp) throws IOException, Exception {
+	public ModelAndView saveUpdateLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper) throws IOException, Exception {
 		Lesson lessonSessionAttribute = (Lesson)session.getAttribute("lessonSessionAttribute");
 		if (lessonSessionAttribute != null){
 			lesson.setSkillLevelTypeId(lessonSessionAttribute.getSkillLevelTypeId()); // assign the skill id
@@ -225,6 +251,14 @@ public class HomeController {
 		return model;
 	}
 
+	/**
+	 * Admin editing a lesson
+	 * 
+	 * @param model
+	 * @param lessonId
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/editLesson")
 	public ModelAndView editLesson (ModelAndView model, @RequestParam("lessonId") String lessonId) throws IOException {
 		System.out.println ("Editing LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
@@ -233,6 +267,17 @@ public class HomeController {
 		return lessonEntryUpdate(model, lesson);
 	}
 	
+	/**
+	 * Submit challenge to coaching engine
+	 * 
+	 * @param m
+	 * @param model
+	 * @param lessonListWrapper
+	 * @param lessonId
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/submitChallenge")
 	public ModelAndView submitChallenge (Model m, ModelAndView model, @ModelAttribute LessonListWrapper lessonListWrapper, @RequestParam("lessonId") String lessonId, @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
 		System.out.println ("Submitting challenge for LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
