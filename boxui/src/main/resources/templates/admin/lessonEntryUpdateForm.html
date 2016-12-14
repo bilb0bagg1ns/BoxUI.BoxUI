@@ -14,8 +14,10 @@
 		<p th:text="'Lesson: ' + ${lesson} + '!'" />
 
  	
+		<form action="#" method="post" th:object="${lesson}" th:action="@{/saveLesson}">
+<!--
 		<form action="#" method="post" th:object="${lesson}" th:action="@{/saveUpdateLesson}">
-<!-- 		
+ 		
 		<form action="#" method="post" th:object="${session.lessonSessionAttribute}" th:action="@{/saveLesson}">
 -->		
 		

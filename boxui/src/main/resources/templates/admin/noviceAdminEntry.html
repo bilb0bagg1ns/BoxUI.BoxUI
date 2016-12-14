@@ -12,7 +12,7 @@
 		<p th:text="'User ' + ${session.userSessionAttribute} + '!'" />
 		
 		
-		<a href="#" th:href="@{/lessonEntry}">Add Lesson</a>
+		<a href="#" th:href="@{/lessonEntry(skillLevelTypeId=${lesson.skillLevelTypeId})}">Add Lesson</a>
 		
  <h2>Lesson list</h2>
         <table>
