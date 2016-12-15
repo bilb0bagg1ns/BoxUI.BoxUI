@@ -3,7 +3,6 @@ package com.box.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
