@@ -117,12 +117,13 @@ public class HomeController {
 
 			Lesson lesson = new Lesson ();
 			lesson.setSkillLevelTypeId(skillLevelTypeId);
+			model.addObject("lesson", lesson);
 			
 			// add to session so it's available for subsequent screens
 			// adding to session in lieu of trying to pass it via the hfref link
 			// TODO: Ensure on logoff, to invalidate session!
-			session.setAttribute("lessonSessionAttribute",lesson);
-			System.out.println (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+			//session.setAttribute("lessonSessionAttribute",lesson);
+			//System.out.println (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
 			
 		    // retrieve lessons
 		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(skillLevelTypeId);
@@ -143,7 +144,11 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/lessonEntry")
-	public ModelAndView lessonEntry (ModelAndView model, @ModelAttribute Lesson lesson) throws IOException {
+	public ModelAndView lessonEntry (ModelAndView model, @ModelAttribute Lesson lesson,  @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
+		System.out.println ("skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		System.out.println ("HomeController:lessonEntry: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		
+		lesson.setSkillLevelTypeId(skillLevelTypeId);
 		model.addObject("lesson", lesson);
 		model.setViewName("lessonEntryForm");
 		return model;
@@ -156,11 +161,27 @@ public class HomeController {
 		return model;
 	}
 	
+	/**
+	 * Save lesson created by Admin
+	 * 
+	 * Called by lessonEntryForm.html
+	 * 
+	 * @param session
+	 * @param model
+	 * @param m
+	 * @param lesson
+	 * @param lessonListWrapper
+	 * @return
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/saveLesson")
-	public ModelAndView saveLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper, @ModelAttribute ArrayList<Lesson> lessonsListTmp) throws IOException, Exception {
-		Lesson lessonSessionAttribute = (Lesson)session.getAttribute("lessonSessionAttribute");
-		if (lessonSessionAttribute != null){
-			lesson.setSkillLevelTypeId(lessonSessionAttribute.getSkillLevelTypeId()); // assign the skill id
+	public ModelAndView saveLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper) throws IOException {
+		System.out.println ("HomeController:saveLesson: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		
+		//Lesson lessonSessionAttribute = (Lesson)session.getAttribute("lessonSessionAttribute");
+		//if (lessonSessionAttribute != null){
+			//lesson.setSkillLevelTypeId(lessonSessionAttribute.getSkillLevelTypeId()); // assign the skill id
 			if (lesson.getId() == null){ // adding a new lesson
 		       lessonsProcessingService.saveLesson(lesson);
 			} else { // editing a current lesson
@@ -168,7 +189,8 @@ public class HomeController {
 		    }
 
 		    // retrieve lessons
-		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(lessonSessionAttribute.getSkillLevelTypeId());
+//		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(lessonSessionAttribute.getSkillLevelTypeId());
+		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(lesson.getSkillLevelTypeId());
 		    m.addAttribute("lessonListTmp", lessonsList);
 
 		    // insert list into wrapper
@@ -185,23 +207,41 @@ public class HomeController {
 		    }
 		    //model.setViewName("novice?userName=admin&skillLevelTypeId=1");
 
-		} else {
-			throw new Exception ("Internal Error");
-		}
+		//} else {
+		//	throw new Exception ("Internal Error");
+		//}
 		return model;
 	}
 	
+	/**
+	 * Lesson updated by Admin being updated in db. 
+	 * 
+	 * Called by lessonEntryUpdateForm.html
+	 * 
+	 * @param session
+	 * @param model
+	 * @param m
+	 * @param lesson
+	 * @param lessonListWrapper
+	 * @param lessonsListTmp
+	 * @return
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/saveUpdateLesson")
-	public ModelAndView saveUpdateLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper, @ModelAttribute ArrayList<Lesson> lessonsListTmp) throws IOException, Exception {
-		Lesson lessonSessionAttribute = (Lesson)session.getAttribute("lessonSessionAttribute");
-		if (lessonSessionAttribute != null){
-			lesson.setSkillLevelTypeId(lessonSessionAttribute.getSkillLevelTypeId()); // assign the skill id
+	public ModelAndView saveUpdateLesson (HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper) throws IOException {
+		System.out.println ("HomeController:saveUpdateLesson: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		
+		//Lesson lessonSessionAttribute = (Lesson)session.getAttribute("lessonSessionAttribute");
+		//if (lessonSessionAttribute != null){
+			//lesson.setSkillLevelTypeId(lessonSessionAttribute.getSkillLevelTypeId()); // assign the skill id
 			if (lesson.getId() != null){ // editing a current lesson
 		      lessonsProcessingService.upsertLesson(lesson);
 		    }
 
 		    // retrieve lessons
-		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(lessonSessionAttribute.getSkillLevelTypeId());
+//		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(lessonSessionAttribute.getSkillLevelTypeId());
+		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(lesson.getSkillLevelTypeId());
 		    m.addAttribute("lessonListTmp", lessonsList);
 
 		    // insert list into wrapper
@@ -218,17 +258,62 @@ public class HomeController {
 		    }
 		    //model.setViewName("novice?userName=admin&skillLevelTypeId=1");
 
-		} else {
-			throw new Exception ("Internal Error");
-		}
+//		} else {
+//			throw new Exception ("Internal Error");
+//		}
 		return model;
 	}
 
+	/**
+	 * Admin editing a lesson
+	 * 
+	 * @param model
+	 * @param lessonId
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/editLesson")
 	public ModelAndView editLesson (ModelAndView model, @RequestParam("lessonId") String lessonId) throws IOException {
 		System.out.println ("Editing LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
 		
 		Lesson lesson = lessonsProcessingService.findLessonByLessonId(lessonId);
 		return lessonEntryUpdate(model, lesson);
+	}
+	
+	/**
+	 * Submit challenge to coaching engine
+	 * 
+	 * @param m
+	 * @param model
+	 * @param lessonListWrapper
+	 * @param lessonId
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/submitChallenge")
+	public ModelAndView submitChallenge (Model m, ModelAndView model, @ModelAttribute LessonListWrapper lessonListWrapper, @RequestParam("lessonId") String lessonId, @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
+		System.out.println ("Submitting challenge for LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		System.out.println ("Submitting challenge for skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		
+		// testing REST based call
+		ModelMap mm = new ModelMap();
+		coachingEngineController.getTest(mm);
+		System.out.println (mm.get("test") + "<<<<<<------------");
+		
+		if ((SkillLevelType.valueOfId(skillLevelTypeId)).equals(SkillLevelType.NOVICE)){
+		    // retrieve lessons
+		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(skillLevelTypeId);
+		    m.addAttribute("lessonListTmp", lessonsList);
+
+		    // insert list into wrapper
+		    LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+		    lessonListWrapperTmp.setLessonList(lessonsList);
+		    m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+			
+		  model.setViewName("novice");	
+		}
+		
+		return model;
 	}
 }

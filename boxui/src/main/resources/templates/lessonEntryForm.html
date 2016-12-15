@@ -9,9 +9,12 @@
 </head>
 <body>
 	<div align="center">
-		<h1>Lesson Entry</h1>
-		<p th:text="'Lesson: ' + ${session.lessonSessionAttribute} + '!'" />
-		<p th:text="'Lesson: ' + ${lesson} + '!'" />
+
+		<h1>Lesson Entry</h1>		
+		<p th:text="'skillLevelTypeId: ' + ${skillLevelTypeId} + '!'" />
+		<p th:text="'lesson: ' + ${lesson} + '!'" />
+		<p th:text="'Lesson Session Attribute: ' + ${session.lessonSessionAttribute} + '!'" />
+		
 
  	
 		<form action="#" method="post" th:object="${lesson}" th:action="@{/saveLesson}">
@@ -21,7 +24,11 @@
 		
 		   <!-- Use th:field to set field 'id' here 
            <input type="hidden" th:field="*{id}" />
+           <input type="hidden" th:field="*{skillLevelTypeId}" th:value="${skillLevelTypeId}" />           
            -->
+          
+           <input type="hidden" th:field="*{skillLevelTypeId}" th:value="${lesson.skillLevelTypeId}" />           
+           
 		 <table>
         
            <tr>

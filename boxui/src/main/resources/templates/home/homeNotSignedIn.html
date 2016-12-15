@@ -3,15 +3,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
 	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		 <script type="text/javascript" src="../../js/jquery.js" th:src="@{/js/jquery.js}"></script>
+	 
 	 <link rel="stylesheet" type="text/css" media="all"
-	       href="../../css/box.css" th:href="@{/css/box.css}"/>
+	       href="../../css/bootstrap/css/bootstrap.css" th:href="@{/css/bootstrap/css/bootstrap.css}"/>
+	 <script type="text/javascript" src="../../css/bootstrap/css/bootstrap.min.js" th:src="@{/css/bootstrap/css/bootstrap.min.js}"></script>
 	</head>
   </head>
   <body>
-    <div class="container">
-      <div class="hero-unit">
+      <div class="Jumbotron text-center">
         <h1>Test</h1>
+        </div>
+    <div class="container-fluid bg-1 text-center">
+   
         <p>
           Welcome!
           Get started quickly by signing in.
@@ -19,7 +25,7 @@
         <p>
           <a href="/login" th:href="@{/login}" class="btn btn-large btn-success">Login</a>
         </p>
-        <p>          
+        <p >          
           Or register.
         </p>
         <p>
@@ -28,6 +34,6 @@
         
       </div>
       <div>&copy; 2016</div>
-    </div>
+    
   </body>
 </html>

@@ -1,0 +1,8 @@
+December 10, 2016
+
+1. Log off
+2. Add menubar
+3. Hook up log4j (and replace all System.outs)
+4. Cleanup HomeController methods
+      - Extract common logic out
+5. Invalid password flow
