@@ -65,9 +65,7 @@ public class HomeController {
 	@RequestMapping(value = "/login")
 	public ModelAndView login(ModelAndView model) throws IOException {
 		User newUser = new User();
-		model.addObject("user", newUser);
-//		List<Contact> listContact = contactDAO.list();
-//		model.addObject("listContact", listContact);
+		model.addObject("user", newUser);		
 		model.setViewName("login");
 
 		return model;
