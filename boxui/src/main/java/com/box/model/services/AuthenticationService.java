@@ -15,13 +15,14 @@ import com.box.model.domain.User;
 public class AuthenticationService {
 	
 	@Inject
-	private UserRepository repository;
+	private UserRepository userRepository;
+
 
 
 	public boolean isAuthenticated (User user){
 		boolean isAuthenticated = false;
 		
-		User retrievedUser = repository.findByUserNamePassword(user.getUserName(), user.getPassword());
+		User retrievedUser = userRepository.findByUserNamePassword(user.getUserName(), user.getPassword());
 		System.out.println(retrievedUser + "<<<<<----");
 		
 		
@@ -35,5 +36,10 @@ public class AuthenticationService {
 			user.setLastName(retrievedUser.getLastName());
 		}
 		return isAuthenticated;
+	}
+	
+	
+	public User findByUserName(String userName){
+		return userRepository.findByUserName(userName);
 	}
 }

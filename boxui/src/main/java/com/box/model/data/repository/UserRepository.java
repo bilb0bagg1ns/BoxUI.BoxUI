@@ -22,7 +22,21 @@ public class UserRepository  {
     public User findByUserNamePassword(Query query) {
     	return mongoTemplate.findOne(query, User.class, "users");
     }
-    
+
+	public User findByUserName(String userName) {
+		User retrievedUser = null;
+		
+    	// query to search user
+    	Query searchUserQuery = new Query(Criteria.where("userName").is(userName));
+
+    	// find the saved user again.
+    	retrievedUser = mongoTemplate.findOne(searchUserQuery, User.class, "users");
+    	System.out.println("2. find - user : " + retrievedUser); 
+    	
+    	return retrievedUser;
+	}
+
+	
 	public User findByUserNamePassword(String userName, String password) {
 		User retrievedUser = null;
 		

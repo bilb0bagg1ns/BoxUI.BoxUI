@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -51,11 +52,11 @@ public class HomeController {
     }
 
 	
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Principal principal) {
-        return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
-        //return principal != null ? "tmp/homeSignedIn" : "tmp/homeNotSignedIn";
-    }
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    public String index(Principal principal) {
+//        return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
+//        //return principal != null ? "tmp/homeSignedIn" : "tmp/homeNotSignedIn";
+//    }
     
 	@RequestMapping("/greeting")
     public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
@@ -107,6 +108,24 @@ public class HomeController {
 			model.addObject("user", user);
 			model.setViewName("listLevels");
 		}		
+		return model;
+	}
+	
+	@RequestMapping(value = "/testLevels")
+	public ModelAndView testLevels(HttpSession session, Principal principal, ModelAndView model) throws IOException {	
+		//List<Contact> listContact = contactDAO.list();
+		//model.addObject("listContact", listContact);
+		
+		// principal holds the user name entered in the login screen. 
+		// At this point user has been successfully authenticated by Spring Security. 
+		User user = authenticationService.findByUserName(principal.getName());
+		// add to session so it's available for subsequent screens
+		// adding to session in lieu of trying to pass it via the hfref link
+		// TODO: Ensure on logoff, to invalidate session!
+		session.setAttribute("userSessionAttribute",user);
+				
+		model.addObject("user", user);
+		model.setViewName("listLevels");
 		return model;
 	}
 	
