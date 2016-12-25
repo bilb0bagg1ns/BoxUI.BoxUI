@@ -63,6 +63,13 @@ public class LessonRepository  {
 		
     }
     
+    public void delete (String lessonId){
+    	
+		System.out.println (lessonId + "Lesson ID being deleted <<<<<<<<<<<<<<<<<<<>>>>>>>>>");	
+		Lesson lesson = findLessonByLessonId(lessonId);
+    	mongoTemplate.remove(lesson);
+    }
+    
     public Lesson findByUserNamePassword(Query query) {
     	return mongoTemplate.findOne(query, Lesson.class, "lessons");
     }
@@ -81,6 +88,8 @@ public class LessonRepository  {
 	}
     
 	public List<Lesson> findLessonsBySkillLevelTypeId(String skillLevelTypeId) {
+		System.out.println ("\nLessonRepository::findLessonsBySkillLevelTypeId : " +  skillLevelTypeId  + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");	
+
 		ArrayList<Lesson> retrievedLessonsList = null;
 		
     	// query to search lessons

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <!-- 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    	 <link rel="stylesheet" type="text/css" media="all"
+	       href="../../css/box.css" th:href="@{/css/box.css}"/>
+	  -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<!-- 
+	 <script type="text/javascript" src="../../js/jquery.js" th:src="@{/js/jquery.js}"></script>	 
+	 <link rel="stylesheet" type="text/css" media="all"
+	       href="../../css/bootstrap/css/bootstrap.orig.css" th:href="@{/css/bootstrap/css/bootstrap.orig.css}"/>
+	 <script type="text/javascript" src="../../css/bootstrap/css/bootstrap.min.js" th:src="@{/css/bootstrap/css/bootstrap.min.js}"></script>
+ -->	 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  
+</head>
+<body>
+
+ <!-- Header -->
+<div th:replace="fragments/navbar :: navbar">
+</div>
+
+<div class="container" style="margin-top:100px">
+    <p th:text="'Hello, ' + ${user.userName} + '!'" />
+      
+      
+      <fieldset>
+        <div>
+          <label th:text="#{skilllevel.type}">Interested Skill Type </label>
+          <ul>
+<!--           
+            <li th:each="type : ${T(com.box.type.SkillLevelType).values()} ">
+            OR 
+ -->         
+            <!-- Iterate over each enumerated skill type -->   
+            <li th:each="skillLevelType : ${allSkillLevelType}"> <!-- Model attribute in HomeController -->
+              <!-- links to each skill type. Pass username via link for now. TODO: set user on Session -->
+              <a th:href="@{${skillLevelType.link}(userName=${user.userName}, skillLevelTypeId=${skillLevelType.id})}"><span th:text="${skillLevelType.text}"></span></a>              
+            </li>
+          </ul>
+        </div>
+      </fieldset>
+      </div>
+      
+</body>
+</html>

@@ -19,6 +19,10 @@ public class LessonsProcessingService {
 		repository.save(lesson);
 	}
 
+	public void deleteLesson (String lessonId){
+		repository.delete(lessonId);
+	}
+	
 	public void upsertLesson (Lesson lesson){
 		repository.upsert(lesson);
 	}

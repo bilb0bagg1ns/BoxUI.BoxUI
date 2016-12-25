@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--  Source: http://www.thymeleaf.org/doc/articles/layouts.html  -->
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- 	
+	<script type="text/javascript" src="../../js/jquery.orig.js" th:src="@{/js/jquery.orig.js}"></script>
+    <link rel="stylesheet" type="text/css" media="all"
+	       href="../../css/bootstrap/css/bootstrap.orig.css" th:href="@{/css/bootstrap/css/bootstrap.orig.css}"/>
+	<script type="text/javascript" src="../../css/bootstrap/css/bootstrap.min.orig.js" th:src="@{/css/bootstrap/css/bootstrap.min.orig.js}"></script>
+ -->
+ <!-- 
+	<script type="text/javascript" src="../../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <link rel="stylesheet" type="text/css" media="all"
+	       href="../../css/bootstrap/css/bootstrap.min.css" th:href="@{/css/bootstrap/css/bootstrap.min.css}"/>
+	<script type="text/javascript" src="../../css/bootstrap/css/bootstrap.min.js" th:src="@{/css/bootstrap/css/bootstrap.min.js}"></script>
+ -->
+ 
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 
+	</head>
+  </head>
+  <body>
+      <div class="Jumbotron text-center">
+        <h1>Test</h1>
+        </div>
+    <div class="container-fluid bg-1 text-center">
+   
+        <p>
+          Welcome!
+          Get started quickly by signing in.
+        </p>
+        <p>
+          <a href="/listSkillLevels" th:href="@{/listSkillLevels}" class="btn btn-large btn-success">Login</a>
+          <!-- 
+          <a href="/logins" th:href="@{/logins}" class="btn btn-large btn-success">Login</a>
+           -->
+        </p>
+        <p >          
+          Or register.
+        </p>
+        <p>
+          <a href="/register" th:href="@{/register}" class="btn btn-large btn-success">Register</a>
+        </p>
+        
+      </div>
+      <div>&copy; 2016</div>
+    
+  </body>
+</html>

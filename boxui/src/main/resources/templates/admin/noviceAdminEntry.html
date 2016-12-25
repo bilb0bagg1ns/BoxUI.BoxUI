@@ -11,8 +11,10 @@
 		<p th:text="'Lesson Session Attribute: ' + ${session.lessonSessionAttribute} + '!'" />
 		<p th:text="'User ' + ${session.userSessionAttribute} + '!'" />
 		
-		
+		<!--
 		<a href="#" th:href="@{/lessonEntry(skillLevelTypeId=${lesson.skillLevelTypeId})}">Add Lesson</a>
+		-->
+		<a href="#" th:href="@{/lessonEntry(skillLevelTypeId=${skillLevelTypeId})}">Add Lesson</a>
 		
  <h2>Lesson list</h2>
         <table>
@@ -31,7 +33,7 @@
                     <td th:text="${lesson.longDescription}">Red chair</td>
                     <td> 
                         <a th:href="@{editLesson(lessonId=${lesson.id})}"><span th:text="Edit"></span></a>
-                        <a th:href="@{deleteLesson(lessonId=${lesson.id})}"><span th:text="Delete"></span></a>                                                                
+                        <a th:href="@{deleteLesson(lessonId=${lesson.id}, skillLevelTypeId = ${lesson.skillLevelTypeId})}"><span th:text="Delete"></span></a>                                                                
                     </td>                                                      
                 </tr>
             </tbody>
