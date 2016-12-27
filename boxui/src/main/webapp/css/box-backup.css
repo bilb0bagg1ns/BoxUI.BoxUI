@@ -1,12 +1,9 @@
-
 body {
     font-family: 'Trebuchet Ms', Verdana, Arial, sans-serif;
     padding: 0 1em 1em 1em;
 }
 
-
 /* Layout */
-
 html, body { margin: 3px; padding: 0; }
 #leftcol, #rightcol { width: 49%; height: 100%; }
 #leftcol { float: left; }
@@ -185,7 +182,6 @@ div.red {
 div.blue {
     background-color: cadetblue;
 }
-
 
 /* OVERRIDING DEFAULT BOOTSTRAP CSS HERE*/
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
