@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.box.model.domain.Lesson;
 import com.box.model.domain.LessonListWrapper;
+import com.box.model.domain.TestBody;
 import com.box.model.domain.User;
 import com.box.model.services.AuthenticationService;
 import com.box.model.services.LessonsProcessingService;
@@ -124,6 +126,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/listSkillLevels")
 	public ModelAndView listSkillLevels(HttpSession session, Principal principal, ModelAndView model) {
+		System.out.println ("\nHomeController:listSkillLevels - Principal  : "+  principal + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
 		
 		// principal holds the user name entered in the login screen. 
 		// At this point user has been successfully authenticated by Spring Security. 
@@ -242,6 +245,22 @@ public class HomeController {
 //		//	throw new Exception ("Internal Error");
 //		//}
 //		return model;
+	}
+	
+	/**
+	 * http://stackoverflow.com/questions/31401669/thymeleaf-multiple-submit-button-in-one-form
+	 * http://stackoverflow.com/questions/804581/spring-mvc-controller-redirect-to-previous-page
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value="/saveLesson", method=RequestMethod.POST, params="action=cancel")
+	public ModelAndView cancelLesson(HttpServletRequest request, HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson) {
+		System.out.println ("\nHomeController:cancelLesson: Lesson : "+ lesson +"<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		
+//	    String referer = request.getHeader("Referer");
+//	    return "redirect:"+ referer;
+	    
+	    return routeToLessonList(session, model, m, lesson.getSkillLevelTypeId());
 	}
 	
 	/**
@@ -371,7 +390,9 @@ public class HomeController {
 		// testing REST based call
 		ModelMap mm = new ModelMap();
 		coachingEngineController.getTest(mm);
-		System.out.println (mm.get("test") + "<<<<<<------------");
+		TestBody testBody = (TestBody)mm.get("test");
+		
+		System.out.println ("Response from CoachingEngine: " + testBody +"<<<<<<------------");
 		
 		if ((SkillLevelType.valueOfId(skillLevelTypeId)).equals(SkillLevelType.NOVICE)){
 		    // retrieve lessons

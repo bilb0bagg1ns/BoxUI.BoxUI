@@ -138,7 +138,7 @@ div.banner span {
 form {
     border: solid 1px lightgray;
     padding: 0.5em 1.5em 0.5em 1.5em;
-    background-color: #e0f0c2;
+    /* background-color: #c2e6f0; */ /* #e0f0c2; */
 }
 
 label, textarea, input, select {
@@ -189,7 +189,7 @@ div.blue {
 
 /* OVERRIDING DEFAULT BOOTSTRAP CSS HERE*/
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-color: #000;  /*Sets the text hover color on navbar*/
+color: #badcf5 /*#000;*/  /*Sets the text hover color on navbar*/
 }
 
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
@@ -208,6 +208,11 @@ background-color: #030033;
     border-color: #030033;
 }
 
+ .navbar-default .navbar-brand {
+    color: #badcf5;
+}
+
+
   .dropdown-menu > li > a:hover,
    .dropdown-menu > li > a:focus {
     color: #262626;
@@ -225,3 +230,8 @@ background-color: #030033;
   .navbar-default .navbar-nav > li > a {
    color: white; /*Change active text color here*/
     }
+    
+  .jumbotron {
+    background-color: #7abfd2;
+  }
+    
