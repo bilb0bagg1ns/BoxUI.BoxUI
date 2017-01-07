@@ -1,5 +1,7 @@
 package com.box.model.domain;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,9 +20,13 @@ public class Grade {
     /** associated user */
     private String userId;
     /** lesson associated with grade */
-    private String lessionId;
+    private String lessonId;
+    /** associated skill level type id (Novice, Intermediate, Expert) */
+    private String skillLevelTypeId;
     /** pass or fail */
 	private String grade;
+	/** date challenge taken/grade assigned */
+	private Date gradeDate;
 	
 	
 	public Grade() {
@@ -47,13 +53,13 @@ public class Grade {
 	}
 
 
-	public String getLessionId() {
-		return lessionId;
+	public String getLessonId() {
+		return lessonId;
 	}
 
 
-	public void setLessionId(String lessionId) {
-		this.lessionId = lessionId;
+	public void setLessonId(String lessonId) {
+		this.lessonId = lessonId;
 	}
 
 
@@ -67,9 +73,33 @@ public class Grade {
 	}
 
 
+	public String getSkillLevelTypeId() {
+		return skillLevelTypeId;
+	}
+
+
+	public void setSkillLevelTypeId(String skillLevelTypeId) {
+		this.skillLevelTypeId = skillLevelTypeId;
+	}
+
+
+	public Date getGradeDate() {
+		return gradeDate;
+	}
+
+
+	public void setGradeDate(Date gradeDate) {
+		this.gradeDate = gradeDate;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Grade [id=" + id + ", userId=" + userId + ", lessionId=" + lessionId + ", grade=" + grade + "]";
+		return "Grade [id=" + id + ", userId=" + userId + ", lessonId=" + lessonId + ", skillLevelTypeId="
+				+ skillLevelTypeId + ", grade=" + grade + ", gradeDate=" + gradeDate + "]";
 	}
+
+
+
 		
 }

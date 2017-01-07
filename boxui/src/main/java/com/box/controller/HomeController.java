@@ -3,6 +3,7 @@ package com.box.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.box.model.domain.Grade;
+import com.box.model.domain.GradeListWrapper;
 import com.box.model.domain.Lesson;
 import com.box.model.domain.LessonListWrapper;
 import com.box.model.domain.TestBody;
 import com.box.model.domain.User;
 import com.box.model.services.AuthenticationService;
+import com.box.model.services.GradeProcessingService;
 import com.box.model.services.LessonsProcessingService;
 import com.box.model.services.RegistrationService;
 import com.box.model.type.SkillLevelType;
@@ -42,6 +46,9 @@ public class HomeController {
 
 	@Inject
 	private LessonsProcessingService lessonsProcessingService;
+
+	@Inject
+	private GradeProcessingService gradeProcessingService;
 
 	
 	@Inject
@@ -383,17 +390,34 @@ public class HomeController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/submitChallenge")
-	public ModelAndView submitChallenge (Model m, ModelAndView model, @ModelAttribute LessonListWrapper lessonListWrapper, @RequestParam("lessonId") String lessonId, @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
+	public ModelAndView submitChallenge (HttpServletRequest request, Model m, ModelAndView model, @ModelAttribute LessonListWrapper lessonListWrapper, @RequestParam("lessonId") String lessonId, @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
 		System.out.println ("Submitting challenge for LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
 		System.out.println ("Submitting challenge for skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
-		
+		User user = (User)request.getSession().getAttribute("userSessionAttribute");
+		System.out.println ("Submitting challenge for User: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+
 		// testing REST based call
 		ModelMap mm = new ModelMap();
 		coachingEngineController.getTest(mm);
 		TestBody testBody = (TestBody)mm.get("test");
 		
+		// save the grade
+		Grade grade = new Grade();
+		if(testBody.getResponseMessage().contentEquals("1")){
+			// challenge successfully completed
+			grade.setGrade("Pass");		
+		} else {
+			// challenge needs to be repeated
+			grade.setGrade("Repeat");				
+		}		
+		grade.setUserId(user.getId());
+		grade.setLessonId(lessonId);
+	    gradeProcessingService.save(grade);
+
+
 		System.out.println ("Response from CoachingEngine: " + testBody +"<<<<<<------------");
 		
+		// go back to the page where we came from
 		if ((SkillLevelType.valueOfId(skillLevelTypeId)).equals(SkillLevelType.NOVICE)){
 		    // retrieve lessons
 		    ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(skillLevelTypeId);
@@ -408,5 +432,30 @@ public class HomeController {
 		}
 		
 		return model;
+	}
+	
+	@RequestMapping(value = "/retrieveGradebook")
+	public ModelAndView retrieveGradebook (HttpServletRequest request, Model m, ModelAndView model, @RequestParam("userId") String userId) throws IOException {
+		System.out.println ("Submitting challenge for User: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		User user = (User)request.getSession().getAttribute("userSessionAttribute");
+		    
+    
+		ArrayList<Grade> gradeList = null;
+		// if logged user is admin, send them to the 	    
+	   if (user.getUserName().equals("admin")){
+	     model.setViewName("grade/gradebookForAllUsers");
+	   } else {   
+			model.setViewName("grade/gradebookForUser");
+			// retrieve the grade for the user
+		    gradeList = (ArrayList<Grade>)gradeProcessingService.findLessonsByUserId(userId);
+		    
+		    // insert list into wrapper
+		    GradeListWrapper gradeListWrapperTmp = new GradeListWrapper();
+		    gradeListWrapperTmp.setGradeList(gradeList);
+		    m.addAttribute("gradeListWrapper", gradeListWrapperTmp);	    
+	   }
+       System.out.println (gradeList);
+
+	   return model;
 	}
 }

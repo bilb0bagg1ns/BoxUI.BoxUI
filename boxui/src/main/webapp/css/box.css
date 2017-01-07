@@ -43,7 +43,9 @@ h3.footer {
 }
 
 a {
-    color: black;
+    color: blue;
+    border-bottom: 1px solid blue;
+    font-size: medium;
 }
 
 ul {
@@ -92,7 +94,7 @@ thead {
 }
 
 tbody tr:nth-child(even) {
-    background-color: #6286cc;
+    background-color: #b3d9ef;
 }
 
 tbody tr:nth-child(odd) {
@@ -234,4 +236,4 @@ background-color: #030033;
   .jumbotron {
     background-color: #7abfd2;
   }
-    
+  

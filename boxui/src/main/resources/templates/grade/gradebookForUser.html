@@ -26,19 +26,17 @@
 		
  <h2>Lesson List</h2>
          <div class="table-responsive"> 
-          <table class="table table-striped table-bordered table-condensed">
-            <thead>
+          <table class="table table-striped table-bordered table-condensed">           
+             <thead>
                 <tr>
                     <th>Lesson</th>
-                    <th>Description</th>
-                    <th>Challenge</th>
+                    <th>Grade</th>
                 </tr>
             </thead>
             <tbody >
-                <tr th:each="lesson : ${lessonListWrapper.lessonList}">
-                    <td> <a th:href="@{${lesson.name}}"><span th:text="${lesson.name}"></span></a></td>              
-                    <td th:text="${lesson.longDescription}">Description</td>
-                    <td> <a th:href="@{submitChallenge(lessonId=${lesson.Id}, skillLevelTypeId=${lesson.skillLevelTypeId})}"><span th:text="Submit"></span></a></td>                                  
+                <tr th:each="grade : ${gradeListWrapper.gradeList}">
+                    <td th:text="${grade.lessonId}">Lesson</td>
+                    <td th:text="${grade.grade}">Grade</td>
                 </tr>
             </tbody>
         </table>
