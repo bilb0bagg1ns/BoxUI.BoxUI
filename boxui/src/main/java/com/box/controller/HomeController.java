@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.box.model.domain.Grade;
+import com.box.model.domain.GradeComposite;
 import com.box.model.domain.GradeListWrapper;
 import com.box.model.domain.Lesson;
 import com.box.model.domain.LessonListWrapper;
@@ -436,23 +437,30 @@ public class HomeController {
 	
 	@RequestMapping(value = "/retrieveGradebook")
 	public ModelAndView retrieveGradebook (HttpServletRequest request, Model m, ModelAndView model, @RequestParam("userId") String userId) throws IOException {
-		System.out.println ("Submitting challenge for User: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
+		System.out.println ("Retrieving grade book for User: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");		
 		User user = (User)request.getSession().getAttribute("userSessionAttribute");
 		    
     
 		ArrayList<Grade> gradeList = null;
-		// if logged user is admin, send them to the 	    
+		// if logged user is admin, send to view to gradebook to all users 	    
 	   if (user.getUserName().equals("admin")){
 	     model.setViewName("grade/gradebookForAllUsers");
+
+	     ArrayList<GradeComposite> gradeCompositeList = (ArrayList<GradeComposite>)gradeProcessingService.findAllDetails(userId);
+	    // insert list into wrapper
+	    GradeListWrapper gradeListWrapperTmp = new GradeListWrapper();
+	    gradeListWrapperTmp.setGradeCompositeList(gradeCompositeList);
+	    m.addAttribute("gradeListWrapper", gradeListWrapperTmp);	    
+
 	   } else {   
-			model.setViewName("grade/gradebookForUser");
-			// retrieve the grade for the user
-		    gradeList = (ArrayList<Grade>)gradeProcessingService.findLessonsByUserId(userId);
-		    
-		    // insert list into wrapper
-		    GradeListWrapper gradeListWrapperTmp = new GradeListWrapper();
-		    gradeListWrapperTmp.setGradeList(gradeList);
-		    m.addAttribute("gradeListWrapper", gradeListWrapperTmp);	    
+//			model.setViewName("grade/gradebookForUser");
+//			// retrieve the grade for the user
+//		    gradeList = (ArrayList<Grade>)gradeProcessingService.findGradeByUserId(userId);
+//		    
+//		    // insert list into wrapper
+//		    GradeListWrapper gradeListWrapperTmp = new GradeListWrapper();
+//		    gradeListWrapperTmp.setGradeCompositeList(gradeList);
+//		    m.addAttribute("gradeListWrapper", gradeListWrapperTmp);	    
 	   }
        System.out.println (gradeList);
 

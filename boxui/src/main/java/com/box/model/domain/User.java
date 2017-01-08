@@ -65,6 +65,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
+	public String getFullName() {
+		return lastName + "," + firstName;
+	}
+
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -78,6 +83,7 @@ public class User {
 		this.password = password;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName

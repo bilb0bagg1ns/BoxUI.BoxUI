@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.box.model.domain.Lesson;
 import com.box.model.domain.User;
 
 
@@ -19,6 +20,15 @@ public class UserRepository  {
     	mongoTemplate.save(user, "users");
     }
     
+	public User findById(String userId) {
+		User retrievedUser = null;
+		
+    	// find the saved user again.
+    	retrievedUser = (User)mongoTemplate.findById(userId, User.class, "users"); 
+    	System.out.println("find - retrievedUser : " + retrievedUser); 
+    	
+    	return retrievedUser;
+	}
     public User findByUserNamePassword(Query query) {
     	return mongoTemplate.findOne(query, User.class, "users");
     }

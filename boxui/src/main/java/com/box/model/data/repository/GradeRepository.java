@@ -64,7 +64,7 @@ public class GradeRepository  {
     	return retrievedGrade;
 	}
 	
-	public List<Grade> findLessonsByUserId(String userId) {
+	public List<Grade> findGradeByUserId(String userId) {
 		System.out.println ("\nLessonRepository::findLessonsBySkillLevelTypeId : " +  userId  + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");	
 
 		ArrayList<Grade> retrievedGradeList = null;
@@ -79,7 +79,7 @@ public class GradeRepository  {
     	return retrievedGradeList;
 	}
 
-	public List<Grade> findAll() {
+	public List<Grade> findAllGrades() {
 		List<Grade> retrievedGradeList = null;
 		
     	// find the saved user again.

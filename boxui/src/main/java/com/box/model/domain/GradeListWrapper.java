@@ -11,16 +11,13 @@ import java.util.ArrayList;
 
 public class GradeListWrapper {
 
-	private ArrayList<Grade> gradeList;
+	private ArrayList<GradeComposite> gradeCompositeList;
 
-	public ArrayList<Grade> getGradeList() {
-		return gradeList;
+	public ArrayList<GradeComposite> getGradeCompositeList() {
+		return gradeCompositeList;
 	}
 
-	public void setGradeList(ArrayList<Grade> gradeList) {
-		this.gradeList = gradeList;
-	}
-	 
-	 
-	 
+	public void setGradeCompositeList(ArrayList<GradeComposite> gradeCompositeList) {
+		this.gradeCompositeList = gradeCompositeList;
+	} 	 	 
 }
