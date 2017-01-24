@@ -38,6 +38,11 @@
                     <td th:text="${grade.lessonId}">Lesson</td>
                     <td th:text="${grade.grade}">Grade</td>
                 </tr>
+                <tr th:each="gradeComposite : ${gradeListWrapper.gradeCompositeList}">
+                    <td th:text="${gradeComposite.lesson.name}">Lesson</td>
+                    <td th:text="${gradeComposite.grade.grade}">Grade</td>
+                </tr>
+                
             </tbody>
         </table>
         </div>

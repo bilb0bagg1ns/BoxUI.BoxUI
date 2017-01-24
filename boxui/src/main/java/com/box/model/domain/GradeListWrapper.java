@@ -19,5 +19,5 @@ public class GradeListWrapper {
 
 	public void setGradeCompositeList(ArrayList<GradeComposite> gradeCompositeList) {
 		this.gradeCompositeList = gradeCompositeList;
-	} 	 	 
+	}
 }

@@ -30,10 +30,12 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#" th:href="@{/}">Home</a></li>
-		              <li><a th:href="@{retrieveGradebook(userId=${session.userSessionAttribute.id})}">Gradebook</a></li>                
+                <li class="active"><a class="glyphicon glyphicon-home"  href="#" th:href="@{/}">Home</a></li>
+		        <li><a th:href="@{retrieveGradebook(userId=${session.userSessionAttribute.id})}">Gradebook</a></li>                		                        
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                 <!--  Greeting -->
+                <li> <a href="#"> <span th:text="'Hello, ' + ${session.userSessionAttribute.userName} + '!'"></span></a></li>            
                 <li><a th:href="@{/logout}">Logout</a></li>
                 <!--
                 <li><a href="/logout" th:href="@{/logout}">Logout</a></li>

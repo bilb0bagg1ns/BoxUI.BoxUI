@@ -1,0 +1,74 @@
+
+Problem:
+Implementing modal dialog for 'Delete' feature in 'noviceAdminEntry.html.
+When we iterate over the lessonList and 'Delete' a lesson, we want to pop up a modal dialog which has a 'Close' and a 'Delete' button
+
+Design:
+1. I was able to add a href and tie it to the Modal dialog
+2. However, in the 'Delete' button in the Modal, I need to pass in the lessonId and skillLevelType id to the deleteLesson method.
+3. This requires me to use a Javascript (
+    - http://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
+	- http://stackoverflow.com/questions/6085354/pass-lots-of-data-from-a-single-anchor-tag
+4. Added the JavaScript, however, have to figure out how to pass the value from Javascript into the anchor(Delete function) in Modal?
+
+
+
+   <script>
+   $(document).on("click", ".myModal", function () {
+     var lessonId = $(this).data('id');
+     var skillLevelTypeId = $(this).data('ids');
+     $(".modal-body #lessonId").val( lessonId ); // how do we plug this into the anchor href parameter to be passed to deleteLesson?
+     $(".modal-body #skillLevelTypeId").val( skillLevelTypeId ); // how do we plug this into the anchor href parameter to be passed to deleteLesson?
+    });
+   </script>
+
+   
+   .....
+
+					            <tbody >
+					                <tr th:each="lesson : ${lessonListWrapper.lessonList}">
+					                    <td th:text="${lesson.name}">Lesson Name</td>
+					                    <td th:text="${lesson.shortDescription}">Short Description</td>
+					                    <td th:text="${lesson.longDescription}">Long Description</td>
+					                    <td> 
+					                        <a th:href="@{editLesson(lessonId=${lesson.id})}"><span th:text="Edit"></span></a>
+					                        <a th:href="@{deleteLesson(lessonId=${lesson.id}, skillLevelTypeId = ${lesson.skillLevelTypeId})}"><span th:text="Delete"></span></a>
+					                        <a href="#" data-toggle="modal" data-target="#myModal" data-lessonid="${lesson.id}" data-skilleveltypeid="${lesson.skillLevelTypeId}" ><span th:text="Delete"></span></a>                                                                
+					                    </td>                                                      
+					                </tr>
+					            </tbody>
+								
+								
+								
+								<!-- Modal -->
+								<div class="modal fade" id="myModal" role="dialog">
+									<div class="modal-dialog modal-sm">
+									  <div class="modal-content">
+										<div class="modal-header">
+										  <button type="button" class="close" data-dismiss="modal">&times;</button>
+										  <h4 class="modal-title">Modal Header</h4>
+										</div>
+										<div class="modal-body">
+										  <p>This is a small modal.</p>
+										</div>
+										<div class="modal-footer">
+										   <!-- Close Button -->
+										  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										   <!-- Delete Button -->
+										   <!-- How do we pass in the values from Java script into the anchor href below-->
+										   <!-- Below is a hack and it doesn't work. Can the anchor be replace with a button
+										        and can it extract values from JavaScript (perhaps inline JavaScript) and pass
+												it to deleteLesson?
+ 										   --> 
+										   <a th:href="@{deleteLesson(lessonId=#{lessonId}, skillLevelTypeId = #{skillLevelTypeId})}"><span th:text="Delete"></span></a>          
+										</div>
+									  </div>
+									</div>
+								</div>
+
+Resources:
+
+http://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
+http://stackoverflow.com/questions/6085354/pass-lots-of-data-from-a-single-anchor-tag
+http://getbootstrap.com/javascript/#modals-related-target
+
