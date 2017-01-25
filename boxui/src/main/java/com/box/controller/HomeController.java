@@ -7,10 +7,14 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +36,8 @@ import com.box.model.type.SkillLevelType;
 
 @Controller
 public class HomeController {
+
+	private final Logger log = LoggerFactory.getLogger(HomeController.class);
 
 	// @Autowired
 	// private UserRepository repository;
@@ -66,6 +72,7 @@ public class HomeController {
 		if (principal == null) {
 			model.setViewName("home/home");
 		} else {
+			log.debug(principal.getName(), "logged in");
 			model = listSkillLevels(session, principal, model);
 		}
 		return model;
@@ -94,9 +101,17 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/registration")
-	public ModelAndView registeration(ModelAndView model, @ModelAttribute User user) throws IOException {
-		registrationService.register(user);
-		model.setViewName("home/login");
+	// public ModelAndView registeration(ModelAndView model, @ModelAttribute
+	// User user) throws IOException {
+	public ModelAndView registeration(ModelAndView model, @Valid User user, BindingResult bindingResult)
+			throws IOException {
+		if (bindingResult.hasErrors()) {
+			// return to view in incoming model
+			model.setViewName("home/register");
+		} else {
+			registrationService.register(user);
+			model.setViewName("home/login");
+		}
 		return model;
 	}
 
@@ -106,7 +121,7 @@ public class HomeController {
 	// // testing REST based call
 	// ModelMap mm = new ModelMap();
 	// coachingEngineController.getTest(mm);
-	// System.out.println (mm.get("test") + "<<<<<<------------");
+	// log.debug (mm.get("test") + "<<<<<<------------");
 	//
 	// // authenticate user
 	// boolean isAuthenticated = authenticationService.isAuthenticated(user);
@@ -128,8 +143,9 @@ public class HomeController {
 
 	@RequestMapping(value = "/listSkillLevels")
 	public ModelAndView listSkillLevels(HttpSession session, Principal principal, ModelAndView model) {
-		System.out.println(
-				"\nHomeController:listSkillLevels - Principal  : " + principal + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("\nHomeController:listSkillLevels - Principal  : " + principal + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		log.debug("\nHomeController:listSkillLevels - Principal  : " + principal + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// principal holds the user name entered in the login screen.
 		// At this point user has been successfully authenticated by Spring
@@ -149,7 +165,7 @@ public class HomeController {
 	public ModelAndView novice(HttpSession session, Model m, ModelAndView model,
 			@RequestParam("userName") String userName, @RequestParam("skillLevelTypeId") String skillLevelTypeId)
 			throws IOException {
-		System.out.println("\nHomeController:novice:: " + userName + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("\nHomeController:novice:: " + userName + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		Lesson lesson = new Lesson();
 		lesson.setSkillLevelTypeId(skillLevelTypeId);
@@ -159,7 +175,7 @@ public class HomeController {
 		// adding to session in lieu of trying to pass it via the hfref link
 		// TODO: Ensure on logoff, to invalidate session!
 		// session.setAttribute("lessonSessionAttribute",lesson);
-		// System.out.println (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		// log.debug (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// retrieve lessons
 		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService
@@ -185,8 +201,8 @@ public class HomeController {
 	@RequestMapping(value = "/lessonEntry")
 	public ModelAndView lessonEntry(ModelAndView model, @ModelAttribute Lesson lesson,
 			@RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
-		System.out.println("skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
-		System.out.println("HomeController:lessonEntry: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("HomeController:lessonEntry: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		lesson.setSkillLevelTypeId(skillLevelTypeId);
 		model.addObject("lesson", lesson);
@@ -219,7 +235,7 @@ public class HomeController {
 	public ModelAndView saveLesson(HttpSession session, ModelAndView model, Model m, @ModelAttribute Lesson lesson,
 			@ModelAttribute LessonListWrapper lessonListWrapper, @ModelAttribute String skillLevelTypeId)
 			throws IOException {
-		System.out.println("\nHomeController:saveLesson: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("\nHomeController:saveLesson: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// Lesson lessonSessionAttribute =
 		// (Lesson)session.getAttribute("lessonSessionAttribute");
@@ -271,7 +287,7 @@ public class HomeController {
 	@RequestMapping(value = "/saveLesson", method = RequestMethod.POST, params = "action=cancel")
 	public ModelAndView cancelLesson(HttpServletRequest request, HttpSession session, ModelAndView model, Model m,
 			@ModelAttribute Lesson lesson) {
-		System.out.println("\nHomeController:cancelLesson: Lesson : " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("\nHomeController:cancelLesson: Lesson : " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// String referer = request.getHeader("Referer");
 		// return "redirect:"+ referer;
@@ -298,7 +314,7 @@ public class HomeController {
 	public ModelAndView saveUpdateLesson(HttpSession session, ModelAndView model, Model m,
 			@ModelAttribute Lesson lesson, @ModelAttribute LessonListWrapper lessonListWrapper,
 			@ModelAttribute String skillLevelTypeId) throws IOException {
-		System.out.println("HomeController:saveUpdateLesson: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("HomeController:saveUpdateLesson: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// Lesson lessonSessionAttribute =
 		// (Lesson)session.getAttribute("lessonSessionAttribute");
@@ -342,7 +358,7 @@ public class HomeController {
 
 	private ModelAndView routeToLessonList(HttpSession session, ModelAndView modelAndView, Model model,
 			String skillLevelTypeId) {
-		System.out.println("HomeController:routeToLessonList: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("HomeController:routeToLessonList: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService
 				.retrieveLessonsList(skillLevelTypeId);
@@ -374,7 +390,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/editLesson")
 	public ModelAndView editLesson(ModelAndView model, @RequestParam("lessonId") String lessonId) throws IOException {
-		System.out.println("Editing LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("Editing LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		Lesson lesson = lessonsProcessingService.findLessonByLessonId(lessonId);
 		return lessonEntryUpdate(model, lesson);
@@ -392,7 +408,7 @@ public class HomeController {
 	public ModelAndView deleteLesson(HttpSession session, ModelAndView modelAndView, Model model,
 			@RequestParam("lessonId") String lessonId, @RequestParam("skillLevelTypeId") String skillLevelTypeId)
 			throws IOException {
-		System.out.println("Deleting LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("Deleting LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		lessonsProcessingService.deleteLesson(lessonId);
 		return routeToLessonList(session, modelAndView, model, skillLevelTypeId);
@@ -413,11 +429,10 @@ public class HomeController {
 	public ModelAndView submitChallenge(HttpServletRequest request, Model m, ModelAndView model,
 			@ModelAttribute LessonListWrapper lessonListWrapper, @RequestParam("lessonId") String lessonId,
 			@RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
-		System.out.println("Submitting challenge for LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
-		System.out.println(
-				"Submitting challenge for skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("Submitting challenge for LessonId: " + lessonId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("Submitting challenge for skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 		User user = (User) request.getSession().getAttribute("userSessionAttribute");
-		System.out.println("Submitting challenge for User: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("Submitting challenge for User: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// testing REST based call
 		ModelMap mm = new ModelMap();
@@ -437,7 +452,7 @@ public class HomeController {
 		grade.setLessonId(lessonId);
 		gradeProcessingService.save(grade);
 
-		System.out.println("Response from CoachingEngine: " + testBody + "<<<<<<------------");
+		log.debug("Response from CoachingEngine: " + testBody + "<<<<<<------------");
 
 		// go back to the page where we came from
 		if ((SkillLevelType.valueOfId(skillLevelTypeId)).equals(SkillLevelType.NOVICE)) {
@@ -460,7 +475,7 @@ public class HomeController {
 	@RequestMapping(value = "/retrieveGradebook")
 	public ModelAndView retrieveGradebook(HttpServletRequest request, Model m, ModelAndView model,
 			@RequestParam("userId") String userId) throws IOException {
-		System.out.println("Retrieving grade book for User: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("Retrieving grade book for User: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 		User user = (User) request.getSession().getAttribute("userSessionAttribute");
 
 		// if logged user is admin, send to view to gradebook to all users

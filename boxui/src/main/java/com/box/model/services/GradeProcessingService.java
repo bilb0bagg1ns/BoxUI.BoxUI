@@ -6,6 +6,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.box.model.data.repository.GradeRepository;
 import com.box.model.data.repository.LessonRepository;
 import com.box.model.data.repository.UserRepository;
@@ -16,6 +19,8 @@ import com.box.model.domain.User;
 
 @Named
 public class GradeProcessingService {
+
+	private final Logger log = LoggerFactory.getLogger(GradeProcessingService.class);
 
 	@Inject
 	private GradeRepository repository;
@@ -78,7 +83,7 @@ public class GradeProcessingService {
 	public List<Grade> findAllGrades() {
 
 		List<Grade> gradeList = repository.findAllGrades();
-		System.out.println(gradeList + "<<<<<----");
+		log.debug(gradeList + "<<<<<----");
 
 		return gradeList;
 	}
