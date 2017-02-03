@@ -36,9 +36,15 @@
             </thead>
             <tbody >
                 <tr th:each="gradeComposite : ${gradeListWrapper.gradeCompositeList}">
-                    <td th:text="${gradeComposite.lesson.name}">Lesson</td>
-                    <td th:text="${gradeComposite.user.fullName}">User</td>                    
-                    <td th:text="${gradeComposite.grade.grade}">Grade</td>
+                    <td th:if="${gradeComposite.lesson} != NULL" th:text="${gradeComposite.lesson.name}">Lesson</td>
+                    <td th:if="${gradeComposite.lesson} == NULL" th:text="'NULL'"></td>
+
+                    <td th:if="${gradeComposite.user} != NULL" th:text="${gradeComposite.user.fullName}">User full Name</td>
+                    <td th:if="${gradeComposite.user.fullName} == NULL" th:text="'NULL'"></td>
+                    
+                    <td th:if="${gradeComposite.grade} != NULL" th:text="${gradeComposite.grade.grade}">Grade</td>
+                    <td th:if="${gradeComposite.grade} == NULL" th:text="'NULL'"></td>
+                
                 </tr>
             </tbody>
         </table>
