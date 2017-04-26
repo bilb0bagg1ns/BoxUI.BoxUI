@@ -3,6 +3,7 @@ package com.box.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -198,16 +199,43 @@ public class HomeController {
 		return model;
 	}
 
+	/**
+	 * Checkbox logic comes from :
+	 * http://stackoverflow.com/questions/17692941/values-for-thfield-attributes-in-checkbox
+	 * 
+	 * @param modelAndView
+	 * @param lesson
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/lessonEntry")
-	public ModelAndView lessonEntry(ModelAndView model, @ModelAttribute Lesson lesson,
+	public ModelAndView lessonEntry(ModelAndView modelAndView, @ModelAttribute Lesson lesson,
 			@RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
 		log.debug("skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 		log.debug("HomeController:lessonEntry: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
+		// 4/18/17: might be removing this functionality in lieu of setting it
+		// at each lesson entry via checkbox
+		// initialize skill level associated with lesson
 		lesson.setSkillLevelTypeId(skillLevelTypeId);
-		model.addObject("lesson", lesson);
-		model.setViewName("admin/lesson/lessonEntryForm");
-		return model;
+
+		// initialize checkbox
+		List<String> allSkillLevelApplicableItems = new ArrayList<String>();
+		allSkillLevelApplicableItems.add("novice");
+		allSkillLevelApplicableItems.add("intermediate");
+		allSkillLevelApplicableItems.add("expert");
+		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
+
+		// initialize default value
+		List<String> checkedItems = new ArrayList<String>();
+		// novice will be checked by default.
+		checkedItems.add("novice");
+		lesson.setCheckedSkillsLevelsApplicableTo(checkedItems);
+
+		modelAndView.addObject("lesson", lesson);
+		modelAndView.setViewName("admin/lesson/lessonEntryForm");
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/lessonEntryUpdate")
@@ -243,6 +271,12 @@ public class HomeController {
 		// lesson.setSkillLevelTypeId(lessonSessionAttribute.getSkillLevelTypeId());
 		// // assign the skill id
 		if (lesson.getId() == null) { // adding a new lesson
+			ArrayList<Integer> skillsApplicableTo = new ArrayList<Integer>();
+			skillsApplicableTo.add(1);
+			skillsApplicableTo.add(2);
+			skillsApplicableTo.add(3);
+			lesson.setSkillsLevelsApplicableTo(skillsApplicableTo);
+
 			lessonsProcessingService.saveLesson(lesson);
 		} else { // editing a current lesson
 			lessonsProcessingService.upsertLesson(lesson);
