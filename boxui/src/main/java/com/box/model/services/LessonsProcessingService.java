@@ -28,7 +28,12 @@ public class LessonsProcessingService {
 	}
 
 	public void upsertLesson(Lesson lesson) {
-		repository.upsert(lesson);
+		// repository.upsert(lesson);
+
+		// can't seem to upsert lesson's skill applicable checkboxes. hence
+		// doing this approach
+		deleteLesson(lesson.getId());
+		saveLesson(lesson);
 	}
 
 	public Lesson findLessonByLessonId(String lessonId) {

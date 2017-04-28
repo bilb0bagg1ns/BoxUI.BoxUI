@@ -39,6 +39,7 @@
 					                    <th scope="col">Name</th>
 					                    <th scope="col">Short Description</th>
 					                    <th scope="col">Long Description</th>
+					                    <th scope="col">Skill</th>
 					                    <th scope="col">Action</th>
 					                </tr>
 					            </thead>
@@ -47,6 +48,7 @@
 					                    <td th:text="${lesson.name}">Lesson Name</td>
 					                    <td th:text="${lesson.shortDescription}">Short Description</td>
 					                    <td th:text="${lesson.longDescription}">Long Description</td>
+					                    <td th:text="${lesson.CheckedSkillsLevelsApplicableTo}">Long Description</td>
 					                    <td> 
 					                        <a th:href="@{editLesson(lessonId=${lesson.id})}"><span th:text="Edit"></span></a>
 					                        <a th:href="@{deleteLesson(lessonId=${lesson.id}, skillLevelTypeId = ${lesson.skillLevelTypeId})}"><span th:text="Delete"></span></a>

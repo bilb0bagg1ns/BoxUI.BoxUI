@@ -220,7 +220,8 @@ public class HomeController {
 		// initialize skill level associated with lesson
 		lesson.setSkillLevelTypeId(skillLevelTypeId);
 
-		// initialize checkbox
+		// initialize checkbox. Used in rendering checkboxes in lesson entry and
+		// lesson entry update
 		List<String> allSkillLevelApplicableItems = new ArrayList<String>();
 		allSkillLevelApplicableItems.add("novice");
 		allSkillLevelApplicableItems.add("intermediate");
@@ -239,10 +240,18 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/lessonEntryUpdate")
-	public ModelAndView lessonEntryUpdate(ModelAndView model, @ModelAttribute Lesson lesson) throws IOException {
-		model.addObject("lesson", lesson);
-		model.setViewName("admin/lesson/lessonEntryUpdateForm");
-		return model;
+	public ModelAndView lessonEntryUpdate(ModelAndView modelAndView, @ModelAttribute Lesson lesson) throws IOException {
+		// initialize checkbox. Used in rendering checkboxes in lesson entry and
+		// lesson entry update
+		List<String> allSkillLevelApplicableItems = new ArrayList<String>();
+		allSkillLevelApplicableItems.add("novice");
+		allSkillLevelApplicableItems.add("intermediate");
+		allSkillLevelApplicableItems.add("expert");
+		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
+
+		modelAndView.addObject("lesson", lesson);
+		modelAndView.setViewName("admin/lesson/lessonEntryUpdateForm");
+		return modelAndView;
 	}
 
 	/**

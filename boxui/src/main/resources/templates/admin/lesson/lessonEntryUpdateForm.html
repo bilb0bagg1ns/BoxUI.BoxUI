@@ -71,6 +71,17 @@
             <label for="longDescription" th:text="#{lesson.longDescription}"></label>
             <input  class="form-control" type="text" th:field="*{longDescription}" />
           </div>
+          
+          <div class="form-group">
+            <label for="checkedSkillsLevelsApplicableTo" th:text="#{lesson.checkedSkillsLevelsApplicableTo}"></label>          
+	         <div class="checkbox" style="display:inline">
+			  <div th:each="item : ${allSkillLevelApplicableItems}">
+			    <input type="checkbox" th:field="*{checkedSkillsLevelsApplicableTo}" th:value="${item}" />
+			    <label th:text="${item}">example</label>
+			  </div>          
+	         </div>
+          </div>
+          
       
           <div class="form-group">
               <button class="btn btn-success" type="submit" th:text="#{lesson.updateLession}"></button>
