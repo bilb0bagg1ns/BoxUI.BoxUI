@@ -19,15 +19,15 @@
   <div th:replace="fragments/navbar :: navbar" >
   </div> 
   <div class="container" style="margin-top:100px">
-		<h1>Choose an Operating System:</h1>		
+		<h1>Choose :</h1>		
 			 	
-		<form action="#" method="post" th:object="${subjectFocus}" th:action="@{/operatingSystemFocus}">
+		<form action="#" method="post" th:object="${subjectFocus}" th:action="@{/focusArea}">
 		  <div class="btn-toolbar">
 		      <!--  Lunix -->
-              <button class="btn btn-success" type="submit" name="action" value="linux" th:text="#{focus.os.linux}"></button>
+              <button class="btn btn-success" type="submit" name="action" value="prove" th:text="#{focus.area.prove}"></button>
               <div class="col-lg-10"></div>
               <!--  Windows -->                            
-              <button class="btn btn-success" type="submit" name="action" value="windows" th:text="#{focus.os.windows}"></button>
+              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="#{focus.area.learn}"></button>
           </div>
           
 	</form>

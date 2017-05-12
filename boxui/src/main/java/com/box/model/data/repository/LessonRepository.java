@@ -80,6 +80,17 @@ public class LessonRepository {
 		mongoTemplate.remove(lesson);
 	}
 
+	public List<Lesson> retrieveAllLessons() {
+
+		log.debug("\nLessonRepository::findAllLessons " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		ArrayList<Lesson> retrievedLessonsList = null;
+		// find all lessons
+		retrievedLessonsList = (ArrayList<Lesson>) mongoTemplate.findAll(Lesson.class);
+		log.debug("findAllLessons : " + retrievedLessonsList);
+		return retrievedLessonsList;
+
+	}
+
 	public Lesson findByUserNamePassword(Query query) {
 		return mongoTemplate.findOne(query, Lesson.class, "lessons");
 	}

@@ -41,6 +41,12 @@ public class LessonsProcessingService {
 		return lesson;
 	}
 
+	public List<Lesson> retrieveAllLessons() {
+
+		List<Lesson> lessonsList = repository.retrieveAllLessons();
+		return lessonsList;
+	}
+
 	public List<Lesson> retrieveLessonsList(String skillLevelTypeId) {
 
 		List<Lesson> lessonsList = repository.findLessonsBySkillLevelTypeId(skillLevelTypeId);

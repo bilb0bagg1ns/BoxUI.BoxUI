@@ -158,7 +158,14 @@ public class HomeController {
 		session.setAttribute("userSessionAttribute", user);
 
 		model.addObject("user", user);
-		model.setViewName("skilllevels/skillLevels");
+
+		// route based on admin vs. user
+		// TODO: Need to replace hardcoded check with roles
+		if (user.getUserName().equals("admin")) {
+			model.setViewName("skilllevels/skillLevels");
+		} else {
+			model.setViewName("selection/operatingSystem");
+		}
 		return model;
 	}
 
