@@ -31,6 +31,8 @@ public class Lesson {
 	// http://stackoverflow.com/questions/17692941/values-for-thfield-attributes-in-checkbox
 	private List<String> checkedSkillsLevelsApplicableTo;
 
+	private String lessonHtmlPage = "greeting_tmp";
+
 	public Lesson() {
 	}
 
@@ -117,6 +119,14 @@ public class Lesson {
 
 	public void setCheckedSkillsLevelsApplicableTo(List<String> checkedSkillsLevelsApplicableTo) {
 		this.checkedSkillsLevelsApplicableTo = checkedSkillsLevelsApplicableTo;
+	}
+
+	public String getLessonHtmlPage() {
+		return lessonHtmlPage;
+	}
+
+	public void setLessonHtmlPage(String lessonHtmlPage) {
+		this.lessonHtmlPage = lessonHtmlPage;
 	}
 
 	@Override

@@ -2,19 +2,18 @@ package com.box.model.domain;
 
 import java.util.ArrayList;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
  * Box UI user.
  * 
- * @author mike.prasad
- *
  */
 
 public class LessonListWrapper {
 
 	private ArrayList<Lesson> lessonList;
+
+	private ArrayList<LessonRows> lessonRowsList;
+
+	private LessonRows lessonRows;
 
 	public ArrayList<Lesson> getLessonList() {
 		return lessonList;
@@ -23,7 +22,21 @@ public class LessonListWrapper {
 	public void setLessonList(ArrayList<Lesson> lessonList) {
 		this.lessonList = lessonList;
 	}
-	 
-	 
-	 
+
+	public ArrayList<LessonRows> getLessonRowsList() {
+		return lessonRowsList;
+	}
+
+	public void setLessonRowsList(ArrayList<LessonRows> lessonRowsList) {
+		this.lessonRowsList = lessonRowsList;
+	}
+
+	public LessonRows getLessonRows() {
+		return lessonRows;
+	}
+
+	public void setLessonRows(LessonRows lessonRows) {
+		this.lessonRows = lessonRows;
+	}
+
 }

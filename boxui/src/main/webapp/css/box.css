@@ -242,3 +242,16 @@ background-color: #030033;
     margin-top: 4px\9;
     margin-left: -10px;
 }
+
+/* https://stackoverflow.com/questions/8357058/how-to-make-a-href-link-look-like-a-button */
+.button {
+    display: block;
+    width: 175px;
+    height: 55px;
+    background: #1a3973;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: lighter;
+}

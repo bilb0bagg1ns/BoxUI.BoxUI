@@ -23,19 +23,55 @@
 		<!-- <p th:text="'Lesson: ' + ${session.lessonSessionAttribute} + '!'" />
 		 -->
 	<!-- <p th:text="'User ' + ${session.userSessionAttribute} + '!'" /> -->
-   <form action="#" method="post" th:object="${subjectFocus}" th:action="@{/focusArea}">
+   <form action="#" method="post" th:object="${subjectFocus}" th:action="@{/renderLearningTopic}">
 		
          <div class="table-responsive"> 
           <table class="table table-striped table-bordered table-condensed">
             <tbody >
-                <tr th:each="lesson, iterStat : ${lessonListWrapper.lessonList}" th:class="${iterStat.odd}? 'odd'">
-                    <td>
-		              <button class="btn btn-success" type="submit" name="action" value="prove" th:text="${lesson.name}"></button>
+                <!-- iterate over each lesson rows list, which contains a maximum of 4 lessons per row  -->
+                <tr th:each="lessonRows, iterStat : ${lessonListWrapper.lessonRowsList}" th:class="${iterStat.odd}? 'odd'">
+                     <!-- check if lessonXXX exists and then render  -->
+		             <td th:if="${lessonRows.lessonOne} != null">
+		              <button class="btn btn-success" type="submit" name="action" value="${lessonRows.lessonOne.name}" th:text="${lessonRows?.lessonOne?.name}"></button>
 		             </td>
+		             <td th:if="${lessonRows.lessonTwo} != null">
+		              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonTwo?.name}"></button>
+		             </td>
+		             <td th:if="${lessonRows.lessonThree} != null">
+		              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonThree?.name}"></button>
+		             </td>
+		             <td th:if="${lessonRows.lessonFour} != null">
+		              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonFour?.name}"></button>
+		             </td>		             
                 </tr>
             </tbody>
         </table>
+          <table class="table table-striped table-bordered table-condensed">
+            <tbody >
+                <!-- iterate over each lesson rows list, which contains a maximum of 4 lessons per row  -->
+                <tr th:each="lessonRows, iterStat : ${lessonListWrapper.lessonRowsList}" th:class="${iterStat.odd}? 'odd'">
+                     <!-- check if lessonXXX exists and then render  -->
+		             <td th:if="${lessonRows.lessonOne} != null">
+                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonOne.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonOne?.name}"></span></a>
+		             </td>
+		             <td th:if="${lessonRows.lessonTwo} != null">
+                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonTwo.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonTwo?.name}"></span></a>
+		             </td>
+		             <td th:if="${lessonRows.lessonThree} != null">
+                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonThree.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonThree?.name}"></span></a>		              
+		             </td>
+		             <td th:if="${lessonRows.lessonFour} != null">
+                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonFour.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonFour?.name}"></span></a>		              		              
+		             </td>		                     
+                </tr>
+            </tbody>
+        </table>
+
+        
         </div>
+          <div class="form-group">
+              <button class="btn btn-danger" type="submit" name="action" value="cancel" th:text="#{lesson.cancel}"></button>
+          </div>        
     </form>        
 </div>        
 	</body>
