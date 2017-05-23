@@ -21,8 +21,10 @@ import com.box.model.domain.Lesson;
 import com.box.model.domain.LessonListWrapper;
 import com.box.model.domain.LessonRows;
 import com.box.model.domain.SubjectFocus;
+import com.box.model.domain.User;
 import com.box.model.services.AuthenticationService;
 import com.box.model.services.LessonsProcessingService;
+import com.box.model.type.SkillLevelType;
 
 @Controller
 public class ContentController {
@@ -34,6 +36,11 @@ public class ContentController {
 
 	@Inject
 	private LessonsProcessingService lessonsProcessingService;
+
+	@ModelAttribute("allSkillLevelType")
+	public SkillLevelType[] populateTypes() {
+		return new SkillLevelType[] { SkillLevelType.NOVICE, SkillLevelType.INTERMEDIATE, SkillLevelType.EXPERT };
+	}
 
 	@RequestMapping(value = "/chooseOperatingSystem")
 	public ModelAndView chooseOperatingSystem(ModelAndView model) throws IOException {
@@ -224,7 +231,12 @@ public class ContentController {
 		log.debug(
 				"\nContentController:focusAreaProve: SubjectFocus : " + subjectFocus + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 		model.addAttribute("subjectFocus", subjectFocus);
-		modelAndView.setViewName("selection/learnOrProveFocusArea");
+		// modelAndView.setViewName("selection/learnOrProveFocusArea");
+		modelAndView.setViewName("skilllevels/skillLevels");
+
+		User user = (User) session.getAttribute("userSessionAttribute");
+
+		modelAndView.addObject("user", user);
 
 		// return routeToLessonList(session, model, m,
 		// lesson.getSkillLevelTypeId());
