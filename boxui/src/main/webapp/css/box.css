@@ -206,7 +206,7 @@ background-color: #030033;
   }
 
  .navbar-default {
-    background-color: #0f006f;
+    background-color: #2196f3;
     border-color: #030033;
 }
 
@@ -234,7 +234,7 @@ background-color: #030033;
     }
     
   .jumbotron {
-    background-color: #7abfd2;
+    background-color: #2196f3!important;
   }
   
   .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {

@@ -25,43 +25,50 @@
 	<!-- <p th:text="'User ' + ${session.userSessionAttribute} + '!'" /> -->
    <form action="#" method="post" th:object="${subjectFocus}" th:action="@{/renderLearningTopic}">
 		
-         <div class="table-responsive"> 
+         <div class="table-responsive">
+           <!-- iterate over each lesson rows list, which contains a maximum of 4 lessons per row  -->
+	         <!--  ISSUE: Table rendered using submit buttons - they auto size nicely, but couldn't figure out how to pass
+	               what was clicked to the controller. 
+	          <table class="table table-striped table-bordered table-condensed">
+	            <tbody >
+	                <tr th:each="lessonRows, iterStat : ${lessonListWrapper.lessonRowsList}" th:class="${iterStat.odd}? 'odd'">
+			             <td th:if="${lessonRows.lessonOne} != null">
+			              <button class="btn btn-success" type="submit" name="action" value="${lessonRows.lessonOne.name}" th:text="${lessonRows?.lessonOne?.name}"></button>
+			             </td>
+			             <td th:if="${lessonRows.lessonTwo} != null">
+			              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonTwo?.name}"></button>
+			             </td>
+			             <td th:if="${lessonRows.lessonThree} != null">
+			              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonThree?.name}"></button>
+			             </td>
+			             <td th:if="${lessonRows.lessonFour} != null">
+			              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonFour?.name}"></button>
+			             </td>		             
+	                </tr>
+	            </tbody>
+	          </table>
+          -->
+          <!--  table of lessons in rows of href links wrapped around buttons -->
+          <!-- 
+               Using just buttons, requires figuring out(at the controller) what lesson was clicked. In lieu of that, using  href links wrapped around buttons
+               https://stackoverflow.com/questions/710089/how-do-i-make-an-html-link-look-like-a-button
+           -->
           <table class="table table-striped table-bordered table-condensed">
             <tbody >
                 <!-- iterate over each lesson rows list, which contains a maximum of 4 lessons per row  -->
                 <tr th:each="lessonRows, iterStat : ${lessonListWrapper.lessonRowsList}" th:class="${iterStat.odd}? 'odd'">
                      <!-- check if lessonXXX exists and then render  -->
 		             <td th:if="${lessonRows.lessonOne} != null">
-		              <button class="btn btn-success" type="submit" name="action" value="${lessonRows.lessonOne.name}" th:text="${lessonRows?.lessonOne?.name}"></button>
+                       <a th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonOne.lessonHtmlPage})}"><button class="btn btn-primary" type="button" name="action" value="learn" th:text="${lessonRows?.lessonOne?.name}"></button></a>                       
 		             </td>
 		             <td th:if="${lessonRows.lessonTwo} != null">
-		              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonTwo?.name}"></button>
+                       <a th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonTwo.lessonHtmlPage})}"><button class="btn btn-primary" type="button" name="action" value="learn" th:text="${lessonRows?.lessonTwo?.name}"></button></a>                                              
 		             </td>
 		             <td th:if="${lessonRows.lessonThree} != null">
-		              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonThree?.name}"></button>
+                       <a th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonThree.lessonHtmlPage})}"><button class="btn btn-primary" type="button" name="action" value="learn" th:text="${lessonRows?.lessonThree?.name}"></button></a>                                                                     		              
 		             </td>
 		             <td th:if="${lessonRows.lessonFour} != null">
-		              <button class="btn btn-success" type="submit" name="action" value="learn" th:text="${lessonRows?.lessonFour?.name}"></button>
-		             </td>		             
-                </tr>
-            </tbody>
-        </table>
-          <table class="table table-striped table-bordered table-condensed">
-            <tbody >
-                <!-- iterate over each lesson rows list, which contains a maximum of 4 lessons per row  -->
-                <tr th:each="lessonRows, iterStat : ${lessonListWrapper.lessonRowsList}" th:class="${iterStat.odd}? 'odd'">
-                     <!-- check if lessonXXX exists and then render  -->
-		             <td th:if="${lessonRows.lessonOne} != null">
-                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonOne.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonOne?.name}"></span></a>
-		             </td>
-		             <td th:if="${lessonRows.lessonTwo} != null">
-                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonTwo.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonTwo?.name}"></span></a>
-		             </td>
-		             <td th:if="${lessonRows.lessonThree} != null">
-                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonThree.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonThree?.name}"></span></a>		              
-		             </td>
-		             <td th:if="${lessonRows.lessonFour} != null">
-                       <a class="button" th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonFour.lessonHtmlPage})}"><span th:text="${lessonRows?.lessonFour?.name}"></span></a>		              		              
+                       <a th:href="@{renderLesson(lessonHtmlPage=${lessonRows.lessonFour.lessonHtmlPage})}"><button class="btn btn-primary" type="button" name="action" value="learn" th:text="${lessonRows?.lessonFour?.name}"></button></a>                                                                     		                                     		             		              
 		             </td>		                     
                 </tr>
             </tbody>
