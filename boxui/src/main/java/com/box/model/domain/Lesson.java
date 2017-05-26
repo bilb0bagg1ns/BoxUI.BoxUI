@@ -30,6 +30,7 @@ public class Lesson {
 	// Checkbox logic comes from :
 	// http://stackoverflow.com/questions/17692941/values-for-thfield-attributes-in-checkbox
 	private List<String> checkedSkillsLevelsApplicableTo;
+	private List<String> checkedOperatingSystemsApplicableTo;
 
 	private String lessonHtmlPage = "greeting_tmp";
 
@@ -127,6 +128,14 @@ public class Lesson {
 
 	public void setLessonHtmlPage(String lessonHtmlPage) {
 		this.lessonHtmlPage = lessonHtmlPage;
+	}
+
+	public List<String> getCheckedOperatingSystemsApplicableTo() {
+		return checkedOperatingSystemsApplicableTo;
+	}
+
+	public void setCheckedOperatingSystemsApplicableTo(List<String> checkedOperatingSystemsApplicableTo) {
+		this.checkedOperatingSystemsApplicableTo = checkedOperatingSystemsApplicableTo;
 	}
 
 	@Override

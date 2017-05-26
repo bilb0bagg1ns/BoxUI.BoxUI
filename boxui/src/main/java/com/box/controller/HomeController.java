@@ -235,6 +235,11 @@ public class HomeController {
 		allSkillLevelApplicableItems.add("expert");
 		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
 
+		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
+		allOperatingSystemApplicableItems.add("windows");
+		allOperatingSystemApplicableItems.add("linux");
+		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
+
 		// initialize default value
 		List<String> checkedItems = new ArrayList<String>();
 		// novice will be checked by default.
@@ -255,6 +260,11 @@ public class HomeController {
 		allSkillLevelApplicableItems.add("intermediate");
 		allSkillLevelApplicableItems.add("expert");
 		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
+
+		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
+		allOperatingSystemApplicableItems.add("windows");
+		allOperatingSystemApplicableItems.add("linux");
+		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
 
 		modelAndView.addObject("lesson", lesson);
 		modelAndView.setViewName("admin/lesson/lessonEntryUpdateForm");

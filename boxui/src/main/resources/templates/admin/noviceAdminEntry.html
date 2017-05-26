@@ -27,9 +27,10 @@
 				 -->
 				<!--
 				<a href="#" th:href="@{/lessonEntry(skillLevelTypeId=${lesson.skillLevelTypeId})}">Add Lesson</a>
+				<a href="#" th:href="@{/chooseOperatingSystem}">Test Link - Choose Operating System</a>
+			
 				-->
 				<a href="#" th:href="@{/lessonEntry(skillLevelTypeId=${skillLevelTypeId})}">Add Lesson</a>
-				<a href="#" th:href="@{/chooseOperatingSystem}">Test Link - Choose Operating System</a>
 				
 		        <h2>Lesson list</h2>
 		        <div class="table-responsive"> 
@@ -40,6 +41,7 @@
 					                    <th scope="col">Short Description</th>
 					                    <th scope="col">Long Description</th>
 					                    <th scope="col">Skill</th>
+					                    <th scope="col">Operating System</th>					                    
 					                    <th scope="col">Action</th>
 					                </tr>
 					            </thead>
@@ -48,7 +50,8 @@
 					                    <td th:text="${lesson.name}">Lesson Name</td>
 					                    <td th:text="${lesson.shortDescription}">Short Description</td>
 					                    <td th:text="${lesson.longDescription}">Long Description</td>
-					                    <td th:text="${lesson.CheckedSkillsLevelsApplicableTo}">Long Description</td>
+					                    <td th:text="${lesson.CheckedSkillsLevelsApplicableTo}">Skill Level</td>
+					                    <td th:text="${lesson.CheckedOperatingSystemsApplicableTo}"></td>
 					                    <td> 
 					                        <a th:href="@{editLesson(lessonId=${lesson.id})}"><span th:text="Edit"></span></a>
 					                        <a th:href="@{deleteLesson(lessonId=${lesson.id}, skillLevelTypeId = ${lesson.skillLevelTypeId})}"><span th:text="Delete"></span></a>

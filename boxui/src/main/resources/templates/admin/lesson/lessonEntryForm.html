@@ -62,17 +62,28 @@
 		    <label th:text="${item}">example</label>
 		  </div>          
 -->
-   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->
-   <div class="panel panel-info">
-   <div class="panel-heading">Select Applicable Skill
-      <div class="checkbox" style="display:inline">
-		  <div th:each="item : ${allSkillLevelApplicableItems}">
-		    <input type="checkbox" th:field="*{checkedSkillsLevelsApplicableTo}" th:value="${item}" />
-		    <label th:text="${item}">example</label>
-		  </div>          
-      </div>
-  </div>
-</div>       
+	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->
+	   <div class="panel panel-info">
+		   <div class="panel-heading">Select Applicable Skill
+		      <div class="checkbox" style="display:inline">
+				  <div th:each="item : ${allSkillLevelApplicableItems}">
+				    <input type="checkbox" th:field="*{checkedSkillsLevelsApplicableTo}" th:value="${item}" />
+				    <label th:text="${item}">example</label>
+				  </div>          
+		      </div>
+		   </div>
+	   </div>
+	   <div class="panel panel-info">
+		   <div class="panel-heading">Select Applicable Operating System
+		      <div class="checkbox" style="display:inline">
+				  <div th:each="osItem : ${allOperatingSystemApplicableItems}">
+				    <input type="checkbox" th:field="*{checkedOperatingSystemsApplicableTo}" th:value="${osItem}" />
+				    <label th:text="${osItem}">example</label>
+				  </div>          
+		      </div>
+		   </div>
+	   </div>       
+	          
 <div class="panel-body">
 </div>
       
