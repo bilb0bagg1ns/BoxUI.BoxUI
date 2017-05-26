@@ -91,7 +91,7 @@ public class ContentController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/focusArea", method = RequestMethod.POST, params = "action=learn")
+	@RequestMapping(value = "/focusArea", method = { RequestMethod.GET, RequestMethod.POST }, params = "action=learn")
 	public ModelAndView focusAreaLearn(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
 			Model model, @ModelAttribute("subjectFocus") SubjectFocus subjectFocus) {
 		log.debug(

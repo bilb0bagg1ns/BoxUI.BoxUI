@@ -5,14 +5,26 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
 
-<button onclick="goBack()">Go Back</button>
+<p>
+<b>TCP Wrapper</b> is a host-based networking ACL system, used to filter network 
+access to Internet Protocol servers on (Unix-like) operating systems such as 
+Linux or BSD. It allows host or subnetwork IP addresses, names and/or ident 
+query replies, to be used as tokens on which to filter for access control
+purposes.
+</p>
 
-<script>
-function goBack() {
-    window.history.back();
-}
-</script>    
+<p>
+The tarball includes a library named libwrap that implements the actual 
+functionality. Initially, only services that were spawned for each connection 
+from a super-server (such as inetd) got wrapped, utilizing the tcpd program. 
+However most common network service daemons today can be linked against libwrap 
+directly. This is used by daemons that operate without being spawned from a 
+super-server, or when a single process handles multiple connections.
+Otherwise, only the first connection attempt would get checked against its ACLs.
+</p>
+
+<a href="/focusArea?action=learn">Return to Learning Topic</a>
+   
 </body>
 </html>
