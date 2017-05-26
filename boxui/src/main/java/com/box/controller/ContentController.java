@@ -91,6 +91,14 @@ public class ContentController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/focusArea", method = RequestMethod.POST, params = "action=cancel")
+	public ModelAndView cancelProveOrLearnSelection(HttpServletRequest request, HttpSession session,
+			ModelAndView modelAndView, Model m, @ModelAttribute Lesson lesson) throws IOException {
+		log.debug("\nHomeController:cancelProveOrLearnSelection: Lesson : " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		return chooseOperatingSystem(modelAndView);
+	}
+
 	@RequestMapping(value = "/focusArea", method = { RequestMethod.GET, RequestMethod.POST }, params = "action=learn")
 	public ModelAndView focusAreaLearn(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
 			Model model, @ModelAttribute("subjectFocus") SubjectFocus subjectFocus) {

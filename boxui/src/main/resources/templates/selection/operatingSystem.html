@@ -24,12 +24,11 @@
 		<form action="#" method="post" th:object="${subjectFocus}" th:action="@{/operatingSystemFocus}">
 		  <div class="btn-toolbar">
 		      <!--  Lunix -->
-              <button class="btn btn-success" type="submit" name="action" value="linux" th:text="#{focus.os.linux}"></button>
+              <button class="btn btn-primary" type="submit" name="action" value="linux" th:text="#{focus.os.linux}"></button>
               <div class="col-lg-10"></div>
               <!--  Windows -->                            
-              <button class="btn btn-success" type="submit" name="action" value="windows" th:text="#{focus.os.windows}"></button>
-          </div>
-          
+              <button class="btn btn-primary" type="submit" name="action" value="windows" th:text="#{focus.os.windows}"></button>
+          </div>          
 	</form>
   </div>
 </body>
