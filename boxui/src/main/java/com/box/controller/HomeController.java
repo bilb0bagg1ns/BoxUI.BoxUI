@@ -206,6 +206,19 @@ public class HomeController {
 		return model;
 	}
 
+	@RequestMapping(value = "/novice", method = RequestMethod.POST, params = "action=cancel")
+	public ModelAndView cancelNovice(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
+			Model model, @ModelAttribute Lesson lesson) throws IOException {
+		log.debug("\nHomeController:cancelNovice <<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		modelAndView.setViewName("skilllevels/skillLevels");
+		User user = (User) session.getAttribute("userSessionAttribute");
+		modelAndView.addObject("user", user);
+
+		return modelAndView;
+
+	}
+
 	/**
 	 * Checkbox logic comes from :
 	 * http://stackoverflow.com/questions/17692941/values-for-thfield-attributes-in-checkbox
