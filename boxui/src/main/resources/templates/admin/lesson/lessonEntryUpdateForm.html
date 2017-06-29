@@ -18,14 +18,14 @@
   </div> 
   <div class="container" style="margin-top:100px">
 		<h1>Lesson Entry Update</h1>
+<!-- 		
 		<p th:text="'Lesson: ' + ${session.lessonSessionAttribute} + '!'" />
 		<p th:text="'Lesson: ' + ${lesson} + '!'" />
-
+ -->
  	
 		<form action="#" method="post" th:object="${lesson}" th:action="@{/saveLesson}">
 <!--
-		<form action="#" method="post" th:object="${lesson}" th:action="@{/saveUpdateLesson}">
- 		
+		<form action="#" method="post" th:object="${lesson}" th:action="@{/saveUpdateLesson}">	
 		<form action="#" method="post" th:object="${session.lessonSessionAttribute}" th:action="@{/saveLesson}">
 -->		
 		
@@ -58,39 +58,81 @@
            </tr>
 		 </table>
 -->
-          <div class="form-group">
-            <label for="name" th:text="#{lesson.name}"></label>
-            <input  class="form-control" type="text" th:field="*{name}" />
+       <label for="checkedSkillsLevelsApplicableTo" th:text="#{lesson.label}"></label>          
+	   <div class="panel panel-info">
+   	      <div class="panel-heading"> <!-- Update Applicable Skill  -->
+	          <div class="form-group">
+	            <label for="name" th:text="#{lesson.name}"></label>
+	            <input  class="form-control" type="text" th:field="*{name}" />
+	          </div>
+	          <div class="form-group ">
+	            <label for="shortDescription" th:text="#{lesson.shortDescription}"></label>
+	            <input  class="form-control" type="text" th:field="*{shortDescription}" />
+	          </div>
+	 
+	          <div class="form-group">
+	            <label for="longDescription" th:text="#{lesson.longDescription}"></label>
+	            <input  class="form-control" type="text" th:field="*{longDescription}" />
+	          </div>
           </div>
-          <div class="form-group ">
-            <label for="shortDescription" th:text="#{lesson.shortDescription}"></label>
-            <input  class="form-control" type="text" th:field="*{shortDescription}" />
-          </div>
- 
-          <div class="form-group">
-            <label for="longDescription" th:text="#{lesson.longDescription}"></label>
-            <input  class="form-control" type="text" th:field="*{longDescription}" />
-          </div>
+       </div>
           
+	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->
+       <label for="checkedSkillsLevelsApplicableTo" th:text="#{lesson.checkedSkillsLevelsApplicableTo}"></label>          
+	   <div class="panel panel-info">
+		   <div class="panel-heading"> <!-- Update Applicable Skill  -->
+		      <div class="checkbox" style="display:inline">
+				  <div th:each="item : ${allSkillLevelApplicableItems}">
+				    <input type="checkbox" th:field="*{checkedSkillsLevelsApplicableTo}" th:value="${item}" />
+				    <label th:text="${item}">example</label>
+				  </div>          
+		      </div>
+		  </div>
+	   </div>          
+
+       <label for="checkedOperatingSystemsApplicableTo" th:text="#{lesson.checkedOperatingSystemsApplicableTo}"></label>          
+	   <div class="panel panel-info">
+		   <div class="panel-heading"> <!-- Update Applicable Operating System  -->
+		      <div class="checkbox" style="display:inline">
+				  <div th:each="osItem : ${allOperatingSystemApplicableItems}">
+				    <input type="checkbox" th:field="*{checkedOperatingSystemsApplicableTo}" th:value="${osItem}" />
+				    <label th:text="${osItem}">example</label>
+				  </div>          
+		      </div>
+		   </div>
+	   </div>           
+
+       <!--  Lesson Content - path and file name -->
+       <label for="pathToLesson" th:text="#{lesson.label}"></label>          
+	   <div class="panel panel-info">
+		  <div class="panel-heading">  <!-- Update Lesson Path and File Name  -->
           <div class="form-group">
-            <label for="checkedSkillsLevelsApplicableTo" th:text="#{lesson.checkedSkillsLevelsApplicableTo}"></label>          
-	         <div class="checkbox" style="display:inline">
-			  <div th:each="item : ${allSkillLevelApplicableItems}">
-			    <input type="checkbox" th:field="*{checkedSkillsLevelsApplicableTo}" th:value="${item}" />
-			    <label th:text="${item}">example</label>
-			  </div>          
-	         </div>
+            <!--  path to lesson content file -->
+            <label for="pathToLesson" th:text="#{path}"></label>
+            <input  class="form-control" type="text" th:field="*{pathToLesson}" />
+            
+             <!-- file name of lesson content -->
+            <label for="lessonContentFileName" th:text="#{lesson.name}"></label>
+            <input  class="form-control" type="text" th:field="*{lessonContentFileName}" />
           </div>
-          
-          <div class="form-group">
-            <label for="checkedOperatingSystemsApplicableTo" th:text="#{lesson.checkedOperatingSystemsApplicableTo}"></label>          
-	         <div class="checkbox" style="display:inline">
-			  <div th:each="osItem : ${allOperatingSystemApplicableItems}">
-			    <input type="checkbox" th:field="*{checkedOperatingSystemsApplicableTo}" th:value="${osItem}" />
-			    <label th:text="${osItem}">example</label>
-			  </div>          
-	         </div>
-          </div>
+		   </div>
+	   </div>           
+
+       <!--  Script - path and file name -->
+       <label for="pathToScript" th:text="#{script}"></label>          
+	   <div class="panel panel-info">
+		  <div class="panel-heading"> <!-- Update Lesson Path  -->          
+	          <div class="form-group">
+	            <!-- path to script file -->
+	            <label for="pathToScript" th:text="#{path}"></label>
+	            <input  class="form-control" type="text" th:field="*{pathToScript}" />
+	            <!-- file name of script -->
+	            <label for="scriptFileName" th:text="#{lesson.name}"></label>
+	            <input  class="form-control" type="text" th:field="*{scriptFileName}" />
+	          </div>
+		  </div>
+	   </div>           
+
       
           <div class="form-group">
               <button class="btn btn-success" type="submit" th:text="#{lesson.updateLession}"></button>

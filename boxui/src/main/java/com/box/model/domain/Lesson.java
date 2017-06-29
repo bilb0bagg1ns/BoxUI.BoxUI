@@ -32,6 +32,15 @@ public class Lesson {
 	private List<String> checkedSkillsLevelsApplicableTo;
 	private List<String> checkedOperatingSystemsApplicableTo;
 
+	/** path to lesson content file */
+	private String pathToLesson;
+	/** file name of lesson content */
+	private String lessonContentFileName;
+	/** path to script file */
+	private String pathToScript;
+	/** file name of script */
+	private String scriptFileName;
+
 	private String lessonHtmlPage = "greeting_tmp";
 
 	public Lesson() {
@@ -136,6 +145,38 @@ public class Lesson {
 
 	public void setCheckedOperatingSystemsApplicableTo(List<String> checkedOperatingSystemsApplicableTo) {
 		this.checkedOperatingSystemsApplicableTo = checkedOperatingSystemsApplicableTo;
+	}
+
+	public String getPathToLesson() {
+		return pathToLesson;
+	}
+
+	public void setPathToLesson(String pathToLesson) {
+		this.pathToLesson = pathToLesson;
+	}
+
+	public String getLessonContentFileName() {
+		return lessonContentFileName;
+	}
+
+	public void setLessonContentFileName(String lessonContentFileName) {
+		this.lessonContentFileName = lessonContentFileName;
+	}
+
+	public String getPathToScript() {
+		return pathToScript;
+	}
+
+	public void setPathToScript(String pathToScript) {
+		this.pathToScript = pathToScript;
+	}
+
+	public String getScriptFileName() {
+		return scriptFileName;
+	}
+
+	public void setScriptFileName(String scriptFileName) {
+		this.scriptFileName = scriptFileName;
 	}
 
 	@Override
