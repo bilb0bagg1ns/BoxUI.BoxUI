@@ -79,6 +79,14 @@ public class HomeController {
 		return model;
 	}
 
+	@RequestMapping(value = "/cancelAdminLessonEntry")
+	public ModelAndView cancelAdminLessonEntry(ModelAndView modelAndView) throws IOException {
+		log.debug("In HomeController.cancelAdminLessonEntry" + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		modelAndView.setViewName("skilllevels/skillLevels");
+		return modelAndView;
+	}
+
 	@RequestMapping("/greeting")
 	public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
 			Model model) {

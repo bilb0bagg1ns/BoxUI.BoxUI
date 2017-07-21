@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+   <!--  Admin page - allows admin to add, edit and delete lessons. Displays lesson list in a tabular format -->
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1"></meta>	
@@ -39,7 +40,7 @@
 					                <tr>
 					                    <th scope="col">Name</th>
 					                    <th scope="col">Short Description</th>
-					                    <th scope="col">Long Description</th>
+					                    <th scope="col">Lesson</th>
 					                    <th scope="col">Skill</th>
 					                    <th scope="col">Operating System</th>					                    
 					                    <th scope="col">Action</th>
@@ -49,7 +50,7 @@
 					                <tr th:each="lesson : ${lessonListWrapper.lessonList}">
 					                    <td th:text="${lesson.name}">Lesson Name</td>
 					                    <td th:text="${lesson.shortDescription}">Short Description</td>
-					                    <td th:text="${lesson.longDescription}">Long Description</td>
+					                    <td th:text="${lesson.lessonHtmlPage}">Lesson Path and Name</td>
 					                    <td th:text="${lesson.CheckedSkillsLevelsApplicableTo}">Skill Level</td>
 					                    <td th:text="${lesson.CheckedOperatingSystemsApplicableTo}"></td>
 					                    <td> 
@@ -60,6 +61,13 @@
 					            </tbody>
 					        </table>
 					      </div>	
+					      
+          <div class="form-group">
+              <button class="btn btn-danger" type="submit" name="action" value="cancel" th:text="#{lesson.cancel}"></button>
+              <a th:href="@{cancelAdminLessonEntry}"><button class="btn btn-primary" type="button" name="action" value="learn" th:text="#{lesson.cancel}"></button></a>                       
+              
+          </div>		 
+					      
 	      </div>  
 	</body>
 </html>

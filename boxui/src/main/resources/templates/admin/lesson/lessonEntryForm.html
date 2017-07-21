@@ -2,6 +2,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+   <!--  Admin page - allows admin to add a new lesson -->
    <title>Add Lesson</title>
    
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,7 +40,8 @@
 			           -->
 			          
 			<input type="hidden" th:field="*{skillLevelTypeId}" th:value="${lesson.skillLevelTypeId}" />
-				 
+
+ <!--				 
 		   <div class="form-group">
             <label for="name" th:text="#{lesson.name}"></label>
             <input  class="form-control" type="text" th:field="*{name}" />
@@ -47,12 +49,34 @@
           <div class="form-group ">
             <label for="shortDescription" th:text="#{lesson.shortDescription}"></label>
             <input  class="form-control" type="text" th:field="*{shortDescription}" />
-          </div>
- 
+          </div>          
           <div class="form-group">
             <label for="longDescription" th:text="#{lesson.longDescription}"></label>
             <input  class="form-control" type="text" th:field="*{longDescription}" />
           </div>
+ -->          
+ 
+ 
+ 
+       <label for="lesson" th:text="#{lesson.label}"></label>          
+	   <div class="panel panel-info">
+   	      <div class="panel-heading"> <!-- Update Applicable Skill  -->
+	          <div class="form-group">
+	            <label for="name" th:text="#{lesson.name}"></label>
+	            <input  class="form-control" type="text" th:field="*{name}" />
+	          </div>
+	          <div class="form-group ">
+	            <label for="shortDescription" th:text="#{lesson.shortDescription}"></label>
+	            <input  class="form-control" type="text" th:field="*{shortDescription}" />
+	          </div>
+	 <!-- 
+	          <div class="form-group">
+	            <label for="longDescription" th:text="#{lesson.longDescription}"></label>
+	            <input  class="form-control" type="text" th:field="*{longDescription}" />
+	          </div>
+       -->	          
+          </div>
+       </div>
 <!-- 
           <div class="form-group">
              <label for="lessonSkillApplicable" th:text="#{lesson.skillApplicable}"></label>
@@ -63,6 +87,7 @@
 		  </div>          
 -->
 	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->
+<!-- 
 	   <div class="panel panel-info">
 		   <div class="panel-heading">Select Applicable Skill
 		      <div class="checkbox" style="display:inline">
@@ -73,6 +98,22 @@
 		      </div>
 		   </div>
 	   </div>
+ -->	   
+	   <!-- Select Applicable Skill  -->
+	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->
+       <label for="checkedSkillsLevelsApplicableTo" th:text="#{lesson.checkedSkillsLevelsApplicableTo}"></label>          
+	   <div class="panel panel-info">
+		   <div class="panel-heading"> <!-- Update Applicable Skill  -->
+		      <div class="checkbox" style="display:inline">
+				  <div th:each="item : ${allSkillLevelApplicableItems}">
+				    <input type="checkbox" th:field="*{checkedSkillsLevelsApplicableTo}" th:value="${item}" />
+				    <label th:text="${item}">example</label>
+				  </div>          
+		      </div>
+		  </div>
+	   </div>      	   
+
+<!-- 	   
 	   <div class="panel panel-info">
 		   <div class="panel-heading">Select Applicable Operating System
 		      <div class="checkbox" style="display:inline">
@@ -83,6 +124,52 @@
 		      </div>
 		   </div>
 	   </div>       
+-->
+	   <!-- Select Applicable Operating System  -->
+       <label for="checkedOperatingSystemsApplicableTo" th:text="#{lesson.checkedOperatingSystemsApplicableTo}"></label>          
+	   <div class="panel panel-info">
+		   <div class="panel-heading"> <!-- Update Applicable Operating System  -->
+		      <div class="checkbox" style="display:inline">
+				  <div th:each="osItem : ${allOperatingSystemApplicableItems}">
+				    <input type="checkbox" th:field="*{checkedOperatingSystemsApplicableTo}" th:value="${osItem}" />
+				    <label th:text="${osItem}">example</label>
+				  </div>          
+		      </div>
+		   </div>
+	   </div>           
+	          
+       <!--  Lesson Content - path and file name -->
+       <label for="pathAndFileNameOfLesson" th:text="#{lesson.label}"></label>          
+	   <div class="panel panel-info">
+		  <div class="panel-heading">  <!-- Update Lesson Path and File Name  -->
+          <div class="form-group">
+            <!--  path to lesson content file -->
+            <label for="pathToLesson" th:text="#{path}"></label>
+            <input  class="form-control" type="text" th:field="*{pathToLesson}" />
+            
+             <!-- file name of lesson content -->
+            <label for="lessonContentFileName" th:text="#{lesson.name}"></label>
+            <input  class="form-control" type="text" th:field="*{lessonContentFileName}" />
+          </div>
+		   </div>
+	   </div>           
+
+       <!--  Script - path and file name -->
+       <label for="pathAndFileNameOfScript" th:text="#{script}"></label>          
+	   <div class="panel panel-info">
+		  <div class="panel-heading"> <!-- Update Lesson Path  -->          
+	          <div class="form-group">
+	            <!-- path to script file -->
+	            <label for="pathToScript" th:text="#{path}"></label>
+	            <input  class="form-control" type="text" th:field="*{pathToScript}" />
+	            <!-- file name of script -->
+	            <label for="scriptFileName" th:text="#{lesson.name}"></label>
+	            <input  class="form-control" type="text" th:field="*{scriptFileName}" />
+	          </div>
+		  </div>
+	   </div>           
+	          
+	          
 	          
 <div class="panel-body">
 </div>

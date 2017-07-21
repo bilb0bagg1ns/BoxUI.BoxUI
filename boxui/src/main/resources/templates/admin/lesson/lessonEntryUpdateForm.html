@@ -2,6 +2,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+   <!--  Admin page - allows admin to update a lesson -->
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
@@ -58,7 +59,7 @@
            </tr>
 		 </table>
 -->
-       <label for="checkedSkillsLevelsApplicableTo" th:text="#{lesson.label}"></label>          
+       <label for="lesson" th:text="#{lesson.label}"></label>          
 	   <div class="panel panel-info">
    	      <div class="panel-heading"> <!-- Update Applicable Skill  -->
 	          <div class="form-group">
@@ -69,14 +70,16 @@
 	            <label for="shortDescription" th:text="#{lesson.shortDescription}"></label>
 	            <input  class="form-control" type="text" th:field="*{shortDescription}" />
 	          </div>
-	 
+	 <!-- 
 	          <div class="form-group">
 	            <label for="longDescription" th:text="#{lesson.longDescription}"></label>
 	            <input  class="form-control" type="text" th:field="*{longDescription}" />
 	          </div>
+       -->	          
           </div>
        </div>
-          
+
+	   <!-- Select Applicable Skill  -->
 	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->
        <label for="checkedSkillsLevelsApplicableTo" th:text="#{lesson.checkedSkillsLevelsApplicableTo}"></label>          
 	   <div class="panel panel-info">
@@ -90,6 +93,7 @@
 		  </div>
 	   </div>          
 
+	   <!-- Select Applicable Operating System  -->
        <label for="checkedOperatingSystemsApplicableTo" th:text="#{lesson.checkedOperatingSystemsApplicableTo}"></label>          
 	   <div class="panel panel-info">
 		   <div class="panel-heading"> <!-- Update Applicable Operating System  -->
@@ -103,7 +107,7 @@
 	   </div>           
 
        <!--  Lesson Content - path and file name -->
-       <label for="pathToLesson" th:text="#{lesson.label}"></label>          
+       <label for="pathAndFileNameOfLesson" th:text="#{lesson.label}"></label>          
 	   <div class="panel panel-info">
 		  <div class="panel-heading">  <!-- Update Lesson Path and File Name  -->
           <div class="form-group">
@@ -119,7 +123,7 @@
 	   </div>           
 
        <!--  Script - path and file name -->
-       <label for="pathToScript" th:text="#{script}"></label>          
+       <label for="pathAndFileNameOfScript" th:text="#{script}"></label>          
 	   <div class="panel panel-info">
 		  <div class="panel-heading"> <!-- Update Lesson Path  -->          
 	          <div class="form-group">

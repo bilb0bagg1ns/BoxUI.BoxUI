@@ -132,7 +132,7 @@ public class Lesson {
 	}
 
 	public String getLessonHtmlPage() {
-		return lessonHtmlPage;
+		return pathToLesson + lessonContentFileName;
 	}
 
 	public void setLessonHtmlPage(String lessonHtmlPage) {
