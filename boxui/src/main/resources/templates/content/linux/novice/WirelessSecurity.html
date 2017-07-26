@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wireless Security</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+       <!--  Admin page - allows admin to update a lesson -->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+   <link rel="stylesheet" type="text/css" media="all"
+         href="../../css/box.css" th:href="@{/css/box.css}"/>
+    <style>
+body {background-color: lightgrey;}
+h1   {color: blue;}
+p    {color: black;}
+
+table, th, td {
+    border: 0px solid black;
+        border-collapse: collapse;
+}
+
+</style>
+</head>
+<body>
+<h1> Wireless Security </h1>
+
+<p><b>Wireless security</b> is the prevention of unauthorized access or damage to computers using wireless networks. The most common types of wireless security are Wired Equivalent Privacy (WEP) and Wi-Fi Protected Access (WPA). WEP is a notoriously weak security standard. The password it uses can often be cracked in a few minutes with a basic laptop computer and widely available software tools. WEP is an old IEEE 802.11 standard from 1999, which was outdated in 2003 by WPA, or Wi-Fi Protected Access. WPA was a quick alternative to improve security over WEP. The current standard is WPA2; some hardware cannot support WPA2 without firmware upgrade or replacement. WPA2 uses an encryption device that encrypts the network with a 256-bit key; the longer key length improves security over WEP.</p>
+
+<p>Many laptop computers have wireless cards pre-installed. The ability to enter a network while mobile has great benefits. However, wireless networking is prone to some security issues. Hackers have found wireless networks relatively easy to break into, and even use wireless technology to hack into wired networks.[1] As a result, it is very important that enterprises define effective wireless security policies that guard against unauthorized access to important resources.[2] Wireless Intrusion Prevention Systems (WIPS) or Wireless Intrusion Detection Systems (WIDS) are commonly used to enforce wireless security policies.</p>
+
+<p>The risks to users of wireless technology have increased as the service has become more popular. There were relatively few dangers when wireless technology was first introduced. Hackers had not yet had time to latch on to the new technology, and wireless networks were not commonly found in the work place. However, there are many security risks associated with the current wireless protocols and encryption methods, and in the carelessness and ignorance that exists at the user and corporate IT level.[3] Hacking methods have become much more sophisticated and innovative with wireless access. Hacking has also become much easier and more accessible with easy-to-use Windows- or Linux-based tools being made available on the web at no charge.</p>
+
+<p>Some organizations that have no wireless access points installed do not feel that they need to address wireless security concerns. In-Stat MDR and META Group have estimated that 95% of all corporate laptop computers that were planned to be purchased in 2005 were equipped with wireless cards. Issues can arise in a supposedly non-wireless organization when a wireless laptop is plugged into the corporate network. A hacker could sit out in the parking lot and gather information from it through laptops and/or other devices, or even break in through this wireless card&ndash;equipped laptop and gain access to the wired network.</p>
+
+
+<center>
+<!-- object attribute style="vertical-align:middle in object not working   -->
+<object  style="vertical-align:middle"  data="https://www.youtube.com/embed/wd9KdsxTVa8"
+   width="560" height="315"></object>
+</center>
+<p>
+<!--    
+   <table class="table table-condensed">
+ -->   
+   <table border="0">
+     <tbody>
+         <tr>
+           <td>
+              <a th:href="@{focusArea(action=learn)}"><button class="btn-success" type="button" name="action" value="learn" th:text="#{learn.content.return}"></button></a>
+            </td>
+            <td>              
+              <a th:href="@{focusArea(action=learn)}"><button class="btn-primary" type="button" name="action" value="learn" th:text="#{learn.content.take.quiz}"></button></a>
+            </td>              
+         </tr>         
+       </tbody>                       
+</table>   
+
+</p>   
+</body>
+</html>
