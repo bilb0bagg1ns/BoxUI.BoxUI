@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,7 +75,8 @@ public class HomeController {
 			model.setViewName("home/home");
 		} else {
 			log.debug(principal.getName(), "logged in");
-			model = listSkillLevels(session, principal, model);
+			// model = listSkillLevels(session, principal, model);
+			model = renderLandingPage(session, principal, model);
 		}
 		return model;
 	}
@@ -83,7 +85,8 @@ public class HomeController {
 	public ModelAndView cancelAdminLessonEntry(ModelAndView modelAndView) throws IOException {
 		log.debug("In HomeController.cancelAdminLessonEntry" + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
-		modelAndView.setViewName("skilllevels/skillLevels");
+		// modelAndView.setViewName("skilllevels/skillLevels");
+		modelAndView.setViewName("admin/adminLandingPage");
 		return modelAndView;
 	}
 
@@ -150,6 +153,50 @@ public class HomeController {
 	// return model;
 	// }
 
+	/*-
+	 * Renders the correct landing page depending on logged user: Admin -
+	 * renders 
+	 *   Admin Login Page 
+	 *   User - renders Operating System Selection Page
+	 * 
+	 * @param session
+	 * @param principal
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/renderLandingPage")
+	public ModelAndView renderLandingPage(HttpSession session, Principal principal, ModelAndView model) {
+		log.debug("\nHomeController:landingPage - Principal  : " + principal + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// principal holds the user name entered in the login screen.
+		// At this point user has been successfully authenticated by Spring
+		// Security.
+		User user = authenticationService.findByUserName(principal.getName());
+
+		// add user to session so it's available for subsequent screens
+		// adding to session in lieu of trying to pass it via the hfref link
+		session.setAttribute("userSessionAttribute", user);
+
+		model.addObject("user", user);
+
+		// route based on admin vs. user
+		// TODO: Need to replace hardcoded check with roles
+		if (user.getUserName().equals("admin")) {
+			model.setViewName("admin/adminLandingPage");
+		} else {
+			model.setViewName("selection/operatingSystem");
+		}
+		return model;
+	}
+
+	/**
+	 * This might have to be deprecated in lieu of landingPage method above
+	 * 
+	 * @param session
+	 * @param principal
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/listSkillLevels")
 	public ModelAndView listSkillLevels(HttpSession session, Principal principal, ModelAndView model) {
 		log.debug("\nHomeController:listSkillLevels - Principal  : " + principal + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
@@ -177,6 +224,66 @@ public class HomeController {
 		return model;
 	}
 
+	private void loadLessonsIntoModel(Model model) throws IOException {
+		log.debug("\nHomeController:loadLessonsIntoModel:: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// add to session so it's available for subsequent screens
+		// adding to session in lieu of trying to pass it via the hfref link
+		// TODO: Ensure on logoff, to invalidate session!
+		// session.setAttribute("lessonSessionAttribute",lesson);
+		// log.debug (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// retrieve lessons
+		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveAllLessons();
+		model.addAttribute("lessonListTmp", lessonsList);
+
+		// insert list into wrapper
+		LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+		lessonListWrapperTmp.setLessonList(lessonsList);
+		model.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+
+	}
+
+	/**
+	 * Renders the Add Lessons table for Admin user
+	 * 
+	 * @param session
+	 * @param model
+	 * @param modelAndView
+	 * @param userName
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/adminEntry")
+	public ModelAndView adminEntry(HttpSession session, Model model, ModelAndView modelAndView) throws IOException {
+		// public ModelAndView adminEntry(HttpSession session, Model m,
+		// ModelAndView model) throws IOException {
+		log.debug("\nHomeController:adminEntry:: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		loadLessonsIntoModel(model);
+
+		modelAndView.setViewName("admin/adminEntry");
+		// m.addAttribute("skillLevelTypeId", skillLevelTypeId); // needed in
+		// view
+
+		return modelAndView;
+	}
+
+	/**
+	 * Called in user flow, after "Prove" is chosen.
+	 * 
+	 * 7/26/17 - userName is no longer needed, as this flow is only used by the
+	 * User -> ContentController.focusAreaProve -> skillLevels.html
+	 * 
+	 * @param session
+	 * @param m
+	 * @param model
+	 * @param userName
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/novice")
 	public ModelAndView novice(HttpSession session, Model m, ModelAndView model,
 			@RequestParam("userName") String userName, @RequestParam("skillLevelTypeId") String skillLevelTypeId)
@@ -204,13 +311,13 @@ public class HomeController {
 		m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
 
 		// if user is admin, send them to the flow to add/edit lessons
-		if (userName.equals("admin")) {
-			model.setViewName("admin/noviceAdminEntry");
-			m.addAttribute("skillLevelTypeId", skillLevelTypeId); // needed in
-																	// view
-		} else {
-			model.setViewName("skilllevels/novice");
-		}
+		// if (userName.equals("admin")) {
+		// model.setViewName("admin/noviceAdminEntry");
+		// m.addAttribute("skillLevelTypeId", skillLevelTypeId); // needed in
+		// // view
+		// } else {
+		model.setViewName("skilllevels/novice");
+		// }
 		return model;
 	}
 
@@ -238,15 +345,19 @@ public class HomeController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/lessonEntry")
-	public ModelAndView lessonEntry(ModelAndView modelAndView, @ModelAttribute Lesson lesson,
-			@RequestParam("skillLevelTypeId") String skillLevelTypeId) throws IOException {
-		log.debug("skillLevelTypeId: " + skillLevelTypeId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+	public ModelAndView lessonEntry(ModelAndView modelAndView, @ModelAttribute Lesson lesson) throws IOException {
+		// public ModelAndView lessonEntry(ModelAndView modelAndView,
+		// @ModelAttribute Lesson lesson,
+		// @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws
+		// IOException {
+		// log.debug("skillLevelTypeId: " + skillLevelTypeId +
+		// "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 		log.debug("HomeController:lessonEntry: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// 4/18/17: might be removing this functionality in lieu of setting it
 		// at each lesson entry via checkbox
 		// initialize skill level associated with lesson
-		lesson.setSkillLevelTypeId(skillLevelTypeId);
+		// lesson.setSkillLevelTypeId(skillLevelTypeId);
 
 		// initialize checkbox. Used in rendering checkboxes in lesson entry and
 		// lesson entry update
@@ -441,8 +552,14 @@ public class HomeController {
 			String skillLevelTypeId) {
 		log.debug("HomeController:routeToLessonList: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
-		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService
-				.retrieveLessonsList(skillLevelTypeId);
+		ArrayList<Lesson> lessonsList = null;
+		if (StringUtils.isEmpty(skillLevelTypeId)) { // admin flow
+			lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveAllLessons();
+		} else { // user flow coming in as a novice, intermediate or expert
+					// skill
+			lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveLessonsList(skillLevelTypeId);
+		}
+
 		// model.addAttribute("lessonListTmp", lessonsList);
 
 		// insert list into wrapper
@@ -454,7 +571,8 @@ public class HomeController {
 
 		User userSessionAttribute = (User) session.getAttribute("userSessionAttribute");
 		if (userSessionAttribute != null) { // admin is logged in
-			modelAndView.setViewName("admin/noviceAdminEntry");
+											// modelAndView.setViewName("admin/noviceAdminEntry");
+			modelAndView.setViewName("admin/adminEntry");
 		} else {
 			modelAndView.setViewName("skilllevels/novice");
 		}

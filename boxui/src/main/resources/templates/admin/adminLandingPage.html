@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Landing Page</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" type="text/css" media="all"
+        href="../../css/box.css" th:href="@{/css/box.css}"/>	  
+  
+</head>
+<body>
+
+ <!-- Header -->
+<div th:replace="fragments/navbar :: navbar">
+</div>
+	<div class="container" style="margin-top:100px">
+	      <label th:text="#{admin.action}">Please choose action to perform : </label>
+	      <fieldset>
+	        <div style="background:#0c5cf3;  !important"  class="jumbotron">
+				<a href="#" th:href="@{/adminEntry}">Add Lessons</a>
+	        </div>
+	      </fieldset>
+	</div>
+</body>
+</html>
