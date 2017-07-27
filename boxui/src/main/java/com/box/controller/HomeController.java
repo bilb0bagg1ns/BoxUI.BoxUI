@@ -344,6 +344,49 @@ public class HomeController {
 	 * @return
 	 * @throws IOException
 	 */
+	@RequestMapping(value = "/quizEntry")
+	public ModelAndView quizEntry(ModelAndView modelAndView, @ModelAttribute Lesson lesson) throws IOException {
+		// public ModelAndView lessonEntry(ModelAndView modelAndView,
+		// @ModelAttribute Lesson lesson,
+		// @RequestParam("skillLevelTypeId") String skillLevelTypeId) throws
+		// IOException {
+		// log.debug("skillLevelTypeId: " + skillLevelTypeId +
+		// "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("HomeController:quizEntry: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// 4/18/17: might be removing this functionality in lieu of setting it
+		// at each lesson entry via checkbox
+		// initialize skill level associated with lesson
+		// lesson.setSkillLevelTypeId(skillLevelTypeId);
+
+		// initialize checkbox. Used in rendering checkboxes in lesson entry and
+		// lesson entry update
+		List<String> quizTrueFalseState = new ArrayList<String>();
+		quizTrueFalseState.add("true");
+		quizTrueFalseState.add("false");
+		modelAndView.addObject("quizTrueFalseState", quizTrueFalseState);
+
+		// initialize default value
+		List<String> checkedItems = new ArrayList<String>();
+		// novice will be checked by default.
+		checkedItems.add("novice");
+		lesson.setCheckedSkillsLevelsApplicableTo(checkedItems);
+
+		modelAndView.addObject("lesson", lesson);
+		modelAndView.setViewName("admin/lesson/quizEntryForm");
+		return modelAndView;
+	}
+
+	/**
+	 * Checkbox logic comes from :
+	 * http://stackoverflow.com/questions/17692941/values-for-thfield-attributes-in-checkbox
+	 * 
+	 * @param modelAndView
+	 * @param lesson
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/lessonEntry")
 	public ModelAndView lessonEntry(ModelAndView modelAndView, @ModelAttribute Lesson lesson) throws IOException {
 		// public ModelAndView lessonEntry(ModelAndView modelAndView,
