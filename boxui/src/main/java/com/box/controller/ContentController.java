@@ -99,48 +99,6 @@ public class ContentController {
 		return chooseOperatingSystem(modelAndView);
 	}
 
-	@RequestMapping(value = "/focusArea", method = { RequestMethod.GET, RequestMethod.POST }, params = "action=learn")
-	public ModelAndView focusAreaLearn(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
-			Model model, @ModelAttribute("subjectFocus") SubjectFocus subjectFocus) {
-		log.debug(
-				"\nContentController:focusAreaLearn: SubjectFocus : " + subjectFocus + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
-
-		subjectFocus = (SubjectFocus) session.getAttribute("subjectFocus");
-
-		// retrieve lessons
-		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService.retrieveAllLessons();
-		model.addAttribute("lessonListTmp", lessonsList);
-
-		// insert the lessons into LessonRows for rendering on UI in rows
-		LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
-		ArrayList<LessonRows> lessonRowsList = new ArrayList<LessonRows>();
-		// create a lessons rows list with each element holding 4 lessons
-		lessonRowsList = createLessonRowsList(lessonsList, lessonRowsList);
-		// insert list into wrapper
-		lessonListWrapperTmp.setLessonRowsList(lessonRowsList);
-		model.addAttribute("lessonListWrapper", lessonListWrapperTmp);
-
-		// subjectFocus.setOperatingSystem("windows");
-		// model.addAttribute("subjectFocus", subjectFocus);
-		modelAndView.setViewName("selection/learningTopics");
-
-		// return routeToLessonList(session, model, m,
-		// lesson.getSkillLevelTypeId());
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "/renderLearningTopic", method = RequestMethod.POST, params = "action=cancel")
-	public ModelAndView focusAreaLearnCancel(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
-			Model model, @ModelAttribute SubjectFocus subjectFocus) {
-		log.debug("\nContentController:focusAreaLearnCancel: SubjectFocus : " + subjectFocus
-				+ "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
-
-		modelAndView.setViewName("selection/learnOrProveFocusArea");
-
-		return modelAndView;
-
-	}
-
 	@RequestMapping(value = "/renderLearningTopic", method = RequestMethod.POST)
 	public ModelAndView renderLearningTopic(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
 			Model model, @ModelAttribute("subjectFocus") SubjectFocus subjectFocus,
@@ -191,7 +149,7 @@ public class ContentController {
 	 * Thymeleaf
 	 * 
 	 */
-	private ArrayList<LessonRows> createLessonRowsList(ArrayList<Lesson> lessonsList,
+	public static ArrayList<LessonRows> createLessonRowsList(ArrayList<Lesson> lessonsList,
 			ArrayList<LessonRows> lessonRowsList) {
 		// iterate over lessons list
 		for (int i = 0, j = lessonsList.size(); i < lessonsList.size(); i++) {
@@ -233,6 +191,59 @@ public class ContentController {
 		return lessonRowsList;
 	}
 
+	@RequestMapping(value = "/focusArea", method = { RequestMethod.GET, RequestMethod.POST }, params = "action=learn")
+	public ModelAndView focusAreaLearn(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
+			Model model, @ModelAttribute("subjectFocus") SubjectFocus subjectFocus) {
+		log.debug(
+				"\nContentController:focusAreaLearn: SubjectFocus : " + subjectFocus + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		subjectFocus = (SubjectFocus) session.getAttribute("subjectFocus");
+
+		// // retrieve lessons
+		// ArrayList<Lesson> lessonsList = (ArrayList<Lesson>)
+		// lessonsProcessingService.retrieveAllLessons();
+		// model.addAttribute("lessonListTmp", lessonsList);
+		//
+		// // insert the lessons into LessonRows for rendering on UI in rows
+		// LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+		// ArrayList<LessonRows> lessonRowsList = new ArrayList<LessonRows>();
+		// // create a lessons rows list with each element holding 4 lessons
+		// lessonRowsList = createLessonRowsList(lessonsList, lessonRowsList);
+		// // insert list into wrapper
+		// lessonListWrapperTmp.setLessonRowsList(lessonRowsList);
+		// model.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+
+		// used in identifying if flowing from Learn or Prove in
+		// skillLevels.html page
+		model.addAttribute("learnOrProve", "Learn");
+
+		// subjectFocus.setOperatingSystem("windows");
+		// model.addAttribute("subjectFocus", subjectFocus);
+
+		modelAndView.setViewName("skilllevels/skillLevels");
+		// modelAndView.setViewName("selection/learningTopics");
+
+		User user = (User) session.getAttribute("userSessionAttribute");
+
+		modelAndView.addObject("user", user);
+
+		// return routeToLessonList(session, model, m,
+		// lesson.getSkillLevelTypeId());
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/renderLearningTopic", method = RequestMethod.POST, params = "action=cancel")
+	public ModelAndView focusAreaLearnCancel(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
+			Model model, @ModelAttribute SubjectFocus subjectFocus) {
+		log.debug("\nContentController:focusAreaLearnCancel: SubjectFocus : " + subjectFocus
+				+ "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		modelAndView.setViewName("selection/learnOrProveFocusArea");
+
+		return modelAndView;
+
+	}
+
 	@RequestMapping(value = "/focusArea", method = RequestMethod.POST, params = "action=prove")
 	public ModelAndView focusAreaProve(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
 			Model model, @ModelAttribute SubjectFocus subjectFocus) {
@@ -242,6 +253,9 @@ public class ContentController {
 		// modelAndView.setViewName("selection/learnOrProveFocusArea");
 		modelAndView.setViewName("skilllevels/skillLevels");
 
+		// used in identifying if flowing from Learn or Prove in
+		// skillLevels.html page
+		model.addAttribute("learnOrProve", "Prove");
 		User user = (User) session.getAttribute("userSessionAttribute");
 
 		modelAndView.addObject("user", user);

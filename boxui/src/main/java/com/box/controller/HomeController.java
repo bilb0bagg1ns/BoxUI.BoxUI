@@ -28,6 +28,7 @@ import com.box.model.domain.GradeComposite;
 import com.box.model.domain.GradeListWrapper;
 import com.box.model.domain.Lesson;
 import com.box.model.domain.LessonListWrapper;
+import com.box.model.domain.LessonRows;
 import com.box.model.domain.TestBody;
 import com.box.model.domain.User;
 import com.box.model.services.AuthenticationService;
@@ -57,6 +58,9 @@ public class HomeController {
 
 	@Inject
 	private CoachingEngineController coachingEngineController;
+
+	@Inject
+	private ContentController contentController;
 
 	@ModelAttribute("allSkillLevelType")
 	public SkillLevelType[] populateTypes() {
@@ -271,7 +275,8 @@ public class HomeController {
 	}
 
 	/**
-	 * Called in user flow, after "Prove" is chosen.
+	 * Called in User flow a. after "Learn" is chosen OR b. after "Prove" is
+	 * chosen
 	 * 
 	 * 7/26/17 - userName is no longer needed, as this flow is only used by the
 	 * User -> ContentController.focusAreaProve -> skillLevels.html
@@ -285,9 +290,9 @@ public class HomeController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/novice")
-	public ModelAndView novice(HttpSession session, Model m, ModelAndView model,
-			@RequestParam("userName") String userName, @RequestParam("skillLevelTypeId") String skillLevelTypeId)
-			throws IOException {
+	public ModelAndView novice(HttpSession session, Model m, ModelAndView model, HttpServletRequest request,
+			@RequestParam("userName") String userName, @RequestParam("skillLevelTypeId") String skillLevelTypeId,
+			@RequestParam("learnOrProve") String learnOrProve) throws IOException {
 		log.debug("\nHomeController:novice:: " + userName + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		Lesson lesson = new Lesson();
@@ -300,23 +305,44 @@ public class HomeController {
 		// session.setAttribute("lessonSessionAttribute",lesson);
 		// log.debug (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
-		// retrieve lessons
-		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService
-				.retrieveLessonsList(skillLevelTypeId);
-		m.addAttribute("lessonListTmp", lessonsList);
-
-		// insert list into wrapper
-		LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
-		lessonListWrapperTmp.setLessonList(lessonsList);
-		m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
-
 		// if user is admin, send them to the flow to add/edit lessons
 		// if (userName.equals("admin")) {
 		// model.setViewName("admin/noviceAdminEntry");
 		// m.addAttribute("skillLevelTypeId", skillLevelTypeId); // needed in
 		// // view
 		// } else {
-		model.setViewName("skilllevels/novice");
+
+		// retrieve lessons
+		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService
+				.retrieveLessonsList(skillLevelTypeId);
+		m.addAttribute("lessonListTmp", lessonsList);
+
+		if ((!StringUtils.isEmpty(learnOrProve)) && learnOrProve.equals("Prove")) {
+
+			// insert list into wrapper
+			LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+			lessonListWrapperTmp.setLessonList(lessonsList);
+			m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+
+			model.setViewName("skilllevels/noviceProve");
+		} else if ((!StringUtils.isEmpty(learnOrProve)) && learnOrProve.equals("Learn")) {
+
+			// retrieve lessons
+			// ArrayList<Lesson> lessonsList = (ArrayList<Lesson>)
+			// lessonsProcessingService.retrieveAllLessons();
+			// m.addAttribute("lessonListTmp", lessonsList);
+
+			// insert the lessons into LessonRows for rendering on UI in rows
+			LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+			ArrayList<LessonRows> lessonRowsList = new ArrayList<LessonRows>();
+			// create a lessons rows list with each element holding 4 lessons
+			lessonRowsList = ContentController.createLessonRowsList(lessonsList, lessonRowsList);
+			// insert list into wrapper
+			lessonListWrapperTmp.setLessonRowsList(lessonRowsList);
+			m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+
+			model.setViewName("selection/learningTopics");
+		}
 		// }
 		return model;
 	}
@@ -514,6 +540,8 @@ public class HomeController {
 	}
 
 	/**
+	 * Called by Admin
+	 * 
 	 * http://stackoverflow.com/questions/31401669/thymeleaf-multiple-submit-button-in-one-form
 	 * http://stackoverflow.com/questions/804581/spring-mvc-controller-redirect-to-previous-page
 	 * 
@@ -639,7 +667,7 @@ public class HomeController {
 	}
 
 	/**
-	 * Admin deleting a lesson
+	 * Called by Admin to delete a lesson
 	 * 
 	 * @param model
 	 * @param lessonId
@@ -708,7 +736,7 @@ public class HomeController {
 			lessonListWrapperTmp.setLessonList(lessonsList);
 			m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
 
-			model.setViewName("skilllevels/novice");
+			model.setViewName("skilllevels/noviceProve");
 		}
 
 		return model;

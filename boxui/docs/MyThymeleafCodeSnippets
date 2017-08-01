@@ -1,0 +1,47 @@
+1. To pass values from href to controller method
+
+UI:
+	<form action="#" method="post" th:object="${subjectFocus}" th:action="@{/renderLearningTopic}">
+      ....
+          <!-- links to each skill type. Pass username via link for now. TODO: set user on Session -->
+          <a th:href="@{${skillLevelType.link}(userName=${user.userName}, skillLevelTypeId=${skillLevelType.id})}"><span th:text="${skillLevelType.text}"></span></a>              
+
+          
+Controller:
+	@RequestMapping(value = "/novice")
+	public ModelAndView novice(HttpSession session, Model m, ModelAndView model,
+			@RequestParam("userName") String userName, @RequestParam("skillLevelTypeId") String skillLevelTypeId)
+			throws IOException {
+
+			
+			
+2. Thymeleaf multiple submit buttons in one form
+
+
+	 http://stackoverflow.com/questions/31401669/thymeleaf-multiple-submit-button-in-one-form
+	 http://stackoverflow.com/questions/804581/spring-mvc-controller-redirect-to-previous-page
+
+	 
+UI: 
+
+		<form action="#" method="post" th:object="${subjectFocus}" th:action="@{/focusArea}">
+	      <!--  Lunix -->
+          <button class="btn btn-primary" type="submit" name="action" value="prove" th:text="#{focus.area.prove}"></button>
+          <!--  Windows -->                            
+          <button class="btn btn-primary" type="submit" name="action" value="learn" th:text="#{focus.area.learn}"></button>
+
+
+Controller:
+	@RequestMapping(value = "/focusArea", method = RequestMethod.POST, params = "action=prove")
+	public ModelAndView focusAreaProve(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
+			Model model, @ModelAttribute SubjectFocus subjectFocus) {
+			
+
+3. Decorating links as buttons 
+
+UI:
+
+	<form action="#" method="post" th:object="${subjectFocus}" th:action="@{/renderLearningTopic}">
+          <a th:href="@{${skillLevelType.link}(userName=${user.userName}, skillLevelTypeId=${skillLevelType.id})}"><span th:text="${skillLevelType.text}"></span></a>
+
+	 
