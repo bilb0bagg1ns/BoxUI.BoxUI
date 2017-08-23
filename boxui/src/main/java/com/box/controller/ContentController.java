@@ -28,7 +28,7 @@ import com.box.model.type.SkillLevelType;
 
 /**
  * 
- * Content Controller
+ * Content Controller class
  *
  */
 @Controller
