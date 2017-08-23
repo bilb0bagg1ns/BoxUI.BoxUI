@@ -37,6 +37,11 @@ import com.box.model.services.LessonsProcessingService;
 import com.box.model.services.RegistrationService;
 import com.box.model.type.SkillLevelType;
 
+/**
+ * 
+ * Home Controller
+ *
+ */
 @Controller
 public class HomeController {
 
