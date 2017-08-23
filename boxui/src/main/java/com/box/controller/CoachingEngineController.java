@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import com.box.model.domain.TestBody;
 
 /**
- * Coaching Engine Controller application
+ * Coaching Engine Controller 
  */
 @Controller
 @RequestMapping("/coachingengine")
