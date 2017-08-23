@@ -11,6 +11,11 @@ import org.springframework.web.client.RestTemplate;
 
 import com.box.model.domain.TestBody;
 
+/**
+ * Primary controller for Coaching Engine app.
+ * 
+ *
+ */
 @Controller
 @RequestMapping("/coachingengine")
 public class CoachingEngineController {
