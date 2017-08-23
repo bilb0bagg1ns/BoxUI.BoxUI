@@ -26,6 +26,11 @@ import com.box.model.services.AuthenticationService;
 import com.box.model.services.LessonsProcessingService;
 import com.box.model.type.SkillLevelType;
 
+/**
+ * 
+ * Content Controller
+ *
+ */
 @Controller
 public class ContentController {
 
