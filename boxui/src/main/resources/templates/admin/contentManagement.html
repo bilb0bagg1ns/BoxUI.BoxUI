@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Landing Page</title>
+    <title>Admin Content Management Page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
@@ -21,10 +21,9 @@
 	      <label th:text="#{admin.action}">Please choose action to perform : </label>
 	      <fieldset>
 	        <div style="background:#0c5cf3;  !important"  class="jumbotron">
-				<a href="#" th:href="@{/userManagement}">User Management</a> <br/>
-				<a href="#" th:href="@{/contentManagement}">Content Management</a> <br/>
-				<a href="#" th:href="@{/lessonEntry}">Lesson Management</a> <br/>
-				
+				<a href="#" th:href="@{/operatingSystemEntry}">Add Operating Systems</a>  <br/>
+				<a href="#" th:href="@{/skillsEntry}">Add Skills</a>  <br/>
+				<a href="#" th:href="@{/lessonEntry}">Add Lessons</a>  <br/>
 	        </div>
 	      </fieldset>
 	</div>

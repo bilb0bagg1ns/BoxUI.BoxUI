@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <!--  Admin page - allows admin to add, edit and delete lessons. Displays lesson list in a tabular format -->
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>	
+
+    
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  <link rel="stylesheet" type="text/css" media="all"
+        href="../../css/box.css" th:href="@{/css/box.css}"/>
+     
+	</head>
+	<body>
+		<!-- Header -->
+		<div th:replace="fragments/navbar :: navbar">
+		</div>
+			
+		<div class="container" style="margin-top:100px">
+		
+				<h1>Admin - Lesson Management</h1>
+				<!-- 
+				<p th:text="'lesson: ' + ${lesson} + '!'" />
+				<p th:text="'Lesson Session Attribute: ' + ${session.lessonSessionAttribute} + '!'" />
+				<p th:text="'User ' + ${session.userSessionAttribute} + '!'" />
+				 -->
+				<!--
+				<a href="#" th:href="@{/lessonEntry(skillLevelTypeId=${lesson.skillLevelTypeId})}">Add Lesson</a>
+				<a href="#" th:href="@{/chooseOperatingSystem}">Test Link - Choose Operating System</a>
+			
+				-->
+				<!-- 7/26/2017 
+				<a href="#" th:href="@{/lessonEntry(skillLevelTypeId=${skillLevelTypeId})}">Add Lesson</a>
+				-->
+				
+				<a href="#" th:href="@{/lessonEntryForm}">Add Lesson</a>
+				
+				<a href="#" th:href="@{/quizEntry}">Add Quiz</a>
+				
+		        <h2>Lesson list</h2>
+		        <div class="table-responsive"> 
+					        <table class="table table-striped table-bordered table-condensed">
+					            <thead>
+					                <tr>
+					                    <th scope="col">Name</th>
+					                    <th scope="col">Short Description</th>
+					                    <th scope="col">Lesson</th>
+					                    <th scope="col">Skill</th>
+					                    <th scope="col">Operating System</th>					                    
+					                    <th scope="col">Action</th>
+					                </tr>
+					            </thead>
+					            <tbody >
+					                <tr th:each="lesson : ${lessonListWrapper.lessonList}">
+					                    <td th:text="${lesson.name}">Lesson Name</td>
+					                    <td th:text="${lesson.shortDescription}">Short Description</td>
+					                    <td th:text="${lesson.lessonHtmlPage}">Lesson Path and Name</td>
+					                    <td th:text="${lesson.CheckedSkillsLevelsApplicableTo}">Skill Level</td>
+					                    <td th:text="${lesson.CheckedOperatingSystemsApplicableTo}"></td>
+					                    <td> 
+					                        <a th:href="@{editLesson(lessonId=${lesson.id})}"><span th:text="Edit"></span></a>
+					                        <a th:href="@{deleteLesson(lessonId=${lesson.id}, skillLevelTypeId = ${lesson.skillLevelTypeId})}"><span th:text="Delete"></span></a>
+					                    </td>                                                      
+					                </tr>
+					            </tbody>
+					        </table>
+					      </div>	
+					      
+          <div class="form-group">
+              <a th:href="@{cancelAdminLessonEntry}"><button class="btn btn-danger" type="button" name="action" value="learn" th:text="#{lesson.cancel}"></button></a>                       
+          </div>		 
+					      
+	      </div>  
+	</body>
+</html>
