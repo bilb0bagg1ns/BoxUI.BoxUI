@@ -46,6 +46,7 @@ public class OperatingSystemProcessingService {
 
 	public List<OperatingSystem> retrieveAllOperatingSystems() {
 
+
 		List<OperatingSystem> operatingSystemsList = repository.retrieveAllOperatingSystems();
 		return operatingSystemsList;
 	}

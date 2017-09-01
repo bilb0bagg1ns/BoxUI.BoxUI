@@ -3,7 +3,7 @@ package com.box.model.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "operatingsystems")
+@Document(collection = "operatingSystems")
 public class OperatingSystem {
 
 	@Id
@@ -12,6 +12,7 @@ public class OperatingSystem {
 	private String name;
 	private String version;	
 	private String shortDescription;
+	
 	public String getId() {
 		return id;
 	}

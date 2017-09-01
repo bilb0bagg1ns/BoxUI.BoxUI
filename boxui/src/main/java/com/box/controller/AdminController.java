@@ -119,13 +119,11 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/operatingSystemEntry")
-	public ModelAndView operatingSystemEntry(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute Lesson lesson) throws IOException {
+	public ModelAndView operatingSystemEntry(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute OperatingSystem operatingSystem) throws IOException {
 
-		log.debug("AdminController:operatingSystemEntry: " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("AdminController:operatingSystemEntry: " + operatingSystem + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
-
-		// model.addAttribute("lessonListTmp", lessonsList);
 
 		// insert list into wrapper
 		OperatingSystemListWrapper operatingSystemListWrapperTmp = new OperatingSystemListWrapper();
@@ -136,6 +134,91 @@ public class AdminController {
 		return modelAndView;
 	}
 	
+	/**
+	 * Checkbox logic comes from :
+	 * http://stackoverflow.com/questions/17692941/values-for-thfield-attributes-in-checkbox
+	 * 
+	 * @param modelAndView
+	 * @param lesson
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/operatingSystemEntryForm")
+	public ModelAndView operatingSystemEntryForm(ModelAndView modelAndView, @ModelAttribute OperatingSystem operatingSystem) throws IOException {
+		log.debug("AdminController:operatingSystemEntryForm: " + operatingSystem + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		modelAndView.addObject("operatingSystem", operatingSystem);
+		modelAndView.setViewName("admin/operatingsystem/operatingSystemEntryForm");
+		return modelAndView;
+	}
+	
+	/**
+	 * Save lesson created by Admin
+	 * 
+	 * Called by OperatingSystemEntryForm.html
+	 * 
+	 * @param session
+	 * @param modelAndView
+	 * @param model
+	 * @param lesson
+	 * @param lessonListWrapper
+	 * @return
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/saveOperatingSystem")
+	public ModelAndView saveOperatingSystem(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute OperatingSystem operatingSystem,
+			@ModelAttribute LessonListWrapper lessonListWrapper, @ModelAttribute String skillLevelTypeId)
+			throws IOException {
+		log.debug("\nAdminController:saveOperatingSystem: " + operatingSystem + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// assign the skill id
+		if (operatingSystem.getId() == null) { // adding a new operating system
+			operatingSystemProcessingService.saveOperatingSystem(operatingSystem);
+		} else { // editing a current lesson
+			operatingSystemProcessingService.upsertOperatingSystem(operatingSystem);
+		}
+		return routeToOperatingSystemList(session, modelAndView, model);
+
+	}
+	
+	
+	private ModelAndView routeToOperatingSystemList(HttpSession session, ModelAndView modelAndView, Model model) {
+		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
+
+		// insert list into wrapper
+		OperatingSystemListWrapper operatingSystemListWrapperTmp = new OperatingSystemListWrapper();
+		operatingSystemListWrapperTmp.setOperatingSystemList(operatingSystemList);
+		model.addAttribute("operatingSystemListWrapper", operatingSystemListWrapperTmp);
+
+		modelAndView.setViewName("admin/operatingSystem/operatingSystemEntry");
+		return modelAndView;
+	}
+	
+	/**
+	 * Admin editing an Operating System
+	 * 
+	 * @param model
+	 * @param lessonId
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/editOperatingSystem")
+	public ModelAndView editOperatingSystem(ModelAndView model, @RequestParam("operatingSystemId") String id) throws IOException {
+		log.debug("Editing id: " + id + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		OperatingSystem operatingSystem = operatingSystemProcessingService.findOperatingSystemByOperatingSystemId(id);
+		return operatingSystemEntryUpdate(model, operatingSystem);
+	}
+
+	@RequestMapping(value = "/operatingSystemEntryUpdate")
+	public ModelAndView operatingSystemEntryUpdate(ModelAndView modelAndView, @ModelAttribute OperatingSystem operatingSystem) throws IOException {
+
+		modelAndView.addObject("operatingSystem", operatingSystem);
+		modelAndView.setViewName("admin/operatingSystem/operatingSystemEntryUpdateForm");
+		return modelAndView;
+	}	
 	@RequestMapping(value = "/lessonEntry")
 	public ModelAndView lessonEntry(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute Lesson lesson) throws IOException {
 
@@ -384,7 +467,7 @@ public class AdminController {
 		User userSessionAttribute = (User) session.getAttribute("userSessionAttribute");
 		if (userSessionAttribute != null) { // admin is logged in
 											// modelAndView.setViewName("admin/noviceAdminEntry");
-			modelAndView.setViewName("admin/lessonEntry");
+			modelAndView.setViewName("admin/lesson/lessonEntry");
 		} else {
 			modelAndView.setViewName("skilllevels/novice");
 		}
