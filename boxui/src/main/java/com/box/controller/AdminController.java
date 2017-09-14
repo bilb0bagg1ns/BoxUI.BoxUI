@@ -212,6 +212,23 @@ public class AdminController {
 		return operatingSystemEntryUpdate(model, operatingSystem);
 	}
 
+	/**
+	 * Called by Admin to delete an operating system
+	 * 
+	 * @param model
+	 * @param lessonId
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/deleteOperatingSystem")
+	public ModelAndView deleteOperatingSystem(HttpSession session, ModelAndView modelAndView, Model model,
+			@RequestParam("operatingSystemId") String operatingSystemId)
+			throws IOException {
+		log.debug("Deleting operatingSystemId: " + operatingSystemId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		operatingSystemProcessingService.deleteOperatingSystem(operatingSystemId);
+		return routeToOperatingSystemList(session, modelAndView, model);
+	}
 	@RequestMapping(value = "/operatingSystemEntryUpdate")
 	public ModelAndView operatingSystemEntryUpdate(ModelAndView modelAndView, @ModelAttribute OperatingSystem operatingSystem) throws IOException {
 
