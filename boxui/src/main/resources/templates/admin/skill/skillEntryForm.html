@@ -1,0 +1,54 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <!--  Admin page - allows admin to add a new lesson -->
+   <title>Admin - Skill Entry</title>
+   
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+   <link rel="stylesheet" type="text/css" media="all"
+	        href="../../css/box.css" th:href="@{/css/box.css}"/>
+	        
+</head>
+<body>
+  <!-- Header -->
+  <div th:replace="fragments/navbar :: navbar" >
+  </div> 
+  <div class="container" style="margin-top:100px">
+	 <h1>Admin - Skill Entry</h1>		
+     <p> Enter details of skill : </p>		 	
+	 <form action="#" method="post" th:object="${skill}" th:action="@{/saveSkill}">
+       <label for="skill" th:text="#{skill.label}"></label>          
+	   <div class="panel panel-info">
+   	      <div class="panel-heading">
+	          <div class="form-group">
+	            <label for="name" th:text="#{skill.name}"></label>
+	            <input  class="form-control" type="text" th:field="*{name}" />
+	          </div>
+	          <div class="form-group ">
+	            <label for="shortDescription" th:text="#{skill.shortDescription}"></label>
+	            <input  class="form-control" type="text" th:field="*{shortDescription}" />
+	          </div>	          
+          </div>
+       </div>
+
+<div class="panel-body">
+</div>
+      
+      					 
+		  <div class="btn-toolbar">
+              <button class="btn btn-success" type="submit" th:text="#{skill.saveSkill}"></button>
+              <div class="col-lg-10"></div>              
+              <button class="btn btn-danger" type="submit" name="action" value="cancel" th:text="#{cancel}"></button>
+          </div>
+        
+	</form>
+  </div>
+</body>
+</html>

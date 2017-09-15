@@ -8,9 +8,7 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.box.model.data.repository.LessonRepository;
 import com.box.model.data.repository.OperatingSystemRepository;
-import com.box.model.domain.Lesson;
 import com.box.model.domain.OperatingSystem;
 
 

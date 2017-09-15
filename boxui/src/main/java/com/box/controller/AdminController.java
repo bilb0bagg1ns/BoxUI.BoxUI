@@ -23,9 +23,12 @@ import com.box.model.domain.Lesson;
 import com.box.model.domain.LessonListWrapper;
 import com.box.model.domain.OperatingSystem;
 import com.box.model.domain.OperatingSystemListWrapper;
+import com.box.model.domain.Skill;
+import com.box.model.domain.SkillListWrapper;
 import com.box.model.domain.User;
 import com.box.model.services.LessonsProcessingService;
 import com.box.model.services.OperatingSystemProcessingService;
+import com.box.model.services.SkillProcessingService;
 
 @Controller
 public class AdminController {
@@ -38,6 +41,9 @@ public class AdminController {
 	
 	@Inject
 	private OperatingSystemProcessingService operatingSystemProcessingService;
+	
+	@Inject
+	private SkillProcessingService skillProcessingService;
 	
 	/**
 	 * Renders the Add Lessons table for Admin user
@@ -153,6 +159,14 @@ public class AdminController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value = "/operatingSystemEntryUpdate")
+	public ModelAndView operatingSystemEntryUpdate(ModelAndView modelAndView, @ModelAttribute OperatingSystem operatingSystem) throws IOException {
+
+		modelAndView.addObject("operatingSystem", operatingSystem);
+		modelAndView.setViewName("admin/operatingSystem/operatingSystemEntryUpdateForm");
+		return modelAndView;
+	}
+	
 	/**
 	 * Save lesson created by Admin
 	 * 
@@ -229,13 +243,86 @@ public class AdminController {
 		operatingSystemProcessingService.deleteOperatingSystem(operatingSystemId);
 		return routeToOperatingSystemList(session, modelAndView, model);
 	}
-	@RequestMapping(value = "/operatingSystemEntryUpdate")
-	public ModelAndView operatingSystemEntryUpdate(ModelAndView modelAndView, @ModelAttribute OperatingSystem operatingSystem) throws IOException {
+	
+	@RequestMapping(value = "/skillEntry")
+	public ModelAndView skillEntry(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute Skill skill) throws IOException {
 
-		modelAndView.addObject("operatingSystem", operatingSystem);
-		modelAndView.setViewName("admin/operatingSystem/operatingSystemEntryUpdateForm");
+		log.debug("AdminController:skillEntry: " + skill + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		ArrayList<Skill> skillList  = (ArrayList<Skill>) skillProcessingService.retrieveAllSkills();
+
+		// insert list into wrapper
+		SkillListWrapper skillListWrapperTmp = new SkillListWrapper();
+		skillListWrapperTmp.setSkillList(skillList);
+		model.addAttribute("skillListWrapper", skillListWrapperTmp);
+
+		modelAndView.setViewName("admin/skill/skillEntry");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/skillEntryForm")
+	public ModelAndView skillEntryForm(ModelAndView modelAndView, @ModelAttribute Skill skill) throws IOException {
+		log.debug("AdminController:skillEntryForm: " + skill + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		modelAndView.addObject("skill", skill);
+		modelAndView.setViewName("admin/skill/skillEntryForm");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/skillEntryUpdate")
+	public ModelAndView skillEntryUpdate(ModelAndView modelAndView, @ModelAttribute Skill skill) throws IOException {
+
+		modelAndView.addObject("skill", skill);
+		modelAndView.setViewName("admin/skill/skillEntryUpdateForm");
 		return modelAndView;
 	}	
+	
+	@RequestMapping(value = "/saveSkill")
+	public ModelAndView saveSkill(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute Skill skill,
+			@ModelAttribute LessonListWrapper lessonListWrapper)
+			throws IOException {
+		log.debug("\nAdminController:saveSkill: " + skill + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// assign the skill id
+		if (skill.getId() == null) { // adding a new operating system
+			skillProcessingService.saveSkill(skill);
+		} else { // editing a current lesson
+			skillProcessingService.upsertSkill(skill);
+		}
+		return routeToSkillList(session, modelAndView, model);
+
+	}
+	
+	@RequestMapping(value = "/editSkill")
+	public ModelAndView editSkill(ModelAndView model, @RequestParam("skillId") String id) throws IOException {
+		log.debug("Editing id: " + id + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		Skill skill = skillProcessingService.findSkillBySkillId(id);
+		return skillEntryUpdate(model, skill);
+	}
+	
+	@RequestMapping(value = "/deleteSkill")
+	public ModelAndView deleteSkill(HttpSession session, ModelAndView modelAndView, Model model,
+			@RequestParam("skillId") String skillId)
+			throws IOException {
+		log.debug("Deleting skillId: " + skillId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		skillProcessingService.deleteSkill(skillId);
+		return routeToSkillList(session, modelAndView, model);
+	}
+	
+	private ModelAndView routeToSkillList(HttpSession session, ModelAndView modelAndView, Model model) {
+		ArrayList<Skill> skillList  = (ArrayList<Skill>) skillProcessingService.retrieveAllSkills();
+
+		// insert list into wrapper
+		SkillListWrapper skillListWrapperTmp = new SkillListWrapper();
+		skillListWrapperTmp.setSkillList(skillList);
+		model.addAttribute("skillListWrapper", skillListWrapperTmp);
+
+		modelAndView.setViewName("admin/skill/skillEntry");
+		return modelAndView;
+	}
+	
 	@RequestMapping(value = "/lessonEntry")
 	public ModelAndView lessonEntry(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute Lesson lesson) throws IOException {
 

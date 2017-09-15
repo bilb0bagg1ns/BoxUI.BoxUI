@@ -66,6 +66,7 @@ public class OperatingSystemRepository {
 		Update update = new Update();
 		update.set("id", operatingSystem.getId());
 		update.set("name", operatingSystem.getName());
+		update.set("version", operatingSystem.getVersion());
 		update.set("shortDescription", operatingSystem.getShortDescription());
 
 		mongoTemplate.upsert(query, update, OperatingSystem.class);
@@ -81,7 +82,7 @@ public class OperatingSystemRepository {
 
 	public List<OperatingSystem> retrieveAllOperatingSystems() {
 
-		log.debug("\nOperatingSystemRepository::findAllOperatingSystems " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		log.debug("\nOperatingSystemRepository::retrieveAllOperatingSystems " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 		ArrayList<OperatingSystem> retrievedOperatingSystemsList = null;
 		// find all operatingSystems
 		retrievedOperatingSystemsList = (ArrayList<OperatingSystem>) mongoTemplate.findAll(OperatingSystem.class);
