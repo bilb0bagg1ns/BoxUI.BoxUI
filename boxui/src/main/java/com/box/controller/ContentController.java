@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,22 +74,7 @@ public class ContentController {
 			ModelAndView modelAndView, Model model, @ModelAttribute SubjectFocus subjectFocus, @RequestParam(value="action", required=true) String action) {
 		log.debug(
 				"\nContentController:operatingSystemFocus: SubjectFocus : " + subjectFocus + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
-		
-		 switch(action) {
-	        case "save":
-	            // do stuff
-	            break;
-	        case "cancel":
-	            // do stuff
-	            break;
-	        case "newthing":
-	            // do stuff
-	            break;
-	        default:
-	            // do stuff
-	            break;
-	    }
-		 
+
 		subjectFocus.setOperatingSystem(action);
 		modelAndView.setViewName("selection/learnOrProveFocusArea");
 
@@ -308,5 +294,92 @@ public class ContentController {
 		// lesson.getSkillLevelTypeId());
 		return modelAndView;
 	}
+	
+	/**
+	 * Called in User flow a. after "Learn" is chosen OR b. after "Prove" is
+	 * chosen
+	 * 
+	 * 7/26/17 - userName is no longer needed, as this flow is only used by the
+	 * User -> ContentController.focusAreaProve -> skillLevels.html
+	 * 
+	 * @param session
+	 * @param m
+	 * @param model
+	 * @param userName
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/novice")
+	public ModelAndView novice(HttpSession session, Model m, ModelAndView model, HttpServletRequest request,
+			@RequestParam("userName") String userName, @RequestParam("skillLevelTypeId") String skillLevelTypeId,
+			@RequestParam("learnOrProve") String learnOrProve) throws IOException {
+		log.debug("\nHomeController:novice:: " + userName + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		Lesson lesson = new Lesson();
+		lesson.setSkillLevelTypeId(skillLevelTypeId);
+		model.addObject("lesson", lesson);
+
+		// add to session so it's available for subsequent screens
+		// adding to session in lieu of trying to pass it via the hfref link
+		// TODO: Ensure on logoff, to invalidate session!
+		// session.setAttribute("lessonSessionAttribute",lesson);
+		// log.debug (lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// if user is admin, send them to the flow to add/edit lessons
+		// if (userName.equals("admin")) {
+		// model.setViewName("admin/noviceAdminEntry");
+		// m.addAttribute("skillLevelTypeId", skillLevelTypeId); // needed in
+		// // view
+		// } else {
+
+		// retrieve lessons
+		ArrayList<Lesson> lessonsList = (ArrayList<Lesson>) lessonsProcessingService
+				.retrieveLessonsList(skillLevelTypeId);
+		m.addAttribute("lessonListTmp", lessonsList);
+
+		if ((!StringUtils.isEmpty(learnOrProve)) && learnOrProve.equals("Prove")) {
+
+			// insert list into wrapper
+			LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+			lessonListWrapperTmp.setLessonList(lessonsList);
+			m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+
+			model.setViewName("skilllevels/noviceProve");
+		} else if ((!StringUtils.isEmpty(learnOrProve)) && learnOrProve.equals("Learn")) {
+
+			// retrieve lessons
+			// ArrayList<Lesson> lessonsList = (ArrayList<Lesson>)
+			// lessonsProcessingService.retrieveAllLessons();
+			// m.addAttribute("lessonListTmp", lessonsList);
+
+			// insert the lessons into LessonRows for rendering on UI in rows
+			LessonListWrapper lessonListWrapperTmp = new LessonListWrapper();
+			ArrayList<LessonRows> lessonRowsList = new ArrayList<LessonRows>();
+			// create a lessons rows list with each element holding 4 lessons
+			lessonRowsList = ContentController.createLessonRowsList(lessonsList, lessonRowsList);
+			// insert list into wrapper
+			lessonListWrapperTmp.setLessonRowsList(lessonRowsList);
+			m.addAttribute("lessonListWrapper", lessonListWrapperTmp);
+
+			model.setViewName("selection/learningTopics");
+		}
+		// }
+		return model;
+	}
+
+	@RequestMapping(value = "/novice", method = RequestMethod.POST, params = "action=cancel")
+	public ModelAndView cancelNovice(HttpServletRequest request, HttpSession session, ModelAndView modelAndView,
+			Model model, @ModelAttribute Lesson lesson) throws IOException {
+		log.debug("\nHomeController:cancelNovice <<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		modelAndView.setViewName("skilllevels/skillLevels");
+		User user = (User) session.getAttribute("userSessionAttribute");
+		modelAndView.addObject("user", user);
+
+		return modelAndView;
+
+	}
+
 
 }
