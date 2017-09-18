@@ -129,15 +129,25 @@ public class AdminController {
 
 		log.debug("AdminController:operatingSystemEntry: " + operatingSystem + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
+		// get model with operating system info in it
+		buildModelWithOperatingSystemListWrapper(model);
+
+		modelAndView.setViewName("admin/operatingSystem/operatingSystemEntry");
+		return modelAndView;
+	}
+	
+
+	/**
+	 * Retrieve all operating systems details from repository into a wrapper and add it to the Model.
+	 * @param model
+	 */
+	protected void buildModelWithOperatingSystemListWrapper(Model model) {
 		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
 
 		// insert list into wrapper
 		OperatingSystemListWrapper operatingSystemListWrapperTmp = new OperatingSystemListWrapper();
 		operatingSystemListWrapperTmp.setOperatingSystemList(operatingSystemList);
 		model.addAttribute("operatingSystemListWrapper", operatingSystemListWrapperTmp);
-
-		modelAndView.setViewName("admin/operatingSystem/operatingSystemEntry");
-		return modelAndView;
 	}
 	
 	/**
@@ -199,12 +209,7 @@ public class AdminController {
 	
 	
 	private ModelAndView routeToOperatingSystemList(HttpSession session, ModelAndView modelAndView, Model model) {
-		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
-
-		// insert list into wrapper
-		OperatingSystemListWrapper operatingSystemListWrapperTmp = new OperatingSystemListWrapper();
-		operatingSystemListWrapperTmp.setOperatingSystemList(operatingSystemList);
-		model.addAttribute("operatingSystemListWrapper", operatingSystemListWrapperTmp);
+		buildModelWithOperatingSystemListWrapper(model);
 
 		modelAndView.setViewName("admin/operatingSystem/operatingSystemEntry");
 		return modelAndView;

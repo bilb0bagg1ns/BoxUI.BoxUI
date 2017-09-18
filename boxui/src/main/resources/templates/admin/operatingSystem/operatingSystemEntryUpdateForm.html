@@ -24,7 +24,7 @@
 	 <h1>Admin - Operating System Update</h1>		
      <p> Update details of operating system: </p>		 	
 	 <form action="#" method="post" th:object="${operatingSystem}" th:action="@{/saveOperatingSystem}">
-	 	<input type="hidden" th:field="*{id}" th:value="${operatingSystem.id}" />
+	   <input type="hidden" th:field="*{id}" th:value="${operatingSystem.id}" />
 	   <label for="operatingsystem" th:text="#{operatingSystem.label}"></label>          
 	   <div class="panel panel-info">
    	      <div class="panel-heading">

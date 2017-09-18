@@ -37,6 +37,10 @@ public class ContentController {
 	private final Logger log = LoggerFactory.getLogger(ContentController.class);
 
 	@Inject
+	private AdminController	adminController;
+
+	
+	@Inject
 	private AuthenticationService authenticationService;
 
 	@Inject
@@ -48,13 +52,48 @@ public class ContentController {
 	}
 
 	@RequestMapping(value = "/chooseOperatingSystem")
-	public ModelAndView chooseOperatingSystem(ModelAndView model) throws IOException {
+	public ModelAndView chooseOperatingSystem(ModelAndView modelAndView, Model model) throws IOException {
 		log.debug("ContentController:chooseOperatingSystem: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
-		model.setViewName("selection/operatingSystem");
-		return model;
+		adminController.buildModelWithOperatingSystemListWrapper(model);
+
+		modelAndView.setViewName("selection/operatingSystem");
+		return modelAndView;
 	}
 
+	
+	/**
+	 * http://stackoverflow.com/questions/31401669/thymeleaf-multiple-submit-button-in-one-form
+	 * http://stackoverflow.com/questions/804581/spring-mvc-controller-redirect-to-previous-page
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/operatingSystemFocus", method = RequestMethod.POST)
+	public ModelAndView operatingSystemFocus(HttpServletRequest request, HttpSession session,
+			ModelAndView modelAndView, Model model, @ModelAttribute SubjectFocus subjectFocus, @RequestParam(value="action", required=true) String action) {
+		log.debug(
+				"\nContentController:operatingSystemFocus: SubjectFocus : " + subjectFocus + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		
+		 switch(action) {
+	        case "save":
+	            // do stuff
+	            break;
+	        case "cancel":
+	            // do stuff
+	            break;
+	        case "newthing":
+	            // do stuff
+	            break;
+	        default:
+	            // do stuff
+	            break;
+	    }
+		 
+		subjectFocus.setOperatingSystem(action);
+		modelAndView.setViewName("selection/learnOrProveFocusArea");
+
+		return modelAndView;
+	}
 	/**
 	 * http://stackoverflow.com/questions/31401669/thymeleaf-multiple-submit-button-in-one-form
 	 * http://stackoverflow.com/questions/804581/spring-mvc-controller-redirect-to-previous-page
@@ -98,10 +137,10 @@ public class ContentController {
 
 	@RequestMapping(value = "/focusArea", method = RequestMethod.POST, params = "action=cancel")
 	public ModelAndView cancelProveOrLearnSelection(HttpServletRequest request, HttpSession session,
-			ModelAndView modelAndView, Model m, @ModelAttribute Lesson lesson) throws IOException {
+			ModelAndView modelAndView, Model model, @ModelAttribute Lesson lesson) throws IOException {
 		log.debug("\nHomeController:cancelProveOrLearnSelection: Lesson : " + lesson + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
-		return chooseOperatingSystem(modelAndView);
+		return chooseOperatingSystem(modelAndView, model);
 	}
 
 	@RequestMapping(value = "/renderLearningTopic", method = RequestMethod.POST)

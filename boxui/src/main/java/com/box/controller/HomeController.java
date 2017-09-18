@@ -3,7 +3,6 @@ package com.box.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +65,9 @@ public class HomeController {
 
 	@Inject
 	private ContentController contentController;
+	
+	@Inject
+	private AdminController adminController;
 
 	@ModelAttribute("allSkillLevelType")
 	public SkillLevelType[] populateTypes() {
@@ -79,15 +81,15 @@ public class HomeController {
 	// }
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index(HttpSession session, Principal principal, ModelAndView model) {
+	public ModelAndView index(HttpSession session, Principal principal, ModelAndView modelAndView, Model model) {
 		if (principal == null) {
-			model.setViewName("home/home");
+			modelAndView.setViewName("home/home");
 		} else {
 			log.debug(principal.getName(), "logged in");
 			// model = listSkillLevels(session, principal, model);
-			model = renderLandingPage(session, principal, model);
+			modelAndView = renderLandingPage(session, principal, modelAndView, model);
 		}
-		return model;
+		return modelAndView;
 	}
 
 
@@ -167,7 +169,7 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/renderLandingPage")
-	public ModelAndView renderLandingPage(HttpSession session, Principal principal, ModelAndView model) {
+	public ModelAndView renderLandingPage(HttpSession session, Principal principal, ModelAndView modelAndView, Model model) {
 		log.debug("\nHomeController:landingPage - Principal  : " + principal + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		// principal holds the user name entered in the login screen.
@@ -179,16 +181,17 @@ public class HomeController {
 		// adding to session in lieu of trying to pass it via the hfref link
 		session.setAttribute("userSessionAttribute", user);
 
-		model.addObject("user", user);
+		modelAndView.addObject("user", user);
 
 		// route based on admin vs. user
 		// TODO: Need to replace hardcoded check with roles
 		if (user.getUserName().equals("admin")) {
-			model.setViewName("admin/adminLandingPage");
+			modelAndView.setViewName("admin/adminLandingPage");
 		} else {
-			model.setViewName("selection/operatingSystem");
+			adminController.buildModelWithOperatingSystemListWrapper(model);
+			modelAndView.setViewName("selection/operatingSystem");
 		}
-		return model;
+		return modelAndView;
 	}
 
 	/**
