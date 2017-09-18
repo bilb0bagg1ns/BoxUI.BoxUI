@@ -361,23 +361,32 @@ public class AdminController {
 		// initialize skill level associated with lesson
 		// lesson.setSkillLevelTypeId(skillLevelTypeId);
 
-		// initialize checkbox. Used in rendering checkboxes in lesson entry and
-		// lesson entry update
+		// extract all operating systems info from repository
+		ArrayList<Skill> skillList  = (ArrayList<Skill>) skillProcessingService.retrieveAllSkills();
+		// add each skill to list for UI display
 		List<String> allSkillLevelApplicableItems = new ArrayList<String>();
-		allSkillLevelApplicableItems.add("novice");
-		allSkillLevelApplicableItems.add("intermediate");
-		allSkillLevelApplicableItems.add("expert");
+		for (Skill skill : skillList ) {
+			allSkillLevelApplicableItems.add(skill.getName());			
+		}	
+//		allSkillLevelApplicableItems.add("novice");
+//		allSkillLevelApplicableItems.add("intermediate");
+//		allSkillLevelApplicableItems.add("expert");
 		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
 
+		// extract all operating systems info from repository
+		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
+		// add each operating system name to list for UI display
 		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
-		allOperatingSystemApplicableItems.add("windows");
-		allOperatingSystemApplicableItems.add("linux");
+		for (OperatingSystem operatingSystem : operatingSystemList ) {
+			allOperatingSystemApplicableItems.add(operatingSystem.getName());			
+		}
 		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
 
 		// initialize default value
 		List<String> checkedItems = new ArrayList<String>();
 		// novice will be checked by default.
-		checkedItems.add("novice");
+		//checkedItems.add("novice");
+		checkedItems.add(allSkillLevelApplicableItems.get(0));
 		lesson.setCheckedSkillsLevelsApplicableTo(checkedItems);
 
 		modelAndView.addObject("lesson", lesson);
@@ -387,17 +396,23 @@ public class AdminController {
 
 	@RequestMapping(value = "/lessonEntryUpdate")
 	public ModelAndView lessonEntryUpdate(ModelAndView modelAndView, @ModelAttribute Lesson lesson) throws IOException {
-		// initialize checkbox. Used in rendering checkboxes in lesson entry and
-		// lesson entry update
+		
+		// extract all operating systems info from repository
+		ArrayList<Skill> skillList  = (ArrayList<Skill>) skillProcessingService.retrieveAllSkills();
+		// add each skill to list for UI display
 		List<String> allSkillLevelApplicableItems = new ArrayList<String>();
-		allSkillLevelApplicableItems.add("novice");
-		allSkillLevelApplicableItems.add("intermediate");
-		allSkillLevelApplicableItems.add("expert");
+		for (Skill skill : skillList ) {
+			allSkillLevelApplicableItems.add(skill.getName());			
+		}	
 		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
 
+		// extract all operating systems info from repository
+		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
+		// add each operating system name to list for UI display
 		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
-		allOperatingSystemApplicableItems.add("windows");
-		allOperatingSystemApplicableItems.add("linux");
+		for (OperatingSystem operatingSystem : operatingSystemList ) {
+			allOperatingSystemApplicableItems.add(operatingSystem.getName());			
+		}
 		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
 
 		modelAndView.addObject("lesson", lesson);
