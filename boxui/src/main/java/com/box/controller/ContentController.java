@@ -76,8 +76,9 @@ public class ContentController {
 				"\nContentController:operatingSystemFocus: SubjectFocus : " + subjectFocus + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
 		subjectFocus.setOperatingSystem(action);
-		modelAndView.setViewName("selection/learnOrProveFocusArea");
+		//modelAndView.setViewName("selection/learnOrProveFocusArea");
 
+		modelAndView = renderLearningTopic(request, session, modelAndView, model, subjectFocus, null);
 		return modelAndView;
 	}
 	/**
