@@ -114,6 +114,16 @@ public class AdminController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/userManagement")
+	public ModelAndView userManagement(HttpSession session, ModelAndView modelAndView, Model model) throws IOException {
+
+		log.debug("AdminController:userManagement: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		modelAndView.setViewName("admin/user/userEntry");
+		return modelAndView;
+
+	}
+	
 	@RequestMapping(value = "/contentManagement")
 	public ModelAndView contentManagement(HttpSession session, ModelAndView modelAndView, Model model, @ModelAttribute Lesson lesson) throws IOException {
 

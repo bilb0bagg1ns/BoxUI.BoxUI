@@ -1,6 +1,7 @@
 package com.box.model.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,6 +23,13 @@ public class User {
 	@Id
 	public String id;
 
+
+	/** list of admin optionally assigned operating systems */
+	private List<String> operatingSystemIdList;
+	
+	/** list of admin optionally assigned lessons */
+	private List<String> lessonIdList;
+	
 	@NotNull
 	@Size(min = 2, max = 30)
 	private String userName;
@@ -64,6 +72,24 @@ public class User {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	
+
+	public List<String> getOperatingSystemIdList() {
+		return operatingSystemIdList;
+	}
+
+	public List<String> getLessonIdList() {
+		return lessonIdList;
+	}
+
+	public void setOperatingSystemIdList(List<String> operatingSystemIdList) {
+		this.operatingSystemIdList = operatingSystemIdList;
+	}
+
+	public void setLessionIdList(List<String> lessonIdList) {
+		this.lessonIdList = lessonIdList;
 	}
 
 	public String getFirstName() {
@@ -112,8 +138,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
+		return "User [id=" + id + ", operatingSystemIdList=" + operatingSystemIdList + ", lessonIdList="
+				+ lessonIdList + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", createdDate=" + createdDate + "]";
 	}
-
 }
