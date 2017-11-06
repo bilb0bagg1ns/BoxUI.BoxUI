@@ -86,7 +86,7 @@ public class LessonRepository {
 		ArrayList<Lesson> retrievedLessonsList = null;
 		// find all lessons
 		retrievedLessonsList = (ArrayList<Lesson>) mongoTemplate.findAll(Lesson.class);
-		log.debug("findAllLessons : " + retrievedLessonsList);
+		log.debug("retrieveAllLessons : " + retrievedLessonsList);
 		return retrievedLessonsList;
 
 	}

@@ -1,6 +1,8 @@
 package com.box.model.data.repository;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,13 @@ public class UserRepository {
 		}
 	}
 
+	public void delete(String userId) {
+
+		log.debug(userId + "Lesson ID being deleted <<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		User user = findById(userId);
+		mongoTemplate.remove(user);
+	}
+	
 	public User findById(String userId) {
 		User retrievedUser = null;
 
@@ -71,6 +80,17 @@ public class UserRepository {
 		log.debug("2. find - user : " + retrievedUser);
 
 		return retrievedUser;
+	}
+	
+	public List<User> retrieveAllUsers() {
+
+		log.debug("\nUserRepository::retrieveAllUsers " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		ArrayList<User> retrievedUsersList = null;
+		// find all lessons
+		retrievedUsersList = (ArrayList<User>) mongoTemplate.findAll(User.class);
+		log.debug("retrieveAllUsers : " + retrievedUsersList);
+		return retrievedUsersList;
+
 	}
 
 }

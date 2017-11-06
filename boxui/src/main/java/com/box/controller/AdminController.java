@@ -26,16 +26,20 @@ import com.box.model.domain.OperatingSystemListWrapper;
 import com.box.model.domain.Skill;
 import com.box.model.domain.SkillListWrapper;
 import com.box.model.domain.User;
+import com.box.model.domain.UserListWrapper;
 import com.box.model.services.LessonsProcessingService;
 import com.box.model.services.OperatingSystemProcessingService;
 import com.box.model.services.SkillProcessingService;
+import com.box.model.services.UsersProcessingService;
 
 @Controller
 public class AdminController {
 
 	private final Logger log = LoggerFactory.getLogger(AdminController.class);
 	
-
+	@Inject
+	private UsersProcessingService usersProcessingService;
+	
 	@Inject
 	private LessonsProcessingService lessonsProcessingService;
 	
@@ -119,9 +123,22 @@ public class AdminController {
 
 		log.debug("AdminController:userManagement: " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
-		modelAndView.setViewName("admin/user/userEntry");
-		return modelAndView;
+		User userSessionAttribute = (User) session.getAttribute("userSessionAttribute");
+		if (userSessionAttribute != null) { // admin is logged in
 
+//            // retrieve all users
+//			ArrayList<User> usersList = null;
+//			usersList = (ArrayList<User>) usersProcessingService.retrieveAllUsers();
+//
+//			// insert list into wrapper
+//			UserListWrapper userListWrapperTmp = new UserListWrapper();
+//			userListWrapperTmp.setUserList(usersList);
+//			model.addAttribute("userListWrapper", userListWrapperTmp);
+//			
+//			modelAndView.setViewName("admin/user/userEntry");
+			modelAndView =  userEntry(session, modelAndView, model);
+		}
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/contentManagement")
@@ -669,5 +686,24 @@ public class AdminController {
 		// modelAndView.setViewName("skilllevels/skillLevels");
 		modelAndView.setViewName("admin/adminLandingPage");
 		return modelAndView;
+	}
+	
+	public ModelAndView userEntry(HttpSession session, ModelAndView modelAndView, Model model) throws IOException {
+
+		log.debug("userEntry <<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+        // retrieve all users
+		ArrayList<User> usersList = null;
+		usersList = (ArrayList<User>) usersProcessingService.retrieveAllUsers();
+
+		// insert list into wrapper
+		UserListWrapper userListWrapperTmp = new UserListWrapper();
+		userListWrapperTmp.setUserList(usersList);
+		model.addAttribute("userListWrapper", userListWrapperTmp);
+		
+		modelAndView.setViewName("admin/user/userEntry");
+		
+    	return modelAndView;
+
 	}
 }
