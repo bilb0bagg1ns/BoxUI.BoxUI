@@ -136,7 +136,7 @@ public class AdminController {
 //			model.addAttribute("userListWrapper", userListWrapperTmp);
 //			
 //			modelAndView.setViewName("admin/user/userEntry");
-			modelAndView =  userEntry(session, modelAndView, model);
+			modelAndView =  userEntry(modelAndView, model);
 		}
 		return modelAndView;
 	}
@@ -688,7 +688,7 @@ public class AdminController {
 		return modelAndView;
 	}
 	
-	public ModelAndView userEntry(HttpSession session, ModelAndView modelAndView, Model model) throws IOException {
+	public ModelAndView userEntry(ModelAndView modelAndView, Model model) throws IOException {
 
 		log.debug("userEntry <<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
@@ -705,5 +705,52 @@ public class AdminController {
 		
     	return modelAndView;
 
+	}
+	
+	/**
+	 * Checkbox logic comes from :
+	 * http://stackoverflow.com/questions/17692941/values-for-thfield-attributes-in-checkbox
+	 * 
+	 * @param modelAndView
+	 * @param lesson
+	 * @param skillLevelTypeId
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/userEntryForm")
+	public ModelAndView userEntryForm(ModelAndView modelAndView, @ModelAttribute User user) throws IOException {
+		log.debug("AdminController:userEntryForm: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+
+
+		// extract all operating systems info from repository
+		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
+		// add each operating system name to list for UI display
+		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
+		for (OperatingSystem operatingSystem : operatingSystemList ) {
+			allOperatingSystemApplicableItems.add(operatingSystem.getName());			
+		}
+		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
+
+		// extract all lessons from repository
+		ArrayList<Lesson> lessonsList  = (ArrayList<Lesson>) lessonsProcessingService.retrieveAllLessons();
+		// add each operating system name to list for UI display
+		List<String> allLessonsApplicableItems = new ArrayList<String>();
+		for (Lesson lesson : lessonsList ) {
+			allLessonsApplicableItems.add(lesson.getName());			
+		}
+		modelAndView.addObject("allLessonsApplicableItems", allLessonsApplicableItems);
+
+		
+		modelAndView.addObject("user", user);
+		modelAndView.setViewName("admin/user/userEntryForm");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/cancelAdminUserEntryForm")
+	public ModelAndView cancelAdminUserEntryForm(ModelAndView modelAndView, Model model) throws IOException {
+		log.debug("In AdminController.cancelAdminUserEntryForm" + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+		
+		return userEntry(modelAndView, model);
 	}
 }

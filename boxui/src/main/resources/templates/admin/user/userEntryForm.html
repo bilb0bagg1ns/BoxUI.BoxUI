@@ -24,28 +24,28 @@
 			<h1>Admin - User Entry</h1>		
 			  <p> Enter user: </p>
 			 	
-		<form action="#" method="post" th:object="user" th:action="@{/saveUser}">
+		<form action="#" method="post" th:object="${user}" th:action="@{/saveUser}">
  
        <label for="user" th:text="#{user.label}"></label>          
 	   <div class="panel panel-info">
    	      <div class="panel-heading">
 	          <div class="form-group">
-	            <label for="name" th:text="#{user.firstname}"></label>
+	            <label for="name" th:text="#{user.firstName}"></label>
 	            <input  class="form-control" type="text" th:field="*{firstName}" />
 	          </div>
 	          <div class="form-group">
-	            <label for="name" th:text="#{user.lastname}"></label>
+	            <label for="name" th:text="#{user.lastName}"></label>
 	            <input  class="form-control" type="text" th:field="*{lastName}" />
 	          </div>
 	          <div class="form-group">
-	            <label for="name" th:text="#{user.username}"></label>
+	            <label for="name" th:text="#{user.userName}"></label>
 	            <input  class="form-control" type="text" th:field="*{userName}" />
 	          </div>          
           </div>
        </div>
 	   
 	   <!-- Select Applicable Operating System  -->
-       <label for="assignedOperatingSystems" th:text="#{lesson.assignedOperatingSystems}"></label>          
+       <label for="checkedOperatingSystemsApplicableTo" th:text="#{checkedOperatingSystemsApplicableTo}"></label>          
 	   <div class="panel panel-info">
 		   <div class="panel-heading"> <!-- Update Applicable Operating System  -->
 		      <div class="checkbox" style="display:inline">
@@ -58,11 +58,11 @@
 	   </div>           
 	          
 	   <!-- Select Applicable Lesson  -->
-       <label for="assignedLessons" th:text="#{lesson.assignedLessons}"></label>          
+       <label for="checkedLessonsApplicableTo" th:text="#{user.checkedLessonsApplicableTo}"></label>          
 	   <div class="panel panel-info">
 		   <div class="panel-heading"> <!-- Update Applicable Operating System  -->
 		      <div class="checkbox" style="display:inline">
-				  <div th:each="osItem : ${allOperatingSystemApplicableItems}">
+				  <div th:each="lessonItem : ${allLessonsApplicableItems}">
 				    <input type="checkbox" th:field="*{lessonIdList}" th:value="${lessonItem}" />
 				    <label th:text="${lessonItem}">lesson</label>
 				  </div>          
@@ -73,12 +73,12 @@
 </div>
       
       					 
-		  <div class="btn-toolbar">
-              <button class="btn btn-success" type="submit" th:text="#{lesson.saveLession}"></button>
-              <div class="col-lg-10"></div>              
-              <button class="btn btn-danger" type="submit" name="action" value="cancel" th:text="#{lesson.cancel}"></button>
-          </div>
-        
+    <div class="btn-toolbar">
+       <button class="btn btn-success" type="submit" th:text="#{user.saveUser}"></button>
+       <div class="col-lg-10"></div>              
+         <a th:href="@{cancelAdminUserEntryForm}"><button class="btn btn-danger" type="button" name="action" value="learn" th:text="#{cancel}"></button></a>                              
+    </div>
+
 	</form>
   </div>
 </body>
