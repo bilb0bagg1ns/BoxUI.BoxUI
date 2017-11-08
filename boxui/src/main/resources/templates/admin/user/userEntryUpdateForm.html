@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
    <!--  Admin page - allows admin to add a new User -->
-   <title>Add User</title>
+   <title>Update User</title>
    
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -21,13 +21,16 @@
   <div th:replace="fragments/navbar :: navbar" >
   </div> 
   <div class="container" style="margin-top:100px">
-			<h1>Admin - User Entry</h1>		
+			<h1>Admin - User Entry Update</h1>		
 			  <p> Enter user: </p>
 			 	
 	<form action="#" method="post" th:object="${user}" th:action="@{/saveUser}">
- 
+
+   	    <!-- Use th:field to set field 'id' here  -->
+       <input type="hidden" th:field="*{id}" />
+           
        <label for="user" th:text="#{user.label}"></label>          
-	   <div class="panel panel-info">
+	   <div class="panel panel-info"> <!-- Update User Info  -->
    	      <div class="panel-heading">
 	          <div class="form-group">
 	            <label for="name" th:text="#{user.firstName}"></label>
@@ -49,7 +52,7 @@
           </div>
        </div>
 	   
-	   <!-- Select Applicable Operating System  -->
+	   <!-- Update Applicable Operating System  -->
 	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->	   
        <label for="checkedOperatingSystemsApplicableTo" th:text="#{checkedOperatingSystemsApplicableTo}"></label>          
 	   <div class="panel panel-info">
@@ -63,7 +66,7 @@
 		   </div>
 	   </div>           
 	          
-	   <!-- Select Applicable Lesson  -->
+	   <!-- Update Applicable Lesson  -->
 	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->	   
        <label for="checkedLessonsApplicableTo" th:text="#{user.checkedLessonsApplicableTo}"></label>          
 	   <div class="panel panel-info">

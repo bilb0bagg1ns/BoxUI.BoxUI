@@ -88,7 +88,7 @@ public class User {
 		this.operatingSystemIdList = operatingSystemIdList;
 	}
 
-	public void setLessionIdList(List<String> lessonIdList) {
+	public void setLessonIdList(List<String> lessonIdList) {
 		this.lessonIdList = lessonIdList;
 	}
 

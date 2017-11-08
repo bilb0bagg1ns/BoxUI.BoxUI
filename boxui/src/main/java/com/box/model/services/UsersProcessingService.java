@@ -27,7 +27,7 @@ public class UsersProcessingService {
 		repository.delete(userId);
 	}
 
-	public void upsertLesson(User user) {
+	public void upsertUser(User user) {
 		// repository.upsert(user);
 
 		// can't seem to upsert user's skill applicable checkboxes. hence

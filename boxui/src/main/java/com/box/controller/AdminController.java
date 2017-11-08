@@ -388,26 +388,18 @@ public class AdminController {
 		// initialize skill level associated with lesson
 		// lesson.setSkillLevelTypeId(skillLevelTypeId);
 
-		// extract all operating systems info from repository
+		// extract all skills info from repository
 		ArrayList<Skill> skillList  = (ArrayList<Skill>) skillProcessingService.retrieveAllSkills();
 		// add each skill to list for UI display
 		List<String> allSkillLevelApplicableItems = new ArrayList<String>();
 		for (Skill skill : skillList ) {
 			allSkillLevelApplicableItems.add(skill.getName());			
 		}	
-//		allSkillLevelApplicableItems.add("novice");
-//		allSkillLevelApplicableItems.add("intermediate");
-//		allSkillLevelApplicableItems.add("expert");
 		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
+		
 
-		// extract all operating systems info from repository
-		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
-		// add each operating system name to list for UI display
-		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
-		for (OperatingSystem operatingSystem : operatingSystemList ) {
-			allOperatingSystemApplicableItems.add(operatingSystem.getName());			
-		}
-		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
+		// set all operating systems available
+		setToModelAndViewAllOperatingSystemApplicableItems(modelAndView);
 
 		// initialize default value
 		List<String> checkedItems = new ArrayList<String>();
@@ -421,10 +413,28 @@ public class AdminController {
 		return modelAndView;
 	}
 
+	/**
+	 * 
+	 * @param modelAndView
+	 * @param lesson
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/lessonEntryUpdate")
 	public ModelAndView lessonEntryUpdate(ModelAndView modelAndView, @ModelAttribute Lesson lesson) throws IOException {
 		
-		// extract all operating systems info from repository
+		// set all skills available
+		setToModelAndViewAllSkillLevelApplicableItems(modelAndView);
+		// set all operating systems available
+		setToModelAndViewAllOperatingSystemApplicableItems(modelAndView);
+
+		modelAndView.addObject("lesson", lesson);
+		modelAndView.setViewName("admin/lesson/lessonEntryUpdateForm");
+		return modelAndView;
+	}
+
+	private void setToModelAndViewAllSkillLevelApplicableItems(ModelAndView modelAndView) {
+		// extract all skills info from repository
 		ArrayList<Skill> skillList  = (ArrayList<Skill>) skillProcessingService.retrieveAllSkills();
 		// add each skill to list for UI display
 		List<String> allSkillLevelApplicableItems = new ArrayList<String>();
@@ -432,19 +442,6 @@ public class AdminController {
 			allSkillLevelApplicableItems.add(skill.getName());			
 		}	
 		modelAndView.addObject("allSkillLevelApplicableItems", allSkillLevelApplicableItems);
-
-		// extract all operating systems info from repository
-		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
-		// add each operating system name to list for UI display
-		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
-		for (OperatingSystem operatingSystem : operatingSystemList ) {
-			allOperatingSystemApplicableItems.add(operatingSystem.getName());			
-		}
-		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
-
-		modelAndView.addObject("lesson", lesson);
-		modelAndView.setViewName("admin/lesson/lessonEntryUpdateForm");
-		return modelAndView;
 	}
 
 	/**
@@ -721,26 +718,11 @@ public class AdminController {
 	public ModelAndView userEntryForm(ModelAndView modelAndView, @ModelAttribute User user) throws IOException {
 		log.debug("AdminController:userEntryForm: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
-
-
-		// extract all operating systems info from repository
-		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
-		// add each operating system name to list for UI display
-		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
-		for (OperatingSystem operatingSystem : operatingSystemList ) {
-			allOperatingSystemApplicableItems.add(operatingSystem.getName());			
-		}
-		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
-
-		// extract all lessons from repository
-		ArrayList<Lesson> lessonsList  = (ArrayList<Lesson>) lessonsProcessingService.retrieveAllLessons();
-		// add each operating system name to list for UI display
-		List<String> allLessonsApplicableItems = new ArrayList<String>();
-		for (Lesson lesson : lessonsList ) {
-			allLessonsApplicableItems.add(lesson.getName());			
-		}
-		modelAndView.addObject("allLessonsApplicableItems", allLessonsApplicableItems);
-
+		// set all operating systems available
+		setToModelAndViewAllOperatingSystemApplicableItems(modelAndView);
+        // set all lessons available
+		setToModelAndViewAllLessonsApplicableItems(modelAndView);
+		
 		
 		modelAndView.addObject("user", user);
 		modelAndView.setViewName("admin/user/userEntryForm");
@@ -753,4 +735,80 @@ public class AdminController {
 		
 		return userEntry(modelAndView, model);
 	}
+	
+	@RequestMapping(value = "/saveUser")
+	public ModelAndView saveUser(ModelAndView modelAndView, Model model, @ModelAttribute User user)
+			throws IOException {
+		log.debug("\nAdminController:saveUser: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		if (user.getId() == null) { // adding a new user
+			usersProcessingService.saveUser(user);
+		} else { // editing a current lesson
+			usersProcessingService.upsertUser(user);
+		}
+		return userEntry(modelAndView, model);
+	}
+
+	@RequestMapping(value = "/editUser")
+	public ModelAndView editUser(ModelAndView modelAndView, Model model,  @RequestParam("userId") String userId) throws IOException {
+		log.debug("Editing LessonId: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		User user = usersProcessingService.findById(userId);
+		return userEntryFormUpdate(modelAndView, user);
+	}
+	
+	/**
+	 * Render User entry update form to allow admin to edit user details.
+	 * 
+	 * @param modelAndView
+	 * @param user
+	 * @return
+	 * @throws IOException
+	 */
+	public ModelAndView userEntryFormUpdate(ModelAndView modelAndView, @ModelAttribute User user) throws IOException {
+		log.debug("AdminController:userEntryForm: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		// set all operating systems available
+		setToModelAndViewAllOperatingSystemApplicableItems(modelAndView);
+        // set all lessons available
+		setToModelAndViewAllLessonsApplicableItems(modelAndView);
+
+		modelAndView.addObject("user", user);
+		modelAndView.setViewName("admin/user/userEntryUpdateForm");
+		return modelAndView;
+	}
+
+	/**
+ 	 * Retrieve all lessons and add to model
+ 	 * 
+	 * @param modelAndView
+	 */
+	private void setToModelAndViewAllLessonsApplicableItems(ModelAndView modelAndView) {
+		// extract all lessons from repository
+		ArrayList<Lesson> lessonsList  = (ArrayList<Lesson>) lessonsProcessingService.retrieveAllLessons();
+		// add each operating system name to list for UI display
+		List<String> allLessonsApplicableItems = new ArrayList<String>();
+		for (Lesson lesson : lessonsList ) {
+			allLessonsApplicableItems.add(lesson.getName());			
+		}
+		modelAndView.addObject("allLessonsApplicableItems", allLessonsApplicableItems);
+	}
+
+	/**
+	 * Retrieve all operations systems and add to model
+	 * 
+	 * @param modelAndView
+	 */
+	private void setToModelAndViewAllOperatingSystemApplicableItems(ModelAndView modelAndView) {
+		// extract all operating systems info from repository
+		ArrayList<OperatingSystem> operatingSystemList  = (ArrayList<OperatingSystem>) operatingSystemProcessingService.retrieveAllOperatingSystems();
+		// add each operating system name to list for UI display
+		List<String> allOperatingSystemApplicableItems = new ArrayList<String>();
+		for (OperatingSystem operatingSystem : operatingSystemList ) {
+			allOperatingSystemApplicableItems.add(operatingSystem.getName());			
+		}
+		modelAndView.addObject("allOperatingSystemApplicableItems", allOperatingSystemApplicableItems);
+	}
+	
+
 }
