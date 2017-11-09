@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -736,11 +737,26 @@ public class AdminController {
 		return userEntry(modelAndView, model);
 	}
 	
+	/**
+	 *  
+	 * @param modelAndView
+	 * @param model
+	 * @param user
+	 * @param bindingResult
+	 * @return
+	 * @throws IOException
+	 */
+	 // https://stackoverflow.com/questions/30297719/cannot-get-validation-working-with-spring-boot-and-thymeleaf
 	@RequestMapping(value = "/saveUser")
-	public ModelAndView saveUser(ModelAndView modelAndView, Model model, @ModelAttribute User user)
+	public ModelAndView saveUser(ModelAndView modelAndView, Model model, @ModelAttribute User user, BindingResult bindingResult)
 			throws IOException {
 		log.debug("\nAdminController:saveUser: " + user + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
+		  if( bindingResult.hasErrors())
+		    {
+		        log.debug( "There are errors! {}", bindingResult );		      
+		    }
+		  
 		if (user.getId() == null) { // adding a new user
 			usersProcessingService.saveUser(user);
 		} else { // editing a current lesson
@@ -756,7 +772,16 @@ public class AdminController {
 		User user = usersProcessingService.findById(userId);
 		return userEntryFormUpdate(modelAndView, user);
 	}
-	
+
+	@RequestMapping(value = "/deleteUser")
+	public ModelAndView deleteLesson(HttpSession session, ModelAndView modelAndView, Model model,
+			@RequestParam("userId") String userId)
+			throws IOException {
+		log.debug("Deleting UserId: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
+
+		usersProcessingService.deleteUser(userId);
+		return userEntry(modelAndView, model);
+	}
 	/**
 	 * Render User entry update form to allow admin to edit user details.
 	 * 
@@ -786,12 +811,17 @@ public class AdminController {
 	private void setToModelAndViewAllLessonsApplicableItems(ModelAndView modelAndView) {
 		// extract all lessons from repository
 		ArrayList<Lesson> lessonsList  = (ArrayList<Lesson>) lessonsProcessingService.retrieveAllLessons();
-		// add each operating system name to list for UI display
+		// add each lesson name to list for UI display
 		List<String> allLessonsApplicableItems = new ArrayList<String>();
 		for (Lesson lesson : lessonsList ) {
 			allLessonsApplicableItems.add(lesson.getName());			
 		}
 		modelAndView.addObject("allLessonsApplicableItems", allLessonsApplicableItems);
+
+		// 11/9: experimenting
+		modelAndView.addObject("allLessonsApplicable", lessonsList);
+
+		
 	}
 
 	/**

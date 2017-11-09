@@ -48,6 +48,7 @@
 					                    <th scope="col">UserName</th>
 					                    <th scope="col">Assigned Operating Systems</th>					                    
 					                    <th scope="col">Assigned Lessons</th>					                    
+					                    <th scope="col">Assigned Lessons from List</th>					                    
 					                    <th scope="col">Action</th>
 					                </tr>
 					            </thead>
@@ -58,6 +59,7 @@
 					                    <td th:text="${user.userName}">UserName</td>
 					                    <td th:text="${user.operatingSystemIdList}">Assigned Operating System</td>
 					                    <td th:text="${user.lessonIdList}">Assigned Lessons</td>
+  				                        <td th:text="${user.assignedLessons}">Assigned Lessons</td>
 					                    <td> 
 					                        <a th:href="@{editUser(userId=${user.id})}"><span th:text="Edit"></span></a>
 					                        <a th:href="@{deleteUser(userId=${user.id})}"><span th:text="Delete"></span></a>

@@ -1,5 +1,6 @@
 package com.box.model.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,23 @@ public class User {
 	
 	/** list of admin optionally assigned lessons */
 	private List<String> lessonIdList;
+
+	private List<String> lessonList = new ArrayList<String>();
 	
+	public String getAssignedLessons() {
+		String assignedLessons = null;
+		if ((lessonList != null) && (!lessonList.isEmpty())){
+			for (String lesson: lessonList) {
+				if (assignedLessons == null) {
+				  assignedLessons = lesson;	
+				} else {
+					assignedLessons = lesson + " "  + assignedLessons;
+				}
+				
+			}
+		} 
+		return assignedLessons;
+	}
 	@NotNull
 	@Size(min = 2, max = 30)
 	private String userName;
@@ -90,6 +107,15 @@ public class User {
 
 	public void setLessonIdList(List<String> lessonIdList) {
 		this.lessonIdList = lessonIdList;
+	}
+
+		
+	public List<String> getLessonList() {
+		return lessonList;
+	}
+
+	public void setLessonList(List<String> lessonList) {
+		this.lessonList = lessonList;
 	}
 
 	public String getFirstName() {

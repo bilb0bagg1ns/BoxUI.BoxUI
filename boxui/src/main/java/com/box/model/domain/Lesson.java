@@ -42,6 +42,16 @@ public class Lesson {
 	private String scriptFileName;
 
 	private String lessonHtmlPage = "greeting_tmp";
+	
+	private String seperatorHack = ";";
+
+	public String getSeperatorHack() {
+		return seperatorHack;
+	}
+
+	public void setSeperatorHack(String seperatorHack) {
+		this.seperatorHack = seperatorHack;
+	}
 
 	public Lesson() {
 	}

@@ -64,10 +64,11 @@
 	   </div>           
 	          
 	   <!-- Select Applicable Lesson  -->
-	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->	   
+	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->
+       <!-- Assign Applicable Lesson(s)  -->	   	
        <label for="checkedLessonsApplicableTo" th:text="#{user.checkedLessonsApplicableTo}"></label>          
 	   <div class="panel panel-info">
-		   <div class="panel-heading"> <!-- Assign Applicable Lesson(s)  -->
+		   <div class="panel-heading"> 
 		      <div class="checkbox" style="display:inline">
 				  <div th:each="lessonItem : ${allLessonsApplicableItems}">
 				    <input type="checkbox" th:field="*{lessonIdList}" th:value="${lessonItem}" />
@@ -75,7 +76,23 @@
 				  </div>          
 		      </div>
 		   </div>
-	   </div>  	          
+	   </div>  	  
+
+	   <!-- Experimenting: Select Applicable Lesson  -->
+	   <!--  http://stackoverflow.com/questions/23747383/how-to-set-inline-check-box-in-a-bootstrap-panel-header -->	   
+       <label for="checkedLessonsApplicableTo" th:text="#{user.checkedLessonsApplicableTo}"></label>          
+	   <div class="panel panel-info">
+		   <div class="panel-heading"> <!-- Assign Applicable Lesson(s)  -->
+		      <div class="checkbox" style="display:inline">
+				  <div th:each="lesson : ${allLessonsApplicable}">
+				    <input type="checkbox" th:field="*{lessonList}" th:value="${lesson.id} +  ${lesson.seperatorHack} +  ${lesson.name}" />
+				    <label th:text="${lesson.name}">lesson</label>
+				  </div>          
+		      </div>
+		   </div>
+	   </div>  	  
+	   
+	           
 <div class="panel-body">
 </div>
       
