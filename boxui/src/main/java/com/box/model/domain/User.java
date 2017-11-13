@@ -3,10 +3,12 @@ package com.box.model.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,22 +33,113 @@ public class User {
 	/** list of admin optionally assigned lessons */
 	private List<String> lessonIdList;
 
-	private List<String> lessonList = new ArrayList<String>();
+	/** list of lessons associated with this User 
+	 *  Need this association because, the admin via the User flow
+	 *  can optionally assign a lesson to a user and when the lesson is
+	 *  deleted or renamed, it has to be reflected at the User level.
+	 *  
+	 *  Note: Tried List<Users>, but had challenges manipulation at the UI/ThymeLeaf level, hence
+	 *  had to revert to String list.
+	 */
+	private List<String> lessonIdNameList;
 	
-	public String getAssignedLessons() {
+	
+//	public String getAssignedLessons() {
+//		String assignedLessons = null;
+//		if ((lessonIdNameList != null) && (!lessonIdNameList.isEmpty())){
+//			for (String lesson: lessonIdNameList) {
+//				if (assignedLessons == null) {
+//				  assignedLessons = lesson;	
+//				} else {
+//					assignedLessons = lesson + " "  + assignedLessons;
+//				}
+//				
+//			}
+//		} 
+//		return assignedLessons;
+//	}
+	
+
+	/**
+	 * Iterate over lessonIdNameList and return list of lessons
+	 * 
+	 * @param lessonId
+	 * @return
+	 */
+	public String getAssignedLessons(){
 		String assignedLessons = null;
-		if ((lessonList != null) && (!lessonList.isEmpty())){
-			for (String lesson: lessonList) {
-				if (assignedLessons == null) {
-				  assignedLessons = lesson;	
-				} else {
-					assignedLessons = lesson + " "  + assignedLessons;
-				}
-				
-			}
-		} 
+		
+		// iterate over lessonIdNameList 
+		if ((lessonIdNameList != null) && (!lessonIdNameList.isEmpty())) {
+				for (String lessonIdName: lessonIdNameList) {
+				  StringTokenizer st = new StringTokenizer(lessonIdName,";");
+				  while (st.hasMoreTokens()) {
+				     String lessonIdToken = st.nextToken();
+				     String lessonToken = StringUtils.remove(st.nextToken(), '&');
+				    	//lessonList.add(i, lessonToken);
+						if (assignedLessons == null) {
+						  assignedLessons = lessonToken;	
+						} else {
+							assignedLessons = lessonToken + ", "  + assignedLessons;
+						}
+				    	
+				    }
+				  }				
+			}		
 		return assignedLessons;
 	}
+	
+	/**
+	 * Iterate over lessonIdNameList and return list of lessonIds
+	 * 
+	 * @param lessonId
+	 * @return
+	 */
+	public List<String> fetchLessonIds(){
+		List<String> lessonIdList = new ArrayList<String>();
+		
+		// iterate over lessonIdNameList 
+		if ((lessonIdNameList != null) && (!lessonIdNameList.isEmpty())) {
+			for (int i=0; i < lessonIdNameList.size(); i++) {
+				String lessonIdName = lessonIdNameList.get(i);
+				StringTokenizer st = new StringTokenizer(lessonIdName,";");
+				  while (st.hasMoreTokens()) {
+				    String lessonIdToken = st.nextToken();
+				    	lessonIdList.add(i, lessonIdToken); // assign lessonId
+				    	break;
+				    }
+				  }				
+			}				
+		return lessonIdList;
+	}
+	
+	/**
+	 * Iterate over lessonIdNameList and search for match with lessonId if found remove it.
+	 * 
+	 * @param lessonId
+	 * @return
+	 */
+	public boolean removeLessonFromLessonList (String lessonId) {
+		boolean isRemoved = false;
+		
+		// iterate over lessonIdNameList 
+		if ((lessonIdNameList != null) && (!lessonIdNameList.isEmpty())) {
+			for (int i=0; i < lessonIdNameList.size(); i++) {
+				String lessonIdName = lessonIdNameList.get(i);
+				StringTokenizer st = new StringTokenizer(lessonIdName,";");
+				  while (st.hasMoreTokens()) {
+				    String lessonIdToken = st.nextToken();
+				    if (lessonIdToken.equals(lessonId)) { // found lesson id 
+						lessonIdNameList.remove(i);
+						isRemoved = true;
+						break; // we are done
+				    }
+				  }				
+			}
+		}
+		return isRemoved;
+	}
+	
 	@NotNull
 	@Size(min = 2, max = 30)
 	private String userName;
@@ -111,11 +204,11 @@ public class User {
 
 		
 	public List<String> getLessonList() {
-		return lessonList;
+		return lessonIdNameList;
 	}
 
 	public void setLessonList(List<String> lessonList) {
-		this.lessonList = lessonList;
+		this.lessonIdNameList = lessonList;
 	}
 
 	public String getFirstName() {
@@ -162,6 +255,15 @@ public class User {
 		this.createdDate = createdDate;
 	}
 
+	public List<String> getLessonIdNameList() {
+		return lessonIdNameList;
+	}
+
+
+	public void setLessonIdNameList(List<String> lessonIdNameList) {
+		this.lessonIdNameList = lessonIdNameList;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", operatingSystemIdList=" + operatingSystemIdList + ", lessonIdList="

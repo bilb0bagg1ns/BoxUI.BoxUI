@@ -758,7 +758,8 @@ public class AdminController {
 		    }
 		  
 		if (user.getId() == null) { // adding a new user
-			usersProcessingService.saveUser(user);
+			usersProcessingService.saveUser(user);			
+			usersProcessingService.addUserToLesson(user);
 		} else { // editing a current lesson
 			usersProcessingService.upsertUser(user);
 		}

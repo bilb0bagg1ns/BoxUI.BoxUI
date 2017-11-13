@@ -86,7 +86,7 @@ public class UserRepository {
 
 		log.debug("\nUserRepository::retrieveAllUsers " + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 		ArrayList<User> retrievedUsersList = null;
-		// find all lessons
+		// find all Users
 		retrievedUsersList = (ArrayList<User>) mongoTemplate.findAll(User.class);
 		log.debug("retrieveAllUsers : " + retrievedUsersList);
 		return retrievedUsersList;

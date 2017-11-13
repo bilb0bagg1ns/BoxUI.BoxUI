@@ -85,7 +85,7 @@
 		   <div class="panel-heading"> <!-- Assign Applicable Lesson(s)  -->
 		      <div class="checkbox" style="display:inline">
 				  <div th:each="lesson : ${allLessonsApplicable}">
-				    <input type="checkbox" th:field="*{lessonList}" th:value="${lesson.id} +  ${lesson.seperatorHack} +  ${lesson.name}" />
+				    <input type="checkbox" th:field="*{lessonIdNameList}" th:value="${lesson.id} +  ${lesson.seperatorSemiColonHack} +  ${lesson.name} + ${lesson.seperatorAmpersandHack}" />
 				    <label th:text="${lesson.name}">lesson</label>
 				  </div>          
 		      </div>

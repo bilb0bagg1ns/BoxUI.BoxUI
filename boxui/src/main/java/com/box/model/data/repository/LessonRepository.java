@@ -68,6 +68,7 @@ public class LessonRepository {
 		update.set("name", lesson.getName());
 		update.set("shortDescription", lesson.getShortDescription());
 		update.set("longDescription", lesson.getLongDescription());
+		update.set("userIdList", lesson.getUserIdList());
 
 		mongoTemplate.upsert(query, update, Lesson.class);
 
