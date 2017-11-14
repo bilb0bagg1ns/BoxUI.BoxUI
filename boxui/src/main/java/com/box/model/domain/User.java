@@ -1,6 +1,5 @@
 package com.box.model.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -87,57 +86,6 @@ public class User {
 				  }				
 			}		
 		return assignedLessons;
-	}
-	
-	/**
-	 * Iterate over lessonIdNameList and return list of lessonIds
-	 * 
-	 * @param lessonId
-	 * @return
-	 */
-	public List<String> fetchLessonIds(){
-		List<String> lessonIdList = new ArrayList<String>();
-		
-		// iterate over lessonIdNameList 
-		if ((lessonIdNameList != null) && (!lessonIdNameList.isEmpty())) {
-			for (int i=0; i < lessonIdNameList.size(); i++) {
-				String lessonIdName = lessonIdNameList.get(i);
-				StringTokenizer st = new StringTokenizer(lessonIdName,";");
-				  while (st.hasMoreTokens()) {
-				    String lessonIdToken = st.nextToken();
-				    	lessonIdList.add(i, lessonIdToken); // assign lessonId
-				    	break;
-				    }
-				  }				
-			}				
-		return lessonIdList;
-	}
-	
-	/**
-	 * Iterate over lessonIdNameList and search for match with lessonId if found remove it.
-	 * 
-	 * @param lessonId
-	 * @return
-	 */
-	public boolean removeLessonFromLessonList (String lessonId) {
-		boolean isRemoved = false;
-		
-		// iterate over lessonIdNameList 
-		if ((lessonIdNameList != null) && (!lessonIdNameList.isEmpty())) {
-			for (int i=0; i < lessonIdNameList.size(); i++) {
-				String lessonIdName = lessonIdNameList.get(i);
-				StringTokenizer st = new StringTokenizer(lessonIdName,";");
-				  while (st.hasMoreTokens()) {
-				    String lessonIdToken = st.nextToken();
-				    if (lessonIdToken.equals(lessonId)) { // found lesson id 
-						lessonIdNameList.remove(i);
-						isRemoved = true;
-						break; // we are done
-				    }
-				  }				
-			}
-		}
-		return isRemoved;
 	}
 	
 	@NotNull

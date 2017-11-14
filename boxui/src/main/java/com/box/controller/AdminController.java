@@ -758,9 +758,13 @@ public class AdminController {
 		    }
 		  
 		if (user.getId() == null) { // adding a new user
-			usersProcessingService.saveUser(user);			
+			usersProcessingService.saveUser(user);
+			// add the user to the lesson(s) associated with the user
 			usersProcessingService.addUserToLesson(user);
-		} else { // editing a current lesson
+		} else { // editing a current user
+			// add the user to the lesson(s) associated with the user
+			usersProcessingService.addUserToLesson(user);			
+			// update the user
 			usersProcessingService.upsertUser(user);
 		}
 		return userEntry(modelAndView, model);
@@ -775,7 +779,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/deleteUser")
-	public ModelAndView deleteLesson(HttpSession session, ModelAndView modelAndView, Model model,
+	public ModelAndView deleteUSer(HttpSession session, ModelAndView modelAndView, Model model,
 			@RequestParam("userId") String userId)
 			throws IOException {
 		log.debug("Deleting UserId: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
