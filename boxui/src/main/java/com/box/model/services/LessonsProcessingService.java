@@ -83,6 +83,12 @@ public class LessonsProcessingService {
 		return isAssociated;
 	}
 
+	/**
+	 * Upserts lesson object along with the associated users of this lesson object
+     *
+	 * @param lesson
+	 */
+
 	public void upsertLesson(Lesson lesson) {
 		// repository.upsert(lesson);
 
@@ -92,6 +98,11 @@ public class LessonsProcessingService {
 		saveLesson(lesson);
 	}
 
+	/**
+	 * Just upserts lesson object and not do anything with the associated users of this lesson object
+     *
+	 * @param lesson
+	 */
 	public void upsertJustLesson(Lesson lesson) {
 		// repository.upsert(lesson);
 
@@ -141,6 +152,36 @@ public class LessonsProcessingService {
 			upsertJustLesson(lesson);
 		}
 		return removedLessonIdList;
+	}
+	
+	/**
+	 * Used as part of the User delete flow - which requires us to remove lesson association from the lessons standpoint.
+	 * 
+	 * Iterate over the lessons associated with the user, for each lesson, find and remove this user
+	 */
+	public void removeLessonToUserAssociation (String userId) {
+
+		// retrieve user by userId
+		User user = usersProcessingService.findById(userId);
+		
+		// if user has an associated lesson list, then iterate and remove association
+		if ( (user.getLessonIdNameList() != null) && (!user.getLessonIdNameList().isEmpty()) )
+		{
+			// fetch all the lessons ids of the user from the repository
+			List<String> lessonIdsFromRepository = usersProcessingService.fetchLessonIdsFromRepository (user);
+			for (String lessonId : lessonIdsFromRepository) {
+				// retrieve lesson from lessonId
+				Lesson lesson = findLessonByLessonId(lessonId);
+				// if lesson has a userId list, then
+				if (lesson.getUserIdList() != null) {
+  				  // remove userid from the list 
+				  lesson.getUserIdList().remove(user.getId());
+				  
+					// update the lesson now
+					upsertJustLesson(lesson);
+				}
+			}
+		}
 	}
 
 

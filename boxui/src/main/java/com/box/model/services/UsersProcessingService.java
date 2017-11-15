@@ -220,7 +220,7 @@ public class UsersProcessingService {
 	 * @param lessonId
 	 * @return
 	 */
-	private List<String> fetchLessonIdsFromRepository(User user){
+	public List<String> fetchLessonIdsFromRepository(User user){
 		List<String> repoUserlessonIdList = new ArrayList<String>();
 		
 		// get all lessons associated with the user in the repository
@@ -298,4 +298,6 @@ public class UsersProcessingService {
 		}
 		return isRemoved;
 	}
+	
+
 }

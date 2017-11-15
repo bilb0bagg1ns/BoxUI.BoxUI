@@ -779,12 +779,16 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/deleteUser")
-	public ModelAndView deleteUSer(HttpSession session, ModelAndView modelAndView, Model model,
+	public ModelAndView deleteUser(HttpSession session, ModelAndView modelAndView, Model model,
 			@RequestParam("userId") String userId)
 			throws IOException {
 		log.debug("Deleting UserId: " + userId + "<<<<<<<<<<<<<<<<<<<>>>>>>>>>");
 
+		// first remove any lesson(s) associated with the user
+		lessonsProcessingService.removeLessonToUserAssociation(userId);
+		// now delete user
 		usersProcessingService.deleteUser(userId);
+		
 		return userEntry(modelAndView, model);
 	}
 	/**
