@@ -30,7 +30,7 @@ public class User {
 	private List<String> operatingSystemIdList;
 	
 	/** list of admin optionally assigned lessons */
-	private List<String> lessonIdList;
+	// private List<String> lessonIdList;
 
 	/** list of lessons associated with this User 
 	 *  Need this association because, the admin via the User flow
@@ -127,17 +127,17 @@ public class User {
 		return operatingSystemIdList;
 	}
 
-	public List<String> getLessonIdList() {
-		return lessonIdList;
-	}
+//	public List<String> getLessonIdList() {
+//		return lessonIdList;
+//	}
 
 	public void setOperatingSystemIdList(List<String> operatingSystemIdList) {
 		this.operatingSystemIdList = operatingSystemIdList;
 	}
 
-	public void setLessonIdList(List<String> lessonIdList) {
-		this.lessonIdList = lessonIdList;
-	}
+//	public void setLessonIdList(List<String> lessonIdList) {
+//		this.lessonIdList = lessonIdList;
+//	}
 
 		
 	public List<String> getLessonList() {
@@ -200,11 +200,11 @@ public class User {
 	public void setLessonIdNameList(List<String> lessonIdNameList) {
 		this.lessonIdNameList = lessonIdNameList;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", operatingSystemIdList=" + operatingSystemIdList + ", lessonIdList="
-				+ lessonIdList + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
+		return "User [id=" + id + ", operatingSystemIdList=" + operatingSystemIdList + ", lessonIdNameList="
+				+ lessonIdNameList + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", createdDate=" + createdDate + "]";
-	}
+	}	
 }
