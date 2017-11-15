@@ -39,24 +39,13 @@ public class User {
 	 *  
 	 *  Note: Tried List<Users>, but had challenges manipulation at the UI/ThymeLeaf level, hence
 	 *  had to revert to String list.
+	 *  
+	 *  List elements are in this format: lessonId;lessonName&
+	 *  - a semicolon separates the lesson id and the lesson name
+	 *  - an ampersand separates the pairs of elements
+	 *  Ex format: [5915ed47a6b94c2fc419e2aa;Access Rights Management&, 5a0b48ab3eba6c4c04ad61e4;test&]
 	 */
 	private List<String> lessonIdNameList;
-	
-	
-//	public String getAssignedLessons() {
-//		String assignedLessons = null;
-//		if ((lessonIdNameList != null) && (!lessonIdNameList.isEmpty())){
-//			for (String lesson: lessonIdNameList) {
-//				if (assignedLessons == null) {
-//				  assignedLessons = lesson;	
-//				} else {
-//					assignedLessons = lesson + " "  + assignedLessons;
-//				}
-//				
-//			}
-//		} 
-//		return assignedLessons;
-//	}
 	
 
 	/**

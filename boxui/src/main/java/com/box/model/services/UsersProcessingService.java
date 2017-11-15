@@ -87,24 +87,7 @@ public class UsersProcessingService {
 	 */
 	
 	public void addOrRemoveUserToLesson(User user) {
-		
-//		// fetch all (UI edited) lessons associated with this user 
-//		List<String> lessonIdList = fetchLessonIds(user);
-//
-//		 // empty list means that the lesson was removed for the user
-//		if ((lessonIdList != null) && (lessonIdList.isEmpty())) {
-//		 
-//		  // now find lessonIds that were removed for user
-//		  List<String> removedLessonIdList = findLessonsRemovedForUser(user);
-//		  
-//		  // now, remove the user from each of the lessonIds
-//		  List<String> updatedLessonIdList = lessonsProcessingService.removeAssociatedUserFromLessonAndUpdate(removedLessonIdList, user.getId());
-//		
-//		} else {
-//		  // which means a lesson was added for the user
-//			addUserToLesson (user);
-//		}
-		  
+				  
 		  if (isLessonAdded(user)) { // if a lesson was added during User edit
 			  // find lessonIds that were added for the user
 			  // List<String> addedLessonIdList =  findLessonsAddedForUser(user);
