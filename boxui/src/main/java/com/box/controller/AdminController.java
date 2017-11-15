@@ -760,10 +760,10 @@ public class AdminController {
 		if (user.getId() == null) { // adding a new user
 			usersProcessingService.saveUser(user);
 			// add the user to the lesson(s) associated with the user
-			usersProcessingService.addUserToLesson(user);
+			usersProcessingService.associateUserToLesson(user);
 		} else { // editing a current user
-			// add the user to the lesson(s) associated with the user
-			usersProcessingService.addUserToLesson(user);			
+			// edited user add or remove lesson(s) associated with the user
+			usersProcessingService.addOrRemoveUserToLesson(user);			
 			// update the user
 			usersProcessingService.upsertUser(user);
 		}

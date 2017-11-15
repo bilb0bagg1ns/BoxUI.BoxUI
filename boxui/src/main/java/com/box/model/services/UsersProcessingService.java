@@ -61,11 +61,11 @@ public class UsersProcessingService {
 	 * 
 	 * @param user
 	 */
-	public void addUserToLesson(User user) {
+	public void associateUserToLesson(User user) {
 		
 	  // if user id not already associated with lesson then add it, else ignore	
 		// fetch all lessons associated with this user
-		List<String> lessonIdList = fetchLessonIds(user);
+		List<String> lessonIdList = fetchLessonIdsInUserObject(user);
 		// for each lessonId, add user to lesson
 		for (String lessonId : lessonIdList) {
 			// retrieve lesson by lessonId
@@ -88,30 +88,79 @@ public class UsersProcessingService {
 	
 	public void addOrRemoveUserToLesson(User user) {
 		
-		// fetch all lessons associated with this user
-		List<String> lessonIdList = fetchLessonIds(user);
-		
-		if ((lessonIdList != null) && (lessonIdList.isEmpty())) {
-		 // which means that the lesson was removed for the user
-		 
-		  // now find lessonIds that were removed for user
-		  List<String> removedLessonIdList = findLessonsRemovedForUser(user);
+//		// fetch all (UI edited) lessons associated with this user 
+//		List<String> lessonIdList = fetchLessonIds(user);
+//
+//		 // empty list means that the lesson was removed for the user
+//		if ((lessonIdList != null) && (lessonIdList.isEmpty())) {
+//		 
+//		  // now find lessonIds that were removed for user
+//		  List<String> removedLessonIdList = findLessonsRemovedForUser(user);
+//		  
+//		  // now, remove the user from each of the lessonIds
+//		  List<String> updatedLessonIdList = lessonsProcessingService.removeAssociatedUserFromLessonAndUpdate(removedLessonIdList, user.getId());
+//		
+//		} else {
+//		  // which means a lesson was added for the user
+//			addUserToLesson (user);
+//		}
 		  
-		  // now, remove the user from each of the lessonIds
-		  List<String> updatedLessonIdList = lessonsProcessingService.removeAssociatedUserFromLessonAndUpdate(removedLessonIdList, user.getId());
-		
-		} else {
-		  // which means a lesson was added for the user
-			addUserToLesson (user);
-		}
+		  if (isLessonAdded(user)) { // if a lesson was added during User edit
+			  // find lessonIds that were added for the user
+			  // List<String> addedLessonIdList =  findLessonsAddedForUser(user);
+			  // associate the user to the lesson
+   			  associateUserToLesson (user);
+		  } else {
+			  // find lessonIds that were removed for the user
+			  List<String> removedLessonIdList = findLessonsRemovedForUser(user);
+			  // now, remove the user from each of the lessonIds
+			  List<String> updatedLessonIdList = lessonsProcessingService.removeAssociatedUserFromLessonAndUpdate(removedLessonIdList, user.getId());
+			  
+			  
+		  }
 	}
 	
+	
 	/**
-	 * Compares the lessons in the passed in user against the lessons stored in the repository for this user and 
-	 * returns the list of lessons removed if any
+	 * Check to see during editing of User by admin, additional lessons were added in which case the number
+	 * of lessons in the updatedUser's list would be greater then what is in the repository
 	 * 
 	 * @param updatedUser
 	 * @return
+	 */
+	private boolean isLessonAdded(User updatedUser) {
+		boolean isAdd = false;
+		
+		// list of updated lessonId list from updatedUser
+		// Ex: [123, 456, 789]
+		List<String> updatedLessonIdList = fetchLessonIdsFromLessonIdNameList(updatedUser.getLessonIdNameList());
+		
+		// list of lessonIdName list in repository
+		// Ex: [123, 456, 789, 111, 222]
+		List<String> repoLessonIdList = fetchLessonIdsFromRepository(updatedUser);
+		
+		// if updated list is greater then what is in the repository, then lessons were added during User edit
+		if (updatedLessonIdList.size() > repoLessonIdList.size()) {
+			isAdd = true;
+		}
+		return isAdd;
+	}
+	
+	/*-
+	 * Compares the lessons in the passed in user against the lessons stored in the repository for this user and 
+	 * returns the list of lessons removed if any.
+	 * 
+	 * In other words, it substracts from the Lessons in repository from the Updated user and returns list of lessons IDs that 
+	 * were removed. 
+	 * 
+	 * Seq-- In Repository ------- In Updated User ---- New List of lesson ids Removed during User edit
+	 * 1  -- [123 456]      --     [456]          ---   [123] (Removed)
+	 * 2  -- [123 456]      --      []            ---   [123 456] (Removed)
+	 * 3  -- [123 456]      --     [123 456]      ---   [] (No change - containsAll is true)
+	 * 
+	 * 
+	 * @param updatedUser
+	 * @return 
 	 */
 	private List<String> findLessonsRemovedForUser(User updatedUser) {
 		
@@ -121,7 +170,7 @@ public class UsersProcessingService {
 
 		// list of lessonIdName list in repository
 		// Ex: [123, 456, 789, 111, 222]
-		List<String> repoLessonIdList = fetchLessonIds(updatedUser);
+		List<String> repoLessonIdList = fetchLessonIdsFromRepository(updatedUser);
 
 		// find what lessons have been removed by comparing what is in the repository to what was passed in
 		// Ex: [111, 222]		
@@ -132,21 +181,73 @@ public class UsersProcessingService {
 		return repoLessonIdList;
 	}
 
+	/*-
+	 * Compares the lessons in the passed in user against the lessons stored in the repository for this user and 
+	 * returns the list of lessons added.
+	 * 
+	 * In other words, it substracts from the Lessons in Updated User from the ones in repository and returns list of lessons IDs that 
+	 * were added. 
+	 * 
+	 * Seq-- In Repository ------- In Updated User ---- New List of lesson ids added during User edit
+	 * 1  -- [123 456]      --     [123 456 789]          ---   [789] (Added)
+	 * 
+	 * 
+	 * @param updatedUser
+	 * @return 
+	 */
+	private List<String> findLessonsAddedForUser(User updatedUser) {
+		
+		// list of updated lessonId list
+		// Ex: [123, 456, 789]
+		List<String> updatedLessonIdList = fetchLessonIdsFromLessonIdNameList(updatedUser.getLessonIdNameList());
+
+		// list of lessonIdName list in repository
+		// Ex: [123, 456]
+		List<String> repoLessonIdList = fetchLessonIdsFromRepository(updatedUser);
+
+		// find what lessons have been added by comparing what is in the repository to what was passed in
+		// Ex: [789]		
+		updatedLessonIdList.removeAll(repoLessonIdList);
+		
+		// contains the added lesson
+		// Ex: [789]				
+		return updatedLessonIdList;
+	}	
+	
 	/**
-	 * fetch lesson ids associated with user
+	 * fetch lesson ids held in the repo for the user 
 	 * 
 	 * @param lessonId
 	 * @return
 	 */
-	private List<String> fetchLessonIds(User user){
-		List<String> lessonIdList = new ArrayList<String>();
-		List<String> lessonIdNameList = user.getLessonIdNameList();	
+	private List<String> fetchLessonIdsFromRepository(User user){
+		List<String> repoUserlessonIdList = new ArrayList<String>();
+		
+		// get all lessons associated with the user in the repository
+		User repoUser = findById (user.getId());
+		List<String> repoUserLessonIdNameList = repoUser.getLessonIdNameList();
 		
 		// retrieve all lesson ids
-		lessonIdList = fetchLessonIdsFromLessonIdNameList(lessonIdNameList);
-		return lessonIdList;
+		repoUserlessonIdList = fetchLessonIdsFromLessonIdNameList(repoUserLessonIdNameList);
+		return repoUserlessonIdList;
 	}
 	
+	/**
+	 * fetch lesson ids held in the user object
+	 * 
+	 * @param lessonId
+	 * @return
+	 */
+	private List<String> fetchLessonIdsInUserObject(User user){
+		List<String> userlessonIdList = new ArrayList<String>();
+		
+		// get all lessons held in the user object 
+		List<String> userLessonIdNameList = user.getLessonIdNameList();
+		
+		// retrieve all lesson ids
+		userlessonIdList = fetchLessonIdsFromLessonIdNameList(userLessonIdNameList);
+		return userlessonIdList;
+	}
 	
 	/**
 	 * Iterate over lessonIdNameList and return list of lessonIds
